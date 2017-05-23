@@ -1,0 +1,25 @@
+[I 170523 22:32:14 web:2063] 200 GET / (127.0.0.1) 11.83ms
+[I 170523 22:32:14 web:2063] 200 GET /static/chat.js?v=ffb757eb688e1475dc6576aca0d93f71 (127.0.0.1) 12.41ms
+											13750.52, "updater.poll()" ] chat.js:23:1
+13751.532: >>> MsgUpdateHandler(None)
+13752.534: >>> wait_for_messages(None)
+13753.535: >>> MsgUpdateHandler - before yield...
+
+											13777.07, "newMessage(", Object ] chat.js:23:1
+13778.085: >>> MsgNewHandler({'body': u':-)', 'id': 'a23f4331-906'})
+[I 170523 22:32:43 chatdemo:73] Sending new message to 1 listeners
+13779.089: >>> new_messages([{'body': u':-)', 'html': '<div>..', 'id': 'a26'}])
+[I 170523 22:32:44 web:2063] 200 POST /a/message/new (127.0.0.1) 2007.09ms
+13780.091: >>> MsgUpdateHandler - after yield, messages = [..]
+[I 170523 22:32:45 web:2063] 200 POST /a/message/updates (127.0.0.1) 29562.63ms
+											13781.10, "updater.onSuccess()" ] chat.js:23:1
+											13782.10, "updater.newMessages(", Object ] chat.js:23:1
+13784.124: >>> MsgUpdateHandler(u'a23f4331-9054-49f5-ac4a-408a9b491b26')
+13785.125: >>> wait_for_messages(u'a23f4331-9054-49f5-ac4a-408a9b491b26')
+13786.126: >>> MsgUpdateHandler - before yield...
+
+
+
+
+
+

@@ -21,12 +21,22 @@ import tornado.web
 import os.path
 import uuid
 
+from time import time, sleep
+
 from tornado.concurrent import Future
 from tornado import gen
 from tornado.options import define, options, parse_command_line
 
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=False, help="run in debug mode")
+
+
+TIME_ROOT = 1495539784.0
+
+
+def checkpoint(msg):
+    print "%7.3f: %s" % (time() - TIME_ROOT, msg)
+    sleep(1.0)
 
 
 class MessageBuffer(object):
@@ -40,6 +50,7 @@ class MessageBuffer(object):
         # wait_for_messages to be yielded from a coroutine even though
         # it is not a coroutine itself.  We will set the result of the
         # Future when results are available.
+        checkpoint(">>> wait_for_messages(%r)" % cursor)
         result_future = Future()
         if cursor:
             new_count = 0
@@ -60,6 +71,7 @@ class MessageBuffer(object):
 
     def new_messages(self, messages):
         logging.info("Sending new message to %r listeners", len(self.waiters))
+        checkpoint(">>> new_messages(%r)" % messages)
         for future in self.waiters:
             future.set_result(messages)
         self.waiters = set()
@@ -83,6 +95,7 @@ class MessageNewHandler(tornado.web.RequestHandler):
             "id": str(uuid.uuid4()),
             "body": self.get_argument("body"),
         }
+        checkpoint(">>> MsgNewHandler(%r)" % message)
         # to_basestring is necessary for Python 3's json encoder,
         # which doesn't accept byte strings.
         message["html"] = tornado.escape.to_basestring(
@@ -98,10 +111,14 @@ class MessageUpdatesHandler(tornado.web.RequestHandler):
     @gen.coroutine
     def post(self):
         cursor = self.get_argument("cursor", None)
+        checkpoint(">>> MsgUpdateHandler(%r)" % cursor)
         # Save the future returned by wait_for_messages so we can cancel
         # it in wait_for_messages
         self.future = global_message_buffer.wait_for_messages(cursor=cursor)
+        checkpoint(">>> MsgUpdateHandler - before yield...")
         messages = yield self.future
+        checkpoint(">>> MsgUpdateHandler - after yield, messages = %r" %
+                   messages)
         if self.request.connection.stream.closed():
             return
         self.write(dict(messages=messages))

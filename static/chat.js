@@ -12,6 +12,19 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
+var TIME_ROOT = 1495539784.0
+
+function bad_bad_sleep(delay) {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + delay);
+}
+
+function checkpoint(msg) {
+  console.log([Date.now()/1000.0 - TIME_ROOT].concat(msg))
+  bad_bad_sleep(1000.0);
+}
+
+
 $(document).ready(function() {
     if (!window.console) window.console = {};
     if (!window.console.log) window.console.log = function() {};
@@ -33,6 +46,7 @@ $(document).ready(function() {
 
 function newMessage(form) {
     var message = form.formToDict();
+    checkpoint(["newMessage(", message])
     var disabled = form.find("input[type=submit]");
     disabled.disable();
     $.postJSON("/a/message/new", message, function(response) {
@@ -90,6 +104,7 @@ var updater = {
     cursor: null,
 
     poll: function() {
+        checkpoint("updater.poll()")
         var args = {"_xsrf": getCookie("_xsrf")};
         if (updater.cursor) args.cursor = updater.cursor;
         $.ajax({url: "/a/message/updates", type: "POST", dataType: "text",
@@ -98,7 +113,9 @@ var updater = {
     },
 
     onSuccess: function(response) {
+        checkpoint("updater.onSuccess()")
         try {
+            console.log(["New message arrived:", response]);
             updater.newMessages(eval("(" + response + ")"));
         } catch (e) {
             updater.onError();
@@ -115,6 +132,7 @@ var updater = {
     },
 
     newMessages: function(response) {
+        checkpoint(["updater.newMessages(", response])
         if (!response.messages) return;
         updater.cursor = response.cursor;
         var messages = response.messages;
