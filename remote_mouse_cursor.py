@@ -1,0 +1,120 @@
+#!/usr/bin/env python
+
+"""
+API to manage several mouse pointers on single page.
+
+Engine structure is taken from tornado example `chat`, long poll version:
+    https://github.com/tornadoweb/tornado/tree/master/demos/chat
+"""
+
+import logging
+
+import tornado.escape
+import tornado.ioloop
+import tornado.web
+import uuid
+
+
+from tornado.concurrent import Future
+from tornado import gen
+
+
+class PointersStorage(object):
+    def __init__(self):
+        self.pointers = {}
+        self.waiters = set()
+        self.version = 100500
+
+    def wait_for_positions(self, version=0):
+        # Construct a Future to return to our caller.  This allows
+        # wait_for_messages to be yielded from a coroutine even though
+        # it is not a coroutine itself.  We will set the result of the
+        # Future when results are available.
+        result_future = Future()
+        if version < self.version:
+            result_future.set_result({'pointers': self.pointers,
+                                      'version': self.version})
+            return result_future
+        self.waiters.add(result_future)
+        return result_future
+
+    def cancel_wait(self, future):
+        self.waiters.remove(future)
+        # Set an empty result to unblock any coroutines waiting.
+        future.set_result({})
+
+    def __update_all_futures(self):
+        self.version += 1
+        for future in self.waiters:
+            future.set_result({'pointers': self.pointers,
+                               'version': self.version})
+        self.waiters = set()
+
+    def new_position(self, user, position):
+        logging.info("Sending new message to %r listeners", len(self.waiters))
+        self.pointers.update({user: position})
+        self.__update_all_futures()
+
+    def new_user(self, user, position):
+        logging.info("Adding new user: %s", user)
+        self.pointers.update({user: position})
+        self.__update_all_futures()
+
+    def drop_user(self, user):
+        logging.info("Forgetting user: %s", user)
+        del self.pointers[user]
+        self.__update_all_futures()
+
+
+# Making this a non-singleton is left as an exercise for the reader.
+pointers = PointersStorage()
+
+
+class PointerNewUserHandler(tornado.web.RequestHandler):
+    def post(self):
+        if not self.get_secure_cookie("pointer_user"):
+            user = uuid.uuid4().get_hex()
+            self.set_secure_cookie("pointer_user", user)
+            self.write("Welcome!")
+            pointers.new_user(user, self.get_argument("position", None))
+        else:
+            self.write("You are here already!")
+
+
+class PointerDropUserHandler(tornado.web.RequestHandler):
+    def post(self):
+        user = self.get_secure_cookie("pointer_user")
+        if user:
+            self.clear_cookie("pointer_user")
+            self.write("Bye!")
+            pointers.drop_user(user)
+        else:
+            self.write("Who are you?!")
+
+
+class PointerNewPositionHandler(tornado.web.RequestHandler):
+    def post(self):
+        user = self.get_secure_cookie("pointer_user")
+        if user:
+            pointers.new_position(user, self.get_argument("position", None))
+        else:
+            self.write("You are not registered!")
+
+
+class PointerUpdateHandler(tornado.web.RequestHandler):
+    @gen.coroutine
+    def post(self):
+        if not self.get_secure_cookie("pointer_user"):
+            self.write("You are not registered!")
+            return
+        version = self.get_argument("version", 0)
+        # Save the future returned by `wait_for_positions` so we can cancel
+        # it in `wait_for_messages`.
+        self.future = pointers.wait_for_positions(version=version)
+        positions = yield self.future
+        if self.request.connection.stream.closed():
+            return
+        self.write(dict(positions=positions))
+
+    def on_connection_close(self):
+        pointers.cancel_wait(self.future)

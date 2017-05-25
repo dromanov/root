@@ -27,6 +27,9 @@ from tornado.concurrent import Future
 from tornado import gen
 from tornado.options import define, options, parse_command_line
 
+from remote_mouse_cursor import PointerNewUserHandler, \
+    PointerDropUserHandler, PointerNewPositionHandler, PointerUpdateHandler
+
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=False, help="run in debug mode")
 
@@ -135,8 +138,12 @@ def main():
             (r"/", MainHandler),
             (r"/a/message/new", MessageNewHandler),
             (r"/a/message/updates", MessageUpdatesHandler),
+            (r"/a/pointer/new_user", PointerNewUserHandler),
+            (r"/a/pointer/drop_user", PointerDropUserHandler),
+            (r"/a/pointer/new_position", PointerNewPositionHandler),
+            (r"/a/pointer/updates", PointerUpdateHandler),
         ],
-        cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
+        cookie_secret=uuid.uuid4().get_hex(),
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         xsrf_cookies=True,

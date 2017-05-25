@@ -43,6 +43,8 @@ $(document).ready(function() {
     });
     $("#message").select();
     updater.poll();
+
+    pointers.setup_main();
 });
 
 function newMessage(form) {
@@ -141,6 +143,78 @@ var updater = {
         console.log(messages.length, "new messages, cursor:", updater.cursor);
         for (var i = 0; i < messages.length; i++) {
             updater.showMessage(messages[i]);
+        }
+    },
+
+    showMessage: function(message) {
+        var existing = $("#m" + message.id);
+        if (existing.length > 0) return;
+        var node = $(message.html);
+        node.hide();
+        $("#inbox").append(node);
+        node.slideDown();
+    }
+};
+
+var pointers = {
+    errorSleepTime: 500,
+    version: 0,
+
+    setup_main: function() {
+      $("#respawn_point").click(function () {
+        var args = {"_xsrf": getCookie("_xsrf")};
+        $.ajax({
+          url: "/a/pointer/new_user", type: "POST", dataType: "text",
+          data: $.param(args), success: pointers.onSuccess,
+          error: pointers.onError
+        })
+      })
+      $("#logout").click(function () {
+        var args = {"_xsrf": getCookie("_xsrf")};
+        $.ajax({
+          url: "/a/pointer/drop_user", type: "POST", dataType: "text",
+          data: $.param(args)
+        })
+      })
+    },
+
+    poll: function() {
+        // checkpoint("updater.poll()")
+        var args = {"_xsrf": getCookie("_xsrf")};
+        args.version = pointers.version;
+        $.ajax({url: "/a/pointer/updates", type: "POST", dataType: "text",
+                data: $.param(args), success: pointers.onSuccess,
+                error: pointers.onError});
+    },
+
+    onSuccess: function(response) {
+        // checkpoint("updater.onSuccess()")
+        try {
+            console.log(["New positions arrived:", response]);
+            pointers.newMessages(eval("(" + response + ")"));
+        } catch (e) {
+            pointers.onError();
+            return;
+        }
+        pointers.errorSleepTime = 500;
+        window.setTimeout(pointers.poll, 0);
+    },
+
+    onError: function(response) {
+        pointers.errorSleepTime *= 2;
+        console.log("Pointer poll error; sleeping for", pointers.errorSleepTime, "ms");
+        window.setTimeout(pointers.poll, pointers.errorSleepTime);
+    },
+
+    newMessages: function(response) {
+        // checkpoint(["updater.newMessages(", response])
+        if (!response.messages) return;
+        pointers.version = response.version;
+        var messages = response.messages;
+        pointers.version = messages[messages.length - 1].id;
+        console.log(messages.length, "new messages, version:", pointers.version);
+        for (var i = 0; i < messages.length; i++) {
+            pointers.showMessage(messages[i]);
         }
     },
 
