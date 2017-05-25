@@ -21,9 +21,9 @@ from tornado import gen
 
 class PointersStorage(object):
     def __init__(self):
-        self.pointers = {}
+        self.positions = {}
         self.waiters = set()
-        self.version = 100500
+        self.version = 0
 
     def wait_for_positions(self, version=0):
         # Construct a Future to return to our caller.  This allows
@@ -32,7 +32,7 @@ class PointersStorage(object):
         # Future when results are available.
         result_future = Future()
         if version < self.version:
-            result_future.set_result({'pointers': self.pointers,
+            result_future.set_result({'positions': self.positions,
                                       'version': self.version})
             return result_future
         self.waiters.add(result_future)
@@ -43,27 +43,29 @@ class PointersStorage(object):
         # Set an empty result to unblock any coroutines waiting.
         future.set_result({})
 
-    def __update_all_futures(self):
-        self.version += 1
+    def __send_all_futures(self):
         for future in self.waiters:
-            future.set_result({'pointers': self.pointers,
+            future.set_result({'positions': self.positions,
                                'version': self.version})
         self.waiters = set()
 
     def new_position(self, user, position):
         logging.info("Sending new message to %r listeners", len(self.waiters))
-        self.pointers.update({user: position})
-        self.__update_all_futures()
+        self.version += 1
+        self.positions.update({user: position})
+        self.__send_all_futures()
 
     def new_user(self, user, position):
         logging.info("Adding new user: %s", user)
-        self.pointers.update({user: position})
-        self.__update_all_futures()
+        self.version += 1
+        self.positions.update({user: position})
+        self.__send_all_futures()
 
     def drop_user(self, user):
         logging.info("Forgetting user: %s", user)
-        del self.pointers[user]
-        self.__update_all_futures()
+        self.version += 1
+        del self.positions[user]
+        self.__send_all_futures()
 
 
 # Making this a non-singleton is left as an exercise for the reader.
@@ -96,7 +98,9 @@ class PointerNewPositionHandler(tornado.web.RequestHandler):
     def post(self):
         user = self.get_secure_cookie("pointer_user")
         if user:
-            pointers.new_position(user, self.get_argument("position", None))
+            x, y = [int(self.get_argument(k)) for k in "x y".split()]
+            logging.debug("received new coordinates: %s", (x, y))
+            pointers.new_position(user, {'x': x, 'y': y})
         else:
             self.write("You are not registered!")
 
@@ -105,16 +109,18 @@ class PointerUpdateHandler(tornado.web.RequestHandler):
     @gen.coroutine
     def post(self):
         if not self.get_secure_cookie("pointer_user"):
+            logging.debug("no such user")
             self.write("You are not registered!")
             return
-        version = self.get_argument("version", 0)
+        version = int(self.get_argument("version", 0))
+        logging.debug("version: %d", version)
         # Save the future returned by `wait_for_positions` so we can cancel
-        # it in `wait_for_messages`.
+        # it in `wait_for_positions`.
         self.future = pointers.wait_for_positions(version=version)
         positions = yield self.future
         if self.request.connection.stream.closed():
             return
-        self.write(dict(positions=positions))
+        self.write(positions)
 
     def on_connection_close(self):
         pointers.cancel_wait(self.future)

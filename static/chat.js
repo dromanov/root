@@ -159,26 +159,59 @@ var updater = {
 var pointers = {
     errorSleepTime: 500,
     version: 0,
+    drop_polling: true,
 
     setup_main: function() {
+      var args = {"_xsrf": getCookie("_xsrf")};
       $("#respawn_point").click(function () {
-        var args = {"_xsrf": getCookie("_xsrf")};
+        console.log("Introducing new user...")
         $.ajax({
           url: "/a/pointer/new_user", type: "POST", dataType: "text",
-          data: $.param(args), success: pointers.onSuccess,
-          error: pointers.onError
+          data: $.param(args), success: function(response) {
+            console.log(["user activated", response])
+            pointers.errorSleepTime = 500;
+            pointers.drop_polling = false;
+            window.setTimeout(pointers.poll, 0);
+          },
+          error: function (response) {
+            console.log(['user activation failed...', response])
+          }
         })
       })
       $("#logout").click(function () {
-        var args = {"_xsrf": getCookie("_xsrf")};
+        console.log("Dropping user...")
+        pointers.drop_polling = true;
         $.ajax({
           url: "/a/pointer/drop_user", type: "POST", dataType: "text",
-          data: $.param(args)
+          data: $.param(args), success: function (response) {
+            console.log(['user deactivated successfully', response])
+          }, error: function (response) {
+            console.log(['user deactivated with error...', response])
+          }
         })
+      })
+      $("body").mousemove(function(e) {
+        // console.log(["Mouse is here:", e.pageX, e.pageY])
+        if (!pointers.drop_polling) {
+          args.x = e.pageX;
+          args.y = e.pageY;
+          $.ajax({
+            url: "/a/pointer/new_position", type: "POST", dataType: "text",
+            data: $.param(args), success: function(response) {
+              // console.log(["mouse reported successfully", response])
+            },
+            error: function (response) {
+              console.log(["mouse reported with error", response])
+            }
+          })
+        }
       })
     },
 
     poll: function() {
+        if (pointers.drop_polling) {
+          return;
+        }
         // checkpoint("updater.poll()")
         var args = {"_xsrf": getCookie("_xsrf")};
         args.version = pointers.version;
@@ -191,7 +224,11 @@ var pointers = {
         // checkpoint("updater.onSuccess()")
         try {
             console.log(["New positions arrived:", response]);
-            pointers.newMessages(eval("(" + response + ")"));
+            res = eval("(" + response + ")");
+            console.log(['res', res])
+            pointers.version = res.version;
+            positions = res.positions
+            pointers.drawPositions(positions);
         } catch (e) {
             pointers.onError();
             return;
@@ -206,24 +243,8 @@ var pointers = {
         window.setTimeout(pointers.poll, pointers.errorSleepTime);
     },
 
-    newMessages: function(response) {
+    drawPositions: function(positions) {
         // checkpoint(["updater.newMessages(", response])
-        if (!response.messages) return;
-        pointers.version = response.version;
-        var messages = response.messages;
-        pointers.version = messages[messages.length - 1].id;
-        console.log(messages.length, "new messages, version:", pointers.version);
-        for (var i = 0; i < messages.length; i++) {
-            pointers.showMessage(messages[i]);
-        }
-    },
-
-    showMessage: function(message) {
-        var existing = $("#m" + message.id);
-        if (existing.length > 0) return;
-        var node = $(message.html);
-        node.hide();
-        $("#inbox").append(node);
-        node.slideDown();
+        $("#positions").html(JSON.stringify(positions));
     }
 };
