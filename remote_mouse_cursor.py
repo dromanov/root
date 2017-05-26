@@ -32,7 +32,7 @@ class PointersStorage(object):
         # Future when results are available.
         result_future = Future()
         if version < self.version:
-            result_future.set_result({'positions': self.positions,
+            result_future.set_result({'positions': self.positions.items(),
                                       'version': self.version})
             return result_future
         self.waiters.add(result_future)
@@ -45,7 +45,7 @@ class PointersStorage(object):
 
     def __send_all_futures(self):
         for future in self.waiters:
-            future.set_result({'positions': self.positions,
+            future.set_result({'positions': self.positions.items(),
                                'version': self.version})
         self.waiters = set()
 

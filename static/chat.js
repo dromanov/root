@@ -209,32 +209,32 @@ var pointers = {
     },
 
     poll: function() {
-        if (pointers.drop_polling) {
-          return;
-        }
-        // checkpoint("updater.poll()")
-        var args = {"_xsrf": getCookie("_xsrf")};
-        args.version = pointers.version;
-        $.ajax({url: "/a/pointer/updates", type: "POST", dataType: "text",
-                data: $.param(args), success: pointers.onSuccess,
-                error: pointers.onError});
+      if (pointers.drop_polling) {
+        return;
+      }
+      // checkpoint("updater.poll()")
+      var args = {"_xsrf": getCookie("_xsrf")};
+      args.version = pointers.version;
+      $.ajax({url: "/a/pointer/updates", type: "POST", dataType: "text",
+              data: $.param(args), success: pointers.onSuccess,
+              error: pointers.onError});
     },
 
     onSuccess: function(response) {
-        // checkpoint("updater.onSuccess()")
-        try {
-            console.log(["New positions arrived:", response]);
-            res = eval("(" + response + ")");
-            console.log(['res', res])
-            pointers.version = res.version;
-            positions = res.positions
-            pointers.drawPositions(positions);
-        } catch (e) {
-            pointers.onError();
-            return;
-        }
-        pointers.errorSleepTime = 500;
-        window.setTimeout(pointers.poll, 0);
+      // checkpoint("updater.onSuccess()")
+      try {
+        console.log(["New positions arrived:", response]);
+        res = eval("(" + response + ")");
+        console.log(['res', res])
+        pointers.version = res.version;
+        positions = res.positions
+        pointers.drawPositions(positions);
+      } catch (e) {
+        pointers.onError();
+        return;
+      }
+      pointers.errorSleepTime = 500;
+      window.setTimeout(pointers.poll, 0);
     },
 
     onError: function(response) {
@@ -244,7 +244,21 @@ var pointers = {
     },
 
     drawPositions: function(positions) {
-        // checkpoint(["updater.newMessages(", response])
-        $("#positions").html(JSON.stringify(positions));
+      // checkpoint(["updater.newMessages(", response])
+      $("#positions").html(JSON.stringify(positions));
+      for (var i = 0 ; i < positions.length ; ++i) {
+        var p = positions[i][1];
+        console.log(p);
+        mark = $("<span>").css({
+          'position':'absolute',
+          'border':'solid 2px #cc00cc',
+          'border-radius':'20px',
+          'width':'17px',
+          'height':'17px',
+          top: p.y-10,
+          left: p.x-10
+        });
+        $("body").append(mark);
+      }
     }
 };
