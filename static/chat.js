@@ -12,94 +12,81 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-var TIME_ROOT = 1495539784.0
-
-function bad_bad_sleep(delay) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
-}
-
-function checkpoint(msg) {
-  alert("No one should have called me!")
-  console.log([Date.now()/1000.0 - TIME_ROOT].concat(msg))
-  bad_bad_sleep(1000.0);
-}
-
-
 $(document).ready(function() {
-    if (!window.console) window.console = {};
-    if (!window.console.log) window.console.log = function() {};
+  if (!window.console) window.console = {};
+  if (!window.console.log) window.console.log = function() {};
 
-    $("#messageform").on("submit", function() {
-        newMessage($(this));
-        return false;
-    });
-    $("#messageform").on("keypress", function(e) {
-        if (e.keyCode == 13) {
-            newMessage($(this));
-            return false;
-        }
-        return true;
-    });
-    $("#message").select();
-    updater.poll();
+  $("#messageform").on("submit", function() {
+    newMessage($(this));
+    return false;
+  });
+  $("#messageform").on("keypress", function(e) {
+    if (e.keyCode == 13) {
+      newMessage($(this));
+      return false;
+    }
+    return true;
+  });
+  $("#message").select();
+  updater.poll();
 
-    pointers.setup_main();
+  pointers.setup_main();
 });
 
 function newMessage(form) {
-    var message = form.formToDict();
-    // checkpoint(["newMessage(", message])
-    var disabled = form.find("input[type=submit]");
-    disabled.disable();
-    $.postJSON("/a/message/new", message, function(response) {
-        updater.showMessage(response);
-        if (message.id) {
-            form.parent().remove();
-        } else {
-            form.find("input[type=text]").val("").select();
-            disabled.enable();
-        }
-    });
+  var message = form.formToDict();
+  // checkpoint(["newMessage(", message])
+  var disabled = form.find("input[type=submit]");
+  disabled.disable();
+  $.postJSON("/a/message/new", message, function(response) {
+    updater.showMessage(response);
+    if (message.id) {
+      form.parent().remove();
+    } else {
+      form.find("input[type=text]").val("").select();
+      disabled.enable();
+    }
+  });
 }
 
 function getCookie(name) {
-    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-    return r ? r[1] : undefined;
+  var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+  return r ? r[1] : undefined;
 }
 
 jQuery.postJSON = function(url, args, callback) {
-    args._xsrf = getCookie("_xsrf");
-    $.ajax({url: url, data: $.param(args), dataType: "text", type: "POST",
-            success: function(response) {
-        if (callback) callback(eval("(" + response + ")"));
+  args._xsrf = getCookie("_xsrf");
+  $.ajax({url: url, data: $.param(args), dataType: "text", type: "POST",
+    success: function(response) {
+      if (callback) callback(eval("(" + response + ")"));
     }, error: function(response) {
-        console.log("ERROR:", response);
-    }});
+      console.log("ERROR:", response);
+    }
+  });
 };
 
 jQuery.fn.formToDict = function() {
-    var fields = this.serializeArray();
-    var json = {};
-    for (var i = 0; i < fields.length; i++) {
-        json[fields[i].name] = fields[i].value;
-    }
-    if (json.next) delete json.next;
-    return json;
+  var fields = this.serializeArray();
+  var json = {};
+  for (var i = 0; i < fields.length; i++) {
+    json[fields[i].name] = fields[i].value;
+  }
+  if (json.next) delete json.next;
+  return json;
 };
 
 jQuery.fn.disable = function() {
-    this.enable(false);
-    return this;
+  this.enable(false);
+  return this;
 };
 
 jQuery.fn.enable = function(opt_enable) {
-    if (arguments.length && !opt_enable) {
-        this.attr("disabled", "disabled");
-    } else {
-        this.removeAttr("disabled");
-    }
-    return this;
+  if (arguments.length && !opt_enable) {
+      this.attr("disabled", "disabled");
+  } else {
+      this.removeAttr("disabled");
+  }
+  return this;
 };
 
 var updater = {
@@ -156,6 +143,70 @@ var updater = {
     }
 };
 
+
+// Interface between longpoll engine `pointers` and browser drawing.
+// Takes care of creating/deleting DOM elements (cursors) and updating
+// it's positions.
+var users = function () {
+  var cursors = {},
+      spans = {},
+      obj = {};
+
+  obj.update = function (positions) {
+    for (var key in cursors) {
+      // Mark all fields with dirty flag
+      if (cursors.hasOwnProperty(key)) {
+        cursors[key].dirty = 1;
+      }
+    }
+
+    for (var i=0 ; i < positions.length ; ++i) {
+      var username = positions[i][0],
+          position = positions[i][1];
+
+      console.log(['...', username, positions]);
+
+      cursors[username] = position;
+      cursors[username].dirty = 0;
+      if (!spans.hasOwnProperty(username)) {
+        // Drawing: https://gist.github.com/rafaelportela/3026565
+        spans[username] = $("<span id=" + username + ">").css({
+          'position':'absolute',
+          'border':'solid 2px #cc00cc',
+          'border-radius':'20px',
+          'width':'17px',
+          'height':'17px',
+        });
+        $("body").append(spans[username]);
+      }
+      spans[username].css({
+        'top': position.y - 10,
+        'left': position.x - 10
+      })
+    }
+
+    for (var key in cursors) {
+      // Mark all fields with dirty flag
+      if (cursors.hasOwnProperty(key)) {
+        if (cursors[key].dirty) {
+          delete cursors[key];
+          delete spans[key];
+        }
+      }
+    }
+  }
+
+  obj.set_color = function (username, color) {
+    if (spans.hasOwnProperty(username)) {
+      spans[username].css({
+        'background-color': color
+      })
+    }
+  }
+
+  return obj;
+}();
+
 var pointers = {
     errorSleepTime: 500,
     version: 0,
@@ -169,6 +220,7 @@ var pointers = {
           url: "/a/pointer/new_user", type: "POST", dataType: "text",
           data: $.param(args), success: function(response) {
             console.log(["user activated", response])
+            user_id = response;
             pointers.errorSleepTime = 500;
             pointers.drop_polling = false;
             window.setTimeout(pointers.poll, 0);
@@ -212,7 +264,6 @@ var pointers = {
       if (pointers.drop_polling) {
         return;
       }
-      // checkpoint("updater.poll()")
       var args = {"_xsrf": getCookie("_xsrf")};
       args.version = pointers.version;
       $.ajax({url: "/a/pointer/updates", type: "POST", dataType: "text",
@@ -221,15 +272,15 @@ var pointers = {
     },
 
     onSuccess: function(response) {
-      // checkpoint("updater.onSuccess()")
       try {
-        console.log(["New positions arrived:", response]);
-        res = eval("(" + response + ")");
-        console.log(['res', res])
+        var res = eval("(" + response + ")");
         pointers.version = res.version;
-        positions = res.positions
-        pointers.drawPositions(positions);
+        var positions = res.positions
+        console.log(['poitions', positions])
+        $("#positions").html(JSON.stringify(positions));
+        users.update(positions);
       } catch (e) {
+        // console.log(e);
         pointers.onError();
         return;
       }
@@ -238,27 +289,8 @@ var pointers = {
     },
 
     onError: function(response) {
-        pointers.errorSleepTime *= 2;
-        console.log("Pointer poll error; sleeping for", pointers.errorSleepTime, "ms");
-        window.setTimeout(pointers.poll, pointers.errorSleepTime);
+      pointers.errorSleepTime *= 2;
+      console.log("Pointer poll error; sleeping for", pointers.errorSleepTime, "ms");
+      window.setTimeout(pointers.poll, pointers.errorSleepTime);
     },
-
-    drawPositions: function(positions) {
-      // checkpoint(["updater.newMessages(", response])
-      $("#positions").html(JSON.stringify(positions));
-      for (var i = 0 ; i < positions.length ; ++i) {
-        var p = positions[i][1];
-        console.log(p);
-        mark = $("<span>").css({
-          'position':'absolute',
-          'border':'solid 2px #cc00cc',
-          'border-radius':'20px',
-          'width':'17px',
-          'height':'17px',
-          top: p.y-10,
-          left: p.x-10
-        });
-        $("body").append(mark);
-      }
-    }
 };

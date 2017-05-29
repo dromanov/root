@@ -77,8 +77,9 @@ class PointerNewUserHandler(tornado.web.RequestHandler):
         if not self.get_secure_cookie("pointer_user"):
             user = uuid.uuid4().get_hex()
             self.set_secure_cookie("pointer_user", user)
-            self.write("Welcome!")
-            pointers.new_user(user, self.get_argument("position", None))
+            self.write(user)
+            pointers.new_user(user, self.get_argument("position", {'x': 0,
+                                                                   'y': 0}))
         else:
             self.write("You are here already!")
 
