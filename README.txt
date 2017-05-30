@@ -16,6 +16,12 @@ $ workon peopleware
 
 (!) Make absolute path (after all symbolic links stripped) to be unicode free,
     otherwise one can get UnicodeDecodeError.
-    
+
     If you want to work in Russian-named-folder, create real folder in clean
     place and place the symlink into Russian folder to work there.
+
+Step 3
+======
+Freeze and install the requirements:
+    $ pip freeze > requirements.txt
+    $ pip install -r requirements.txt
