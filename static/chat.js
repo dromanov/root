@@ -156,7 +156,7 @@ var users = function () {
     for (var key in cursors) {
       // Mark all fields with dirty flag
       if (cursors.hasOwnProperty(key)) {
-        cursors[key].dirty = 1;
+        cursors[key].disconnected = 1;
       }
     }
 
@@ -167,7 +167,7 @@ var users = function () {
       console.log(['...', username, positions]);
 
       cursors[username] = position;
-      cursors[username].dirty = 0;
+      cursors[username].disconnected = 0;
       if (!spans.hasOwnProperty(username)) {
         // Drawing: https://gist.github.com/rafaelportela/3026565
         spans[username] = $("<span id=" + username + ">").css({
@@ -176,6 +176,9 @@ var users = function () {
           'border-radius':'20px',
           'width':'17px',
           'height':'17px',
+          // Allows to click-through the cursor element we inject into DOM:
+          //    https://stackoverflow.com/a/4839672/774971
+          'pointer-events': 'none'
         });
         $("body").append(spans[username]);
       }
@@ -186,9 +189,10 @@ var users = function () {
     }
 
     for (var key in cursors) {
-      // Mark all fields with dirty flag
+      // Removes all dropped cursors.
       if (cursors.hasOwnProperty(key)) {
-        if (cursors[key].dirty) {
+        if (cursors[key].disconnected) {
+          $(spans[key]).remove();
           delete cursors[key];
           delete spans[key];
         }
