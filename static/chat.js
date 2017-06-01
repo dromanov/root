@@ -214,19 +214,23 @@ var users = function () {
 var pointers = {
     errorSleepTime: 500,
     version: 0,
-    drop_polling: true,
+    is_invisible: true,
 
     setup_main: function() {
-      var args = {"_xsrf": getCookie("_xsrf")};
+      // Start asking for updates on external cursors.
+      pointers.errorSleepTime = 500;
+      window.setTimeout(pointers.poll, 0);
+
+      // Connect events to attach/detach buttons.
       $("#respawn_point").click(function () {
-        console.log("Introducing new user...")
+        var args = {"_xsrf": getCookie("_xsrf")};
         $.ajax({
           url: "/a/pointer/new_user", type: "POST", dataType: "text",
           data: $.param(args), success: function(response) {
             console.log(["user activated", response])
             user_id = response;
             pointers.errorSleepTime = 500;
-            pointers.drop_polling = false;
+            pointers.is_invisible = false;
             window.setTimeout(pointers.poll, 0);
           },
           error: function (response) {
@@ -235,8 +239,8 @@ var pointers = {
         })
       })
       $("#logout").click(function () {
-        console.log("Dropping user...")
-        pointers.drop_polling = true;
+        var args = {"_xsrf": getCookie("_xsrf")};
+        pointers.is_invisible = true;
         $.ajax({
           url: "/a/pointer/drop_user", type: "POST", dataType: "text",
           data: $.param(args), success: function (response) {
@@ -248,26 +252,27 @@ var pointers = {
       })
       $("body").mousemove(function(e) {
         // console.log(["Mouse is here:", e.pageX, e.pageY])
-        if (!pointers.drop_polling) {
-          args.x = e.pageX;
-          args.y = e.pageY;
-          $.ajax({
-            url: "/a/pointer/new_position", type: "POST", dataType: "text",
-            data: $.param(args), success: function(response) {
-              // console.log(["mouse reported successfully", response])
-            },
-            error: function (response) {
-              console.log(["mouse reported with error", response])
-            }
-          })
+        if (pointers.is_invisible) {
+          return;
         }
+        var args = {
+          "_xsrf": getCookie("_xsrf"),
+          "x": e.pageX,
+          "y": e.pageY
+        };
+        $.ajax({
+          url: "/a/pointer/new_position", type: "POST", dataType: "text",
+          data: $.param(args), success: function(response) {
+            // console.log(["mouse reported successfully", response])
+          },
+          error: function (response) {
+            console.log(["mouse reported with error", response])
+          }
+        })
       })
     },
 
     poll: function() {
-      if (pointers.drop_polling) {
-        return;
-      }
       var args = {"_xsrf": getCookie("_xsrf")};
       args.version = pointers.version;
       $.ajax({url: "/a/pointer/updates", type: "POST", dataType: "text",
@@ -284,7 +289,7 @@ var pointers = {
         $("#positions").html(JSON.stringify(positions));
         users.update(positions);
       } catch (e) {
-        // console.log(e);
+        console.log(['bad parsing:', e]);
         pointers.onError();
         return;
       }

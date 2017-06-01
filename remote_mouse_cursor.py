@@ -110,9 +110,7 @@ class PointerUpdateHandler(tornado.web.RequestHandler):
     @gen.coroutine
     def post(self):
         if not self.get_secure_cookie("pointer_user"):
-            logging.debug("no such user")
-            self.write("You are not registered!")
-            return
+            logging.critical("unregistered user polls the data!")
         version = int(self.get_argument("version", 0))
         logging.debug("version: %d", version)
         # Save the future returned by `wait_for_positions` so we can cancel
