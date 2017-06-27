@@ -40,7 +40,7 @@ TIME_ROOT = 1495539784.0
 def checkpoint(msg):
     print "%7.3f: %s" % (time() - TIME_ROOT, msg)
     sleep(1.0)
-    assert False, "no one should have called me"
+    # assert False, "no one should have called me"
 
 
 class MessageBuffer(object):
@@ -99,9 +99,8 @@ class MessageNewHandler(tornado.web.RequestHandler):
             "id": str(uuid.uuid4()),
             "body": self.get_argument("body"),
         }
-        # checkpoint(">>> MsgNewHandler(%r)" % message)
-        # to_basestring is necessary for Python 3's json encoder,
-        # which doesn't accept byte strings.
+        # 'to_basestring' is necessary for Python 3's json encoder, which
+        # doesn't accept byte strings.
         message["html"] = tornado.escape.to_basestring(
             self.render_string("message.html", message=message))
         if self.get_argument("next", None):
@@ -131,11 +130,23 @@ class MessageUpdatesHandler(tornado.web.RequestHandler):
         global_message_buffer.cancel_wait(self.future)
 
 
+class QuestHandler(tornado.web.RequestHandler):
+    @gen.coroutine
+    def get(self, *args):
+        checkpoint(">>> Quest %s" % (args,))
+        # cursor = self.get_argument("cursor", None)
+        self.write("Quest '%s' will be here!" % args[0])
+
+    def on_connection_close(self):
+        checkpoint(">>> Quest served!")
+
+
 def main():
     parse_command_line()
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
+            (r"/quest/(.*)", QuestHandler),
             (r"/a/message/new", MessageNewHandler),
             (r"/a/message/updates", MessageUpdatesHandler),
             (r"/a/pointer/updates", PointerUpdateHandler),
