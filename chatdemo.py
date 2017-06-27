@@ -162,6 +162,11 @@ class TeacherMapHandler(tornado.web.RequestHandler):
         self.render("teacher_map.html", pupils=pupils)
 
 
+class TeacherMapDataHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write({'pupils': pupils.items()})
+
+
 def main():
     parse_command_line()
     app = tornado.web.Application(
@@ -169,6 +174,7 @@ def main():
             (r"/", MainHandler),
             (r"/quest/(.*)", QuestHandler),
             (r"/teacher", TeacherMapHandler),
+            (r"/a/teacher", TeacherMapDataHandler),
             (r"/a/message/new", MessageNewHandler),
             (r"/a/message/updates", MessageUpdatesHandler),
             (r"/a/pointer/updates", PointerUpdateHandler),
