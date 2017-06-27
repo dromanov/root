@@ -90,6 +90,15 @@ global_message_buffer = MessageBuffer()
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        args = {}
+        for k, v in self.request.arguments.iteritems():
+            args[k] = v
+            if isinstance(v, list) and len(v) == 1:
+                args[k] = v[0]
+        # cursor = self.get_argument("cursor", None)
+        if 'name' in args:
+            pupils[args['name']] = 'finals'
+
         self.render("index.html", messages=global_message_buffer.cache)
 
 
@@ -130,6 +139,10 @@ class MessageUpdatesHandler(tornado.web.RequestHandler):
         global_message_buffer.cancel_wait(self.future)
 
 
+pupils = {
+}
+
+
 class QuestHandler(tornado.web.RequestHandler):
     def get(self, milestone):
         checkpoint(">>> Quest %s" % milestone)
@@ -139,10 +152,14 @@ class QuestHandler(tornado.web.RequestHandler):
             if isinstance(v, list) and len(v) == 1:
                 args[k] = v[0]
         # cursor = self.get_argument("cursor", None)
+        if 'name' in args:
+            pupils[args['name']] = milestone
         self.render("quest_%s.html" % milestone, args=args)
 
-    def on_connection_close(self):
-        checkpoint(">>> Quest served!")
+
+class TeacherMapHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("teacher_map.html", pupils=pupils)
 
 
 def main():
@@ -151,6 +168,7 @@ def main():
         [
             (r"/", MainHandler),
             (r"/quest/(.*)", QuestHandler),
+            (r"/teacher", TeacherMapHandler),
             (r"/a/message/new", MessageNewHandler),
             (r"/a/message/updates", MessageUpdatesHandler),
             (r"/a/pointer/updates", PointerUpdateHandler),
