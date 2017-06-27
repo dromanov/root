@@ -39,11 +39,27 @@
   </head>
   <body class='container-fluid'>
     <div class='row'>
-      <div class='col-md-12'>
+      <div class='col-sm-12'>
         <h2>Добро пожаловать в ЦУП</h2>
         <p class='lead'>Время: <span id='time'>00:00:00</span></p>
       </div>
       <div id='minimap' class='col-sm-4 col-sm-offset-1'>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-sm-4 col-sm-offset-4'>
+        <div id='wiki' class='col-sm-4 col-sm-offset-4 well'></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-sm-4'>
+        <div id='introduction' class='well'></div>
+      </div>
+      <div class='col-sm-4'>
+        <div id='hardcore' class='well'></div>
+      </div>
+      <div class='col-sm-4'>
+        <div id='finals' class='well'></div>
       </div>
     </div>
     <script src="{{ static_url("jquery.min.js") }}" type="text/javascript"></script>
@@ -64,11 +80,23 @@
           data: $.param(args), success: function(response) {
             response = eval("(" + response + ")")
             var p = response.pupils,
-                res = "";
+                res = "",
+                res2 = {
+                  'introduction': "&nbsp;",
+                  'hardcore': "&nbsp;",
+                  'wiki': "&nbsp;",
+                  'finals': "&nbsp;"
+                };
             for (var i = 0 ; i < p.length ; i++) {
               res += "<b>" + p[i][0] + "</b>: " + p[i][1] + "<br/>";
+              res2[p[i][1]] += "" + p[i][0] + " ";
             }
-            $("#minimap").html(res);
+            // $("#minimap").html(res);
+
+            $("#introduction").html(res2.introduction);
+            $("#wiki").html(res2.wiki);
+            $("#hardcore").html(res2.hardcore);
+            $("#finals").html(res2.finals);
           },
           error: function (response) {
             console.log('cannot pull new pupils...')
