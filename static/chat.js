@@ -35,6 +35,7 @@ $(document).ready(function() {
 
 function newMessage(form) {
   var message = form.formToDict();
+  console.log(message);
   // checkpoint(["newMessage(", message])
   var disabled = form.find("input[type=submit]");
   disabled.disable();
@@ -45,6 +46,22 @@ function newMessage(form) {
     } else {
       form.find("input[type=text]").val("").select();
       disabled.enable();
+    }
+  });
+}
+
+function _newMessage(message) {
+  var args = {
+    "_xsrf": getCookie("_xsrf"),
+    "body": message
+  };
+
+  $.postJSON("/a/message/new", args, function(response) {
+    updater.showMessage(response);
+    if (message.id) {
+      console.log("Msg " + message + " is posted")
+    } else {
+      console.log("Error posting msg " + message + " is posted")
     }
   });
 }
@@ -232,6 +249,9 @@ var pointers = {
             pointers.errorSleepTime = 500;
             pointers.is_invisible = false;
             window.setTimeout(pointers.poll, 0);
+            window.setTimeout(function () {
+              _newMessage("Новый участник!")
+            }, 0);
           },
           error: function (response) {
             console.log(['user activation failed...', response])
@@ -245,6 +265,9 @@ var pointers = {
           url: "/a/pointer/drop_user", type: "POST", dataType: "text",
           data: $.param(args), success: function (response) {
             console.log(['user deactivated successfully', response])
+            window.setTimeout(function () {
+              _newMessage("Не уходи, друг...")
+            }, 0);
           }, error: function (response) {
             console.log(['user deactivated with error...', response])
           }

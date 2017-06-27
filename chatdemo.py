@@ -133,8 +133,13 @@ class MessageUpdatesHandler(tornado.web.RequestHandler):
 class QuestHandler(tornado.web.RequestHandler):
     def get(self, milestone):
         checkpoint(">>> Quest %s" % milestone)
+        args = {}
+        for k, v in self.request.arguments.iteritems():
+            args[k] = v
+            if isinstance(v, list) and len(v) == 1:
+                args[k] = v[0]
         # cursor = self.get_argument("cursor", None)
-        self.render("quest_%s.html" % milestone)
+        self.render("quest_%s.html" % milestone, args=args)
 
     def on_connection_close(self):
         checkpoint(">>> Quest served!")

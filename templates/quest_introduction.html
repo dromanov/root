@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+  That is template for a quest step. Body of the quest is taken from other
+  folder and is inserted into the quest placeholder.
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Tornado Chat Demo</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
+
+    <style>
+      body {
+        /* Padding is required due to fixed navbar
+           [http://getbootstrap.com/components/#navbar-fixed-top] */
+        /*padding-top: 70px;*/
+      }
+
+      a.btn {
+        width: 100%;
+        margin-bottom: 5px;
+        font-size: 125%;
+      }
+    </style>
+  </head>
+  <body class='container-fluid'>
+    <div class='row'>
+      <div class='col-md-12'>
+        <h2 class='bg-primary' style='padding: 10px'>Добро пожаловать, {{args['name']}}!</h2>
+        <p class='lead'>Здесь вы можете ознакомиться с понятием дроби.</p>
+        <p class='lead'>Конечно, можно просто обратиться к википедии и прочитать:</p>
+
+        <div class="well">
+          <h2>Виды дробей</h2>
+          <h3>Обыкновенные дроби</h3>
+          <p class='lead'><i>Обыкновенная</i> (или <i>простая</i>) дробь&nbsp;— запись рационального числа в виде <img src="{{ static_url('svg/02a230c9242b2e961022dd6ae8960133cddd432e.svg') }}" aria-hidden="true" style="vertical-align: -1.838ex; width:4.706ex; height:4.676ex;" alt="\pm {\frac {m}{n}}"> или <img src="{{ static_url('svg/80057d3e151369819f26007036b9fba6f3de262c.svg') }}" aria-hidden="true" style="vertical-align: -0.838ex; width:7.105ex; height:2.843ex;" alt="\pm m/n,"> где <img src="{{ static_url('svg/e6ca8d061c2c701f5f4ed0a5b805f316e17c24a6.svg') }}" aria-hidden="true" style="vertical-align: -0.838ex; width:6.344ex; height:2.843ex;" alt="n\neq 0."> Горизонтальная или косая черта обозначает знак деления, в результате чего получается частное. Делимое называется <i>числителем</i> дроби, а делитель&nbsp;— <i>знаменателем</i>.</p>
+
+          <h4>Обозначения обыкновенных дробей</h4>
+          <p class='lead'>Есть несколько видов записи обыкновенных дробей в печатном виде:</p>
+          <ul>
+          <li><p class='lead'>½</p></li>
+          <li><p class='lead'>1/2 или <img src="{{ static_url('svg/29588016a190f0c66bca12700b2b1d724c601b86.svg') }}" aria-hidden="true" style="vertical-align: -0.838ex; width:3.296ex; height:3.176ex;" alt="{}^{1}/{}_{2}"> (наклонная черта называется «солидус»)</p></li>
+          <li><p class='lead'>...</p></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-sm-4 col-sm-offset-1'>
+        <a href='wiki?name={{ args["name"] }}' class='btn btn-primary'>Продолжить c wiki</a>
+      </div>
+      <div class='col-sm-4 col-sm-offset-1'>
+        <a href='hardcore?name={{ args["name"] }}' class='btn btn-success'>Перейти к учебнику</a>
+      </div>
+    </div>
+    <script src="{{ static_url("jquery.min.js") }}" type="text/javascript"></script>
+
+    <script src="{{ static_url("bootstrap-3.3.7/js/bootstrap.min.js") }}" type="text/javascript"></script>
+  </body>
+</html>

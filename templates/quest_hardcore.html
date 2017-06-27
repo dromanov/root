@@ -40,16 +40,18 @@
   <body class='container-fluid'>
     <div class='row'>
       <div class='col-md-12'>
-        <h2>Добро пожаловать!</h2>
-        <p class='lead'>Здесь вы можете зарегистрироваться и начать урок!</p>
+        <h2 class='bg-primary' style='padding: 10px'>Молодец, {{args['name']}}!</h2>
+        <div class='well'>
+          <p class='lead'>Продолжается работа с учебником, с динамической анимацией материала, использованием видео-вставок, GeoGebra и так далее.</p>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-sm-4 col-sm-offset-1'>
+        <a href='wiki?name={{ args["name"] }}' class='btn btn-info'>Заглянуть в вики</a>
       </div>
       <div class='col-sm-4 col-sm-offset-1'>
-        <a href='introduction?name=Иван' class='btn btn-primary'>Иван</a>
-        <a href='introduction?name=Мария' class='btn btn-primary'>Мария</a>
-      </div>
-      <div class='col-sm-4 col-sm-offset-1'>
-        <a href='introduction?name=Харитон' class='btn btn-primary'>Харитон</a>
-        <a href='introduction?name=Алия' class='btn btn-primary'>Алия</a>
+        <a href='/' class='btn btn-success'>Групповое задание</a>
       </div>
     </div>
     <script src="{{ static_url("jquery.min.js") }}" type="text/javascript"></script>
