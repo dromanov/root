@@ -95,7 +95,7 @@ class PointerDropUserHandler(tornado.web.RequestHandler):
 
 class PointerNewPositionHandler(tornado.web.RequestHandler):
     def post(self):
-        user = self.get_secure_cookie("pointer_user")
+        user = self.get_secure_cookie("pointer_user").decode("utf-8")
         if user:
             x, y = [int(self.get_argument(k)) for k in "x y".split()]
             logging.debug("received new coordinates: %s", (x, y))
