@@ -10,8 +10,6 @@ Engine structure is taken from tornado example `chat`, long poll version:
 import logging
 import uuid
 
-import tornado.escape
-import tornado.ioloop
 import tornado.web
 
 
@@ -32,7 +30,7 @@ class PointersStorage(object):
         # Future when results are available.
         result_future = Future()
         if version < self.version:
-            result_future.set_result({'positions': self.positions.items(),
+            result_future.set_result({'positions': list(self.positions.items()),
                                       'version': self.version})
             return result_future
         self.waiters.add(result_future)
@@ -45,7 +43,7 @@ class PointersStorage(object):
 
     def __send_all_futures(self):
         for future in self.waiters:
-            future.set_result({'positions': self.positions.items(),
+            future.set_result({'positions': list(self.positions.items()),
                                'version': self.version})
         self.waiters = set()
 
@@ -75,7 +73,7 @@ pointers = PointersStorage()
 class PointerNewUserHandler(tornado.web.RequestHandler):
     def post(self):
         if not self.get_secure_cookie("pointer_user"):
-            user = uuid.uuid4().get_hex()
+            user = uuid.uuid4().hex
             self.set_secure_cookie("pointer_user", user)
             self.write(user)
             pointers.new_user(user, self.get_argument("position", {'x': 0,

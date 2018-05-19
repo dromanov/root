@@ -91,7 +91,7 @@ global_message_buffer = MessageBuffer()
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         args = {}
-        for k, v in self.request.arguments.iteritems():
+        for k, v in self.request.arguments.items():
             args[k] = v
             if isinstance(v, list) and len(v) == 1:
                 args[k] = v[0]
@@ -147,7 +147,7 @@ class QuestHandler(tornado.web.RequestHandler):
     def get(self, milestone):
         checkpoint(">>> Quest %s" % milestone)
         args = {}
-        for k, v in self.request.arguments.iteritems():
+        for k, v in self.request.arguments.items():
             args[k] = v
             if isinstance(v, list) and len(v) == 1:
                 args[k] = v[0]
@@ -164,7 +164,7 @@ class TeacherMapHandler(tornado.web.RequestHandler):
 
 class TeacherMapDataHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write({'pupils': pupils.items()})
+        self.write({'pupils': list(pupils.items())})
 
 
 def main():
@@ -188,6 +188,7 @@ def main():
         xsrf_cookies=True,
         debug=options.debug,
     )
+    print("App is listening to the port", options.port)
     app.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
 
