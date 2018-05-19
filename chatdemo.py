@@ -38,7 +38,7 @@ TIME_ROOT = 1495539784.0
 
 
 def checkpoint(msg):
-    print "%7.3f: %s" % (time() - TIME_ROOT, msg)
+    print("%7.3f: %s" % (time() - TIME_ROOT, msg))
     sleep(1.0)
     # assert False, "no one should have called me"
 
@@ -182,7 +182,7 @@ def main():
             (r"/a/pointer/drop_user", PointerDropUserHandler),
             (r"/a/pointer/new_position", PointerNewPositionHandler),
         ],
-        cookie_secret=uuid.uuid4().get_hex(),
+        cookie_secret=uuid.uuid4().hex,
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         xsrf_cookies=True,
