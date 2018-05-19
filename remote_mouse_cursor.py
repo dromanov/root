@@ -8,11 +8,11 @@ Engine structure is taken from tornado example `chat`, long poll version:
 """
 
 import logging
+import uuid
 
 import tornado.escape
 import tornado.ioloop
 import tornado.web
-import uuid
 
 
 from tornado.concurrent import Future
