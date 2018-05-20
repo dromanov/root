@@ -50,11 +50,10 @@ class MessageBuffer(object):
         self.cache_size = 200
 
     def wait_for_messages(self, cursor=None):
-        # Construct a Future to return to our caller.  This allows
-        # wait_for_messages to be yielded from a coroutine even though
+        # Construct a `Future` to return to our caller. This allows
+        # `wait_for_messages` to be yielded from a coroutine even though
         # it is not a coroutine itself.  We will set the result of the
-        # Future when results are available.
-        # checkpoint(">>> wait_for_messages(%r)" % cursor)
+        # `Future when` results are available.
         result_future = Future()
         if cursor:
             new_count = 0
@@ -70,7 +69,7 @@ class MessageBuffer(object):
 
     def cancel_wait(self, future):
         self.waiters.remove(future)
-        # Set an empty result to unblock any coroutines waiting.
+        # Set an empty result to unblock any waiting coroutines.
         future.set_result([])
 
     def new_messages(self, messages):

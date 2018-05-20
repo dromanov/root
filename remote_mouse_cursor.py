@@ -84,7 +84,7 @@ class PointerNewUserHandler(tornado.web.RequestHandler):
 
 class PointerDropUserHandler(tornado.web.RequestHandler):
     def post(self):
-        user = self.get_secure_cookie("pointer_user")
+        user = self.get_secure_cookie("pointer_user").decode("utf-8")
         if user:
             self.clear_cookie("pointer_user")
             self.write("Bye!")
