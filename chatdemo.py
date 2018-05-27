@@ -94,6 +94,7 @@ class MainHandler(tornado.web.RequestHandler):
             args[k] = v
             if isinstance(v, list) and len(v) == 1:
                 args[k] = v[0]
+            args[k] = args[k].decode('utf8')
         # cursor = self.get_argument("cursor", None)
         if 'name' in args:
             pupils[args['name']] = 'finals'
@@ -150,6 +151,7 @@ class QuestHandler(tornado.web.RequestHandler):
             args[k] = v
             if isinstance(v, list) and len(v) == 1:
                 args[k] = v[0]
+            args[k] = args[k].decode('utf8')
         # cursor = self.get_argument("cursor", None)
         if 'name' in args:
             pupils[args['name']] = milestone
@@ -164,10 +166,30 @@ class TeacherMapHandler(tornado.web.RequestHandler):
 class TeacherMapDataHandler(tornado.web.RequestHandler):
     def get(self):
         self.write({'pupils': list(pupils.items())})
+        
+
+class StageHandler(tornado.web.RequestHandler):
+    def get(self):
+            url = self.request.uri
+            stage_name = open("./stages/" + url + "/stage_name.txt").read()
+            task = open("./stages/" + url + "/task.txt").read()
+            answer_1 = open("./stages/" + url + "/answer_1.txt").read()
+            answer_2 = open("./stages/" + url + "/answer_2.txt").read()
+            answer_3 = open("./stages/" + url + "/answer_3.txt").read()
+            link_1 = open("./stages/" + url + "/link_1.txt").read()
+            link_2 = open("./stages/" + url + "/link_2.txt").read()
+            link_3 = open("./stages/" + url + "/link_3.txt").read()
+            
+            self.render("stage.html", stage_name=stage_name, task=task, 
+                        answer_1=answer_1, answer_2=answer_2, answer_3=answer_3,
+                        link_1=link_1, link_2=link_2, link_3=link_3)
 
 
 def main():
     parse_command_line()
+    adress_list = []
+    for number in range(5):    # количество этапов
+        adress_list.append([""r"/stage" + str (number), StageHandler])
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
@@ -180,7 +202,8 @@ def main():
             (r"/a/pointer/new_user", PointerNewUserHandler),
             (r"/a/pointer/drop_user", PointerDropUserHandler),
             (r"/a/pointer/new_position", PointerNewPositionHandler),
-        ],
+        ]
+        + adress_list,
         cookie_secret=uuid.uuid4().hex,
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
