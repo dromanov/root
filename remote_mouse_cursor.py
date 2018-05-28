@@ -25,9 +25,9 @@ class PointersStorage(object):
 
     def wait_for_positions(self, version=0):
         # Construct a Future to return to our caller.  This allows
-        # wait_for_messages to be yielded from a coroutine even though
+        # `wait_for_messages` to be yielded from a coroutine even though
         # it is not a coroutine itself.  We will set the result of the
-        # Future when results are available.
+        # `Future` when results are available.
         result_future = Future()
         if version < self.version:
             result_future.set_result({'positions': list(self.positions.items()),

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ data.get("stage_name", "") }}</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
+       <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
+  </head>
+
+<body class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>{{ data.get("title", "--- НЕТ ЗАГОЛОВКА ---") }}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="well">{{
+        data.get("task", "--- НЕТ ТЕКСТА ЗАДАНИЯ ---")
+      }}</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button type="button" class="btn btn-primary">"Нажми меня!"</button>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-sm-12">
+      <a href="../game_node_editor/{{ data["nik"] }}">
+        {# Button doesn't submit [https://stackoverflow.com/a/26017210/774971] #}
+        <button type="button" class="btn btn-warning btn-sm">Редактировать</button>
+      </a>
+    </div>
+  </div>
+
+  <script src="{{ static_url("jquery.min.js") }}"></script>
+  <script src="{{ static_url("bootstrap-3.3.7/js/bootstrap.min.js") }}"></script>
+</body>
+</html>

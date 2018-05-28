@@ -30,9 +30,10 @@ from tornado.options import define, options, parse_command_line
 from remote_mouse_cursor import PointerNewUserHandler, \
     PointerDropUserHandler, PointerNewPositionHandler, PointerUpdateHandler
 
-define("port", default=8888, help="run on the given port", type=int)
-define("debug", default=False, help="run in debug mode")
+from quest import  GameNodeHandler, GameNodeEditorHandler, game_routes
 
+define("port", default=8888, help="run on the given port", type=int)
+define("debug", default=True, help="run in debug mode")
 
 TIME_ROOT = 1495539784.0
 
@@ -40,7 +41,7 @@ TIME_ROOT = 1495539784.0
 def checkpoint(msg):
     print("%7.3f: %s" % (time() - TIME_ROOT, msg))
     sleep(1.0)
-    # assert False, "no one should have called me"
+    assert False, "no one should have called me"
 
 
 class MessageBuffer(object):
@@ -145,7 +146,7 @@ pupils = {
 
 class QuestHandler(tornado.web.RequestHandler):
     def get(self, milestone):
-        checkpoint(">>> Quest %s" % milestone)
+        # checkpoint(">>> Quest %s" % milestone)
         args = {}
         for k, v in self.request.arguments.items():
             args[k] = v
@@ -203,7 +204,7 @@ def main():
             (r"/a/pointer/drop_user", PointerDropUserHandler),
             (r"/a/pointer/new_position", PointerNewPositionHandler),
         ]
-        + adress_list,
+        + adress_list + game_routes,
         cookie_secret=uuid.uuid4().hex,
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),

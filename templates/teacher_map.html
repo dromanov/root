@@ -83,7 +83,7 @@
           url: "/a/teacher", type: "GET", dataType: "text",
           data: $.param(args), success: function(response) {
             response = eval("(" + response + ")")
-            var p = response.pupils,
+            let p = response.pupils,
                 res = "",
                 res2 = {
                   'introduction': "&nbsp;",
@@ -91,7 +91,7 @@
                   'wiki': "&nbsp;",
                   'finals': "&nbsp;"
                 };
-            for (var i = 0 ; i < p.length ; i++) {
+            for (let i = 0 ; i < p.length ; i++) {
               res += "<b>" + p[i][0] + "</b>: " + p[i][1] + "<br/>";
               res2[p[i][1]] += "" + p[i][0] + " ";
             }
@@ -108,17 +108,16 @@
         })
       }
 
-
       function pad(i) {
         return (i < 10) ? "0" + i : "" + i;
       }
 
       function printTime() {
-        var today = new Date(),
-            h = pad(((today.getHours() + 11) % 12 + 1)),
+        let today = new Date(),
+            h = pad(today.getHours()),
             m = pad(today.getMinutes()),
             s = pad(today.getSeconds());
-        $("#time").text(h + ":" + m + ":" + s)
+        $("#time").text(h + ":" + m + ":" + s);
         pull();
 
         setTimeout(printTime, 300);
