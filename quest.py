@@ -10,7 +10,6 @@ import tornado.web
 
 __all__ = ["game_routes"]
 
-
 class GameNodeHandler(tornado.web.RequestHandler):
     def get(self, node_id):
         data = eval(open("stages/game_nodes/node_%s.dat" % node_id,
@@ -37,12 +36,9 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
                 args[k] = v[0]
             args[k] = args[k].decode('utf8')
         del args["_xsrf"]
-        open("stages/game_nodes/node_%s.dat" % node_id, "w",
-             encoding="utf-8").write(repr(args))
-        pprint.pprint(args, open("stages/game_nodes/node_%s_.dat" % node_id,
-                                 "w",
-                                 encoding="utf-8"))
-        pprint.pprint(args)
+        output_stream = open("stages/game_nodes/node_%s.dat" % node_id, "w",
+                             encoding="utf-8")
+        pprint.pprint(args, output_stream)
         self.redirect("%s" % node_id)
 
 
