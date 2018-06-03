@@ -30,7 +30,8 @@ from tornado.options import define, options, parse_command_line
 from remote_mouse_cursor import PointerNewUserHandler, \
     PointerDropUserHandler, PointerNewPositionHandler, PointerUpdateHandler
 
-from quest import  GameNodeHandler, GameNodeEditorHandler, game_routes
+from quest import game_routes
+from quest_action import game_action_routes
 
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=True, help="run in debug mode")
@@ -204,7 +205,7 @@ def main():
             (r"/a/pointer/drop_user", PointerDropUserHandler),
             (r"/a/pointer/new_position", PointerNewPositionHandler),
         ]
-        + adress_list + game_routes,
+        + adress_list + game_routes + game_action_routes,
         cookie_secret=uuid.uuid4().hex,
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
