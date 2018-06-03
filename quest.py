@@ -8,12 +8,13 @@ import pprint
 import tornado.web
 
 
-__all__ = "GameNodeHandler GameNodeEditorHandler game_routes".split()
+__all__ = ["game_routes"]
 
 
 class GameNodeHandler(tornado.web.RequestHandler):
     def get(self, node_id):
-        data = eval(open("stages/game_nodes/node_%s.dat" % node_id).read())
+        data = eval(open("stages/game_nodes/node_%s.dat" % node_id,
+                         encoding="utf-8").read())
         data['nik'] = node_id
         self.render("game_node.html", data=data)
 
@@ -23,7 +24,8 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
         data = {}
         datafile = "stages/game_nodes/node_%s.dat" % node_id
         if os.path.isfile(datafile):
-            data = eval(open(datafile).read())
+            data = eval(open(datafile,
+                             encoding="utf-8").read())
         data['nik'] = node_id
         self.render("game_node_editor.html", data=data)
 
@@ -35,8 +37,11 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
                 args[k] = v[0]
             args[k] = args[k].decode('utf8')
         del args["_xsrf"]
-        open("stages/game_nodes/node_%s.dat" % node_id, "w").write(repr(args))
-        pprint.pprint(args, open("stages/game_nodes/node_%s_.dat" % node_id, "w"))
+        open("stages/game_nodes/node_%s.dat" % node_id, "w",
+             encoding="utf-8").write(repr(args))
+        pprint.pprint(args, open("stages/game_nodes/node_%s_.dat" % node_id,
+                                 "w",
+                                 encoding="utf-8"))
         pprint.pprint(args)
         self.redirect("%s" % node_id)
 
