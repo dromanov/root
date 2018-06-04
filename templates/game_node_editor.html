@@ -38,10 +38,11 @@
       <label for="id_title" class="col-sm-2 control-label">Заголовок: </label>
       <div class="col-sm-10">
         <input type="text"
+               class="form-control"
                name="title"
                id="id_title"
-               class="form-control"
                value="{{ data.get("title", "") }}"
+               autocomplete="off"
                placeholder="Короткий заголовок элемента квеста">
       </div>
     </div>

@@ -1,8 +1,8 @@
 '''
 Handles creating, rendering and editing nodes of the text based game.
 '''
-
 import os
+import glob
 import pprint
 
 import tornado.web
@@ -12,9 +12,21 @@ import quest_action
 __all__ = ["game_routes"]
 
 
+def list_nodes():
+    """List all nodes for the drop-down menus, etc."""
+    res = {}
+    for name in glob.glob( "stages/game_nodes/node_*.dat"):
+        node_id = name[len("stages/game_nodes/node_"):-4]
+        res[node_id] = _load_node(node_id)
+    return res
+
+
 def _load_node(node_id):
-    data = eval(open("stages/game_nodes/node_%s.dat" % node_id,
-                     encoding="utf-8").read())
+    filename = "stages/game_nodes/node_%s.dat" % node_id
+    data = {}
+    if os.path.isfile(filename):
+        data = eval(open("stages/game_nodes/node_%s.dat" % node_id,
+                         encoding="utf-8").read())
     data['nik'] = node_id
     return data
 

@@ -126,7 +126,7 @@ class EditSimpleActionHandler(tornado.web.RequestHandler):
         action = _load_action(action_id)
         action['node_id'] = node_id
         self.render("game_simple_action_editor.html",
-                    action=action)
+                    action=action, nodes=quest.list_nodes())
 
     def post(self, node_id, action_id):
         args = _load_action(action_id)
@@ -136,6 +136,13 @@ class EditSimpleActionHandler(tornado.web.RequestHandler):
                 args[k] = v[0]
             args[k] = args[k].decode('utf8')
         del args["_xsrf"]
+
+        new_node_name = args.get("make_new_node", "")
+        if new_node_name.isalnum():
+            self.redirect("/game_node_editor/%s" % args.get("make_new_node"))
+        else:
+            self.redirect("/game_node_editor/%s" % node_id)
+
         _save_action(action_id, args)
         self.redirect("/game_node_editor/%s" % node_id)
 
@@ -145,6 +152,7 @@ def render_to_html(action_id):
 
 
 def load_actions(actions):
+    """Packs actions with full data for external renderer @ node editor."""
     icons, links, _ = zip(*package_resources(include_separators=False))
     pack = dict(zip(links, icons))
     res = dict((_id, _load_action(_id)) for _id in actions)
