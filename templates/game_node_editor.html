@@ -26,7 +26,7 @@
       <label for="id_nik" class="col-sm-2 control-label">Код уровня: </label>
       <div class="col-sm-10">
         <input type="text"
-               name="title"
+               name="nik"
                id="id_nik"
                class="form-control"
                value="{{ data["nik"] }}"
@@ -67,9 +67,11 @@
       <div class="col-sm-10">
         {# Уже существующие действия. #}
         {% for action_id in data.get('actions', []) %}
-          <button type="button" class="btn btn-primary">
-            Action#{{ action_id }}
-          </button>
+          <a href="../action_edit/{{ data['nik'] }}/{{ action_id }}">
+            <button type="button" class="btn btn-primary">
+              Action#{{ action_id }}
+            </button>
+          </a>
         {% end %}
 
         {# Меню для создания нового действия (Action). #}

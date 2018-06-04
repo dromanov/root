@@ -38,10 +38,10 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             data = eval(open(datafile,
                              encoding="utf-8").read())
         data['nik'] = node_id
-        icons = "arrow-right record check --- wrench --- edit".split()
-        links = "simple      radio  check --- code   --- input".split()
+        icons = "random record check --- wrench --- edit".split()
+        links = "simple radio  check --- code   --- input".split()
         labels = '''
-            Варианты выбора: простой переход
+            Варианты выбора: простые переходы
             Варианты выбора: радио-кнопки
             Варианты выбора: чек-боксы
             ---

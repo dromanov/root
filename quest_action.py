@@ -26,6 +26,20 @@ import quest
 
 __all__ = ["game_action_routes", "make_html"]
 
+
+def _load_action(action_id):
+    data = eval(open("stages/game_actions/action_%s.dat" % action_id,
+                     encoding="utf-8").read())
+    data['id'] = action_id
+    return data
+
+
+def _save_action(action_id, data):
+    with open("stages/game_actions/action_%s.dat" % action_id, "w",
+              encoding="utf-8") as output_stream:
+        pprint.pprint(data, output_stream)
+
+
 class ActionHandler(tornado.web.RequestHandler):
     def get(self, action_id):
         data = eval(open("stages/game_actions/action_%s.dat" % action_id,
@@ -35,16 +49,14 @@ class ActionHandler(tornado.web.RequestHandler):
 
 
 class EditActionHandler(tornado.web.RequestHandler):
-    def get(self, action_id):
-        data = {}
-        datafile = "stages/game_nodes/node_%s.dat" % action_id
-        if os.path.isfile(datafile):
-            data = eval(open(datafile,
-                             encoding="utf-8").read())
-        data['nik'] = action_id
-        self.render("game_action_editor.html", data=data)
+    def get(self, node_id, action_id):
+        print("Editing action '{action_id:.5}...' @ '{node_id}'"
+              .format(**locals()))
+        action = _load_action(action_id)
+        action['node_id'] = node_id
+        self.render("game_action_editor.html", action=action)
 
-    def post(self, action_id):
+    def post(self, node_id, action_id):
         args = {}
         for k, v in self.request.arguments.items():
             args[k] = v
@@ -85,5 +97,5 @@ def render_to_html(action_id):
 game_action_routes = [
     (r"/action/(.*)", ActionHandler),
     (r"/action_new", NewActionHandler),
-    (r"/action_edit/(.*)", EditActionHandler),
+    (r"/action_edit/([^/]*)/(.*)", EditActionHandler),
 ]
