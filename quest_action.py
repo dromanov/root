@@ -24,7 +24,26 @@ import tornado.web
 
 import quest
 
-__all__ = ["game_action_routes", "make_html"]
+__all__ = "game_action_routes make_html package_resources".split()
+
+
+def package_resources(include_separators=True):
+    """List of actions; used here and in the node editor."""
+    icons = "random record check --- wrench --- edit".split()
+    links = "simple radio  check --- code   --- input".split()
+    labels = '''
+        Варианты выбора: простые переходы
+        Варианты выбора: радио-кнопки
+        Варианты выбора: чек-боксы
+        ---
+        Игровая логика на Питоне
+        ---
+        Вопрос со свободным ответом (проверка тьютором)
+    '''.strip('\n').split('\n')
+    pkg = zip(icons, links, labels)
+    if not include_separators:
+        pkg = [x for x in pkg if x[0] != "---"]
+    return pkg
 
 
 def _load_action(action_id):
@@ -54,20 +73,19 @@ class EditActionHandler(tornado.web.RequestHandler):
               .format(**locals()))
         action = _load_action(action_id)
         action['node_id'] = node_id
-        self.render("game_action_editor.html", action=action)
+        self.render("game_action_editor.html",
+                    action=action,
+                    actions=package_resources(include_separators=False))
 
     def post(self, node_id, action_id):
-        args = {}
+        args = _load_action(action_id)
         for k, v in self.request.arguments.items():
             args[k] = v
             if isinstance(v, list) and len(v) == 1:
                 args[k] = v[0]
             args[k] = args[k].decode('utf8')
         del args["_xsrf"]
-        output_stream = open("stages/game_actions/action_%s.dat" % action_id,
-                             "w",
-                             encoding="utf-8")
-        pprint.pprint(args, output_stream)
+        _save_action(action_id, args)
         self.redirect("%s" % action_id)
 
 

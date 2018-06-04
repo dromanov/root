@@ -49,43 +49,28 @@
     <div class="form-group">
       <label for="id_type" class="col-sm-2 control-label">Тип выбора:</label>
       <div class="col-sm-10">
-        <div class="radio">
-          <label>
-            <input type="radio" name="type" id="inlineRadio1" value="option1">
-            простые переходы
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="type" id="inlineRadio2" value="option2">
-            радио-кнопки
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="type" id="inlineRadio3" value="option2">
-            чек-боксы
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="type" id="inlineRadio4" value="option2">
-            игровая логика на Питоне
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="type" id="inlineRadio5" value="option2">
-            вопрос со свободным ответом (проверка тьютором)
-          </label>
-        </div>
+        {% for icon, link, label in actions %}
+          <div class="radio">
+            <label>
+              <input type="radio" name="type" id="inlineRadio1"
+                     value="{{ link }}"
+                     {% if link == action.get('type', '') %}
+                     checked="True"
+                     {% end %}
+              >
+              {{ label }}
+              &nbsp;
+              <span class="glyphicon glyphicon-{{ icon }}" aria-hidden="true"></span>
+            </label>
+          </div>
+        {% end %}
       </div>
     </div>
 
     <hr />
     <div class="row">
       <div class="col-sm-offset-2 col-sm-4">
-        <button type="submit" class="btn btn-success">Сохранить</button>
+        <button type="submit" class="btn btn-primary">Далее</button>
         <a href="../game_node/{{ action["node_id"] }}">
           <button type="button" class="btn btn-link">Отмена</button>
         </a>

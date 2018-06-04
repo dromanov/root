@@ -7,6 +7,7 @@ import pprint
 
 import tornado.web
 
+import quest_action
 
 __all__ = ["game_routes"]
 
@@ -38,19 +39,8 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             data = eval(open(datafile,
                              encoding="utf-8").read())
         data['nik'] = node_id
-        icons = "random record check --- wrench --- edit".split()
-        links = "simple radio  check --- code   --- input".split()
-        labels = '''
-            Варианты выбора: простые переходы
-            Варианты выбора: радио-кнопки
-            Варианты выбора: чек-боксы
-            ---
-            Игровая логика на Питоне
-            ---
-            Вопрос со свободным ответом (проверка тьютором)
-        '''.strip('\n').split('\n')
         self.render("game_node_editor.html", data=data,
-                    action_menu=zip(icons, links, labels))
+                    action_menu=quest_action.package_resources())
 
     def post(self, node_id):
         args = _load_node(node_id)
