@@ -108,12 +108,49 @@ class NewActionHandler(tornado.web.RequestHandler):
         self.redirect("../game_node/%s" % args['node_id'])
 
 
+class NewSimpleActionHandler(tornado.web.RequestHandler):
+    def get(self, node_id):
+        action_id = uuid.uuid4().hex
+        action = {
+            'type': 'simple',
+            'id': action_id,
+            'node_id': node_id
+        }
+        _save_action(action_id, action)
+        quest.link_action(node_id, action_id)
+        self.redirect("/action_edit/simple/%s/%s" % (node_id, action_id))
+
+
+class EditSimpleActionHandler(tornado.web.RequestHandler):
+    def get(self, node_id, action_id):
+        action = _load_action(action_id)
+        action['node_id'] = node_id
+        self.render("game_simple_action_editor.html",
+                    action=action)
+
+    def post(self, node_id, action_id):
+        args = _load_action(action_id)
+        for k, v in self.request.arguments.items():
+            args[k] = v
+            if isinstance(v, list) and len(v) == 1:
+                args[k] = v[0]
+            args[k] = args[k].decode('utf8')
+        del args["_xsrf"]
+        _save_action(action_id, args)
+        self.redirect("%s" % action_id)
+
+
 def render_to_html(action_id):
     return "DUMMY_MAKE({})".format(action_id)
 
 
+def load_actions(actions):
+    return dict((_id, _load_action(_id)) for _id in actions)
+
+
 game_action_routes = [
     (r"/action/(.*)", ActionHandler),
-    (r"/action_new", NewActionHandler),
+    (r"/action_new/simple/(.*)", NewSimpleActionHandler),
+    (r"/action_edit/simple/([^/]*)/(.*)", EditSimpleActionHandler),
     (r"/action_edit/([^/]*)/(.*)", EditActionHandler),
 ]

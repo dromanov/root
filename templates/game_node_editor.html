@@ -67,9 +67,10 @@
       <div class="col-sm-10">
         {# Уже существующие действия. #}
         {% for action_id in data.get('actions', []) %}
-          <a href="../action_edit/{{ data['nik'] }}/{{ action_id }}">
+        {% set _a = action_details[action_id] %}
+          <a href="../action_edit/{{ _a["type"] }}/{{ data['nik'] }}/{{ action_id }}">
             <button type="button" class="btn btn-primary">
-              Action#{{ action_id }}
+              {{ _a.get('title', '--- NOT SET ---') }}
             </button>
           </a>
         {% end %}
@@ -83,7 +84,7 @@
           <ul class="dropdown-menu">
             {% for icon, link, label in action_menu %}
               {% if icon != "---" %}
-                <li><a href="../action_new?node_id={{ data['nik'] }}&action={{ link }}">
+                <li><a href="../action_new/{{ link }}/{{ data['nik'] }}">
                   <span class="glyphicon glyphicon-{{ icon }}" aria-hidden="true"></span>
                   &nbsp;{{ label }}
                 </a></li>
