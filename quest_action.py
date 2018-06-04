@@ -137,7 +137,7 @@ class EditSimpleActionHandler(tornado.web.RequestHandler):
             args[k] = args[k].decode('utf8')
         del args["_xsrf"]
         _save_action(action_id, args)
-        self.redirect("%s" % action_id)
+        self.redirect("/game_node_editor/%s" % node_id)
 
 
 def render_to_html(action_id):
@@ -145,7 +145,12 @@ def render_to_html(action_id):
 
 
 def load_actions(actions):
-    return dict((_id, _load_action(_id)) for _id in actions)
+    icons, links, _ = zip(*package_resources(include_separators=False))
+    pack = dict(zip(links, icons))
+    res = dict((_id, _load_action(_id)) for _id in actions)
+    for k in res:
+        res[k]['icon'] = pack[res[k]['type']]
+    return res
 
 
 game_action_routes = [
