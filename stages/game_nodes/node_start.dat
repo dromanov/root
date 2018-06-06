@@ -1,5 +1,6 @@
-{'actions': ['1cbdfa5780274605995009b6163dbfdc',
-             '20c92d3a39ca4613bf67c98d49fe7dd2'],
+{'actions': ['1e08e4150ce04e28808b85e3c274400c'],
+ 'make_new_node': 'balloon',
  'nik': 'start',
+ 'nodes': '[start] Начало!!!"',
  'task': 'Давным давно, в далёкой-далёкой галактике...',
  'title': 'Начало!!!'}

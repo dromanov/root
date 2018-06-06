@@ -67,6 +67,16 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
                 v = v[0]
             args[_key] = v
         del args["_xsrf"]
+
+        # Optionally create new location (node).
+        new_node_name = args.get("make_new_node", "")
+        if new_node_name:
+            if new_node_name.isalnum():
+                self.redirect("/game_node_editor/%s" % new_node_name)
+            else:
+                self.redirect("/game_node_editor/%s" % node_id)
+            return
+
         _save_node(node_id, args)
         self.redirect(node_id)
 
