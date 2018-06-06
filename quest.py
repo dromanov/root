@@ -40,17 +40,13 @@ def _save_node(node_id, data):
 class GameNodeHandler(tornado.web.RequestHandler):
     def get(self, node_id):
         data = _load_node(node_id)
-        self.render("game_node.html", data=data)
+        action_details = quest_action.load_actions(data.get('actions', []))
+        self.render("game_node.html", data=data, action_details=action_details)
 
 
 class GameNodeEditorHandler(tornado.web.RequestHandler):
     def get(self, node_id):
-        data = {}
-        datafile = "stages/game_nodes/node_%s.dat" % node_id
-        if os.path.isfile(datafile):
-            data = eval(open(datafile,
-                             encoding="utf-8").read())
-        data['nik'] = node_id
+        data = _load_node(node_id)
         action_details = quest_action.load_actions(data.get('actions', []))
         self.render("game_node_editor.html", data=data,
                     action_menu=quest_action.package_resources(),
@@ -58,11 +54,11 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
 
     def post(self, node_id):
         args = _load_node(node_id)
-        for k, v in self.request.arguments.items():
-            args[k] = v
+        for _key in self.request.arguments.keys():
+            v = self.get_arguments(_key)
             if isinstance(v, list) and len(v) == 1:
-                args[k] = v[0]
-            args[k] = args[k].decode('utf8')
+                v = v[0]
+            args[_key] = v
         del args["_xsrf"]
         _save_node(node_id, args)
         self.redirect(node_id)

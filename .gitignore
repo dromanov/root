@@ -5,3 +5,4 @@ peopleware.sublime-workspace
 *.pyc
 .idea
 venv
+stages/stage*

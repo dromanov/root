@@ -30,7 +30,17 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <button type="button" class="btn btn-primary">"Нажми меня!"</button>
+      {# Уже существующие действия. #}
+      {% for action_id in data.get('actions', []) %}
+      {% set _a = action_details[action_id] %}
+        <a href="../action_edit/{{ _a["type"] }}/{{ data['nik'] }}/{{ action_id }}">
+          <button type="button" class="btn btn-primary">
+            <span class="glyphicon glyphicon-{{ _a['icon'] }}" aria-hidden="true"></span>
+            &nbsp;
+            {{ _a.get('title', '') or "--- NOT SET ---" }}
+          </button>
+        </a>
+      {% end %}
     </div>
   </div>
 
