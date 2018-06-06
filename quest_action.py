@@ -47,8 +47,10 @@ def package_resources(include_separators=True):
 
 
 def _load_action(action_id):
-    data = eval(open("stages/game_actions/action_%s.dat" % action_id,
-                     encoding="utf-8").read())
+    filename = "stages/game_actions/action_%s.dat" % action_id
+    data = {}
+    if os.path.isfile(filename):
+        data = eval(open(filename, encoding="utf-8").read())
     data['id'] = action_id
     return data
 
@@ -79,11 +81,11 @@ class EditActionHandler(tornado.web.RequestHandler):
 
     def post(self, node_id, action_id):
         args = _load_action(action_id)
-        for k, v in self.request.arguments.items():
-            args[k] = v
+        for _key in self.request.arguments.keys():
+            v = self.get_arguments(_key)
             if isinstance(v, list) and len(v) == 1:
-                args[k] = v[0]
-            args[k] = args[k].decode('utf8')
+                v = v[0]
+            args[_key] = v
         del args["_xsrf"]
         _save_action(action_id, args)
         self.redirect("%s" % action_id)
@@ -92,11 +94,11 @@ class EditActionHandler(tornado.web.RequestHandler):
 class NewActionHandler(tornado.web.RequestHandler):
     def get(self):
         args = {}
-        for k, v in self.request.arguments.items():
-            args[k] = v
+        for _key in self.request.arguments.keys():
+            v = self.get_arguments(_key)
             if isinstance(v, list) and len(v) == 1:
-                args[k] = v[0]
-            args[k] = args[k].decode('utf8')
+                v = v[0]
+            args[_key] = v
         # TODO: add protection against xsrf attack.
         # del args["_xsrf"]
         action_id = uuid.uuid4().hex
@@ -130,16 +132,16 @@ class EditSimpleActionHandler(tornado.web.RequestHandler):
 
     def post(self, node_id, action_id):
         args = _load_action(action_id)
-        for k, v in self.request.arguments.items():
-            args[k] = v
+        for _key in self.request.arguments.keys():
+            v = self.get_arguments(_key)
             if isinstance(v, list) and len(v) == 1:
-                args[k] = v[0]
-            args[k] = args[k].decode('utf8')
+                v = v[0]
+            args[_key] = v
         del args["_xsrf"]
 
         new_node_name = args.get("make_new_node", "")
         if new_node_name.isalnum():
-            self.redirect("/game_node_editor/%s" % args.get("make_new_node"))
+            self.redirect("/game_node_editor/%s" % new_node_name)
         else:
             self.redirect("/game_node_editor/%s" % node_id)
 
