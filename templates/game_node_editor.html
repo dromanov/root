@@ -60,6 +60,52 @@
       </div>
     </div>
 
+    {# Список существующих уровней (карта-шпаргалка). #}
+    <div class="form-group">
+      <label for="id_nodes" class="col-sm-2 control-label">Существующие уровни:</label>
+      <div class="col-sm-5">
+        {# Existing nodes as drop-down lists. #}
+        <div class="input-group">
+          <div class="input-group-addon">
+            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+          </div>
+          <select class="form-control"
+                  name="nodes"
+                  id="id_nodes">
+          {% for num, node in enumerate(nodes.values()) %}
+          {# TODO: rename `nik` to `node_id`. #}
+            <option>[{{ node["nik"] }}] {{ node["title"] }}"</option>
+          {% end %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+    {# New node creation. #}
+    <div class="form-group">
+      <label for="id_node_make_new" class="col-sm-2 control-label">Создать уровень:</label>
+      <div class="col-sm-5">
+        <div class="input-group">
+          <input type="text"
+                 class="form-control"
+                 name="make_new_node"
+                 id="id_node_make_new"
+                 value=""
+                 autocomplete="off"
+                 placeholder="Введите метку новой ноды (in English, a variable name)">
+          <span class="input-group-btn">
+            <button class="btn btn-success" type="button">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              &nbsp;
+              Добавить
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+
     {# Редактирование действий (Action). #}
     <div class="form-group">
       <label for="id_buttons" class="col-sm-2 control-label">
@@ -76,6 +122,7 @@
               {{ _a.get('title', '') or "--- NOT SET ---" }}
             </button>
           </a>
+          <hr/>
         {% end %}
 
         {# Меню для создания нового действия (Action). #}

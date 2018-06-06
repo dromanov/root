@@ -50,7 +50,8 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
         action_details = quest_action.load_actions(data.get('actions', []))
         self.render("game_node_editor.html", data=data,
                     action_menu=quest_action.package_resources(),
-                    action_details=action_details)
+                    action_details=action_details,
+                    nodes=list_nodes())
 
     def post(self, node_id):
         args = _load_node(node_id)
