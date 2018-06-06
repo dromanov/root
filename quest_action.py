@@ -61,55 +61,6 @@ def _save_action(action_id, data):
         pprint.pprint(data, output_stream)
 
 
-class ActionHandler(tornado.web.RequestHandler):
-    def get(self, action_id):
-        data = eval(open("stages/game_actions/action_%s.dat" % action_id,
-                         encoding="utf-8").read())
-        data['nik'] = action_id
-        self.render("game_action.html", data=data)
-
-
-class EditActionHandler(tornado.web.RequestHandler):
-    def get(self, node_id, action_id):
-        print("Editing action '{action_id:.5}...' @ '{node_id}'"
-              .format(**locals()))
-        action = _load_action(action_id)
-        action['node_id'] = node_id
-        self.render("game_action_editor.html",
-                    action=action,
-                    actions=package_resources(include_separators=False))
-
-    def post(self, node_id, action_id):
-        args = _load_action(action_id)
-        for _key in self.request.arguments.keys():
-            v = self.get_arguments(_key)
-            if isinstance(v, list) and len(v) == 1:
-                v = v[0]
-            args[_key] = v
-        del args["_xsrf"]
-        _save_action(action_id, args)
-        self.redirect("%s" % action_id)
-
-
-class NewActionHandler(tornado.web.RequestHandler):
-    def get(self):
-        args = {}
-        for _key in self.request.arguments.keys():
-            v = self.get_arguments(_key)
-            if isinstance(v, list) and len(v) == 1:
-                v = v[0]
-            args[_key] = v
-        # TODO: add protection against xsrf attack.
-        # del args["_xsrf"]
-        action_id = uuid.uuid4().hex
-        output_stream = open("stages/game_actions/action_%s.dat" % action_id,
-                             "w",
-                             encoding="utf-8")
-        pprint.pprint(args, output_stream)
-        quest.link_action(args['node_id'], action_id)
-        self.redirect("../game_node/%s" % args['node_id'])
-
-
 class NewSimpleActionHandler(tornado.web.RequestHandler):
     def get(self, node_id):
         action_id = uuid.uuid4().hex
@@ -137,6 +88,7 @@ class EditSimpleActionHandler(tornado.web.RequestHandler):
             if isinstance(v, list) and len(v) == 1:
                 v = v[0]
             args[_key] = v
+        # TODO: does tornado check the _xsfr token automatically for me?
         del args["_xsrf"]
 
         new_node_name = args.get("make_new_node", "")
@@ -164,8 +116,6 @@ def load_actions(actions):
 
 
 game_action_routes = [
-    (r"/action/(.*)", ActionHandler),
     (r"/action_new/simple/(.*)", NewSimpleActionHandler),
     (r"/action_edit/simple/([^/]*)/(.*)", EditSimpleActionHandler),
-    (r"/action_edit/([^/]*)/(.*)", EditActionHandler),
 ]
