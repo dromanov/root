@@ -48,6 +48,12 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
     def get(self, node_id):
         data = _load_node(node_id)
         action_details = quest_action.load_actions(data.get('actions', []))
+        if self.get_argument('do', '') == 'delete':
+            _id = self.get_argument('action_id')
+            data['actions'].pop(data['actions'].index(_id))
+            _save_node(node_id, data)
+            self.redirect(node_id)
+            return
         self.render("game_node_editor.html", data=data,
                     action_menu=quest_action.package_resources(),
                     action_details=action_details,

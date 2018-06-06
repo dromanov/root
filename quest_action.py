@@ -92,10 +92,12 @@ class EditSimpleActionHandler(tornado.web.RequestHandler):
         del args["_xsrf"]
 
         new_node_name = args.get("make_new_node", "")
-        if new_node_name.isalnum():
-            self.redirect("/game_node_editor/%s" % new_node_name)
-        else:
-            self.redirect("/game_node_editor/%s" % node_id)
+        if new_node_name:
+            if new_node_name.isalnum():
+                self.redirect("/game_node_editor/%s" % new_node_name)
+            else:
+                self.redirect("/game_node_editor/%s" % node_id)
+            return
 
         _save_action(action_id, args)
         self.redirect("/game_node_editor/%s" % node_id)
