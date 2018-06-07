@@ -22,7 +22,11 @@
   </div>
 
   {# Функция для генерации иконки из набора бутстрапа.  #}
-  {% set glyph = lambda name: '<span class="glyphicon glyphicon-%s" aria-hidden="true"></span>' % name %}
+  {%
+    set glyph = lambda name, add_space=True: \
+      '<span class="glyphicon glyphicon-%s" aria-hidden="true"></span> %s ' % \
+        (name, add_space and "&nbsp;" or "")
+  %}
 
   <form method="POST" class="form-horizontal">
     <div class="form-group">
@@ -70,7 +74,7 @@
         {# Existing nodes as drop-down lists. #}
         <div class="input-group">
           <div class="input-group-addon">
-            {% raw glyph('map-marker') %}
+            {% raw glyph('map-marker', add_space=False) %}
           </div>
           <select class="form-control"
                   name="nodes"
@@ -99,9 +103,7 @@
                  placeholder="Введите метку новой ноды (in English, a variable name)">
           <span class="input-group-btn">
             <button class="btn btn-success" type="button">
-              {% raw glyph('plus') %}
-              &nbsp;
-              Добавить
+              {% raw glyph('plus') %} Добавить
             </button>
           </span>
         </div>
@@ -121,7 +123,6 @@
           <div class="btn-group">
             <button type="button" class="btn btn-primary">
               {% raw glyph(_a['icon']) %}
-              &nbsp;
               {{ _a.get('title', '') or "--- NOT SET ---" }}
             </button>
             <button type="button" class="btn btn-primary dropdown-toggle"
@@ -131,11 +132,13 @@
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu">
-              <li><a href="#">{% raw glyph('pencil') %} &nbsp; Edit</a></li>
-              <li><a href="#">{% raw glyph('arrow-left') %} &nbsp; Move up</a></li>
-              <li><a href="#">{% raw glyph('arrow-right') %} &nbsp; Move down</a></li>
+              <li><a href="#">{% raw glyph('pencil')      %} Edit</a></li>
+              <li><a href="#">{% raw glyph('arrow-left')  %} Move up</a></li>
+              <li><a href="#">{% raw glyph('arrow-right') %} Move down</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="?do=delete&action_id={{ _a['id'] }}">{% raw glyph('trash') %} &nbsp; Delete</a></li>
+              <li><a href="?do=delete&action_id={{ _a['id'] }}">
+                {% raw glyph('trash') %} Delete
+              </a></li>
             </ul>
           </div>
 
@@ -146,15 +149,13 @@
         <div class="btn-group">
           <button type="button" class="btn btn-success dropdown-toggle"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {% raw glyph('plus') %}
-            &nbsp;
-            Новое действие <span class="caret"></span>
+            {% raw glyph('plus') %} Новое действие <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
             {% for icon, link, label in action_menu %}
               {% if icon != "---" %}
                 <li><a href="../action_new/{{ link }}/{{ data['nik'] }}">
-                  {% raw glyph(icon) %} &nbsp; {{ label }}
+                  {% raw glyph(icon) %} {{ label }}
                 </a></li>
               {% else %}
                 <li role="separator" class="divider"></li>

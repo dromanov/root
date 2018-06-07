@@ -1,4 +1,5 @@
-{'actions': ['1e08e4150ce04e28808b85e3c274400c'],
+{'actions': ['1e08e4150ce04e28808b85e3c274400c',
+             '88721c2fd5f2457b9e827d037b5935ca'],
  'make_new_node': 'balloon',
  'nik': 'start',
  'nodes': '[start] Начало!!!"',
