@@ -100,3 +100,9 @@ td {
 .button2000:hover::after {
     opacity: 1;
 }
+
+/* Between-form-element-like padding taken from inspection of
+   the bootstrap 3.3.2 generated page. */
+.dima-mt-f {
+  margin-top: 15px;
+}

@@ -45,6 +45,13 @@ class GameNodeHandler(tornado.web.RequestHandler):
 
 
 class GameNodeEditorHandler(tornado.web.RequestHandler):
+    """Complex handler with GET and POST channels.
+    GET:
+        the operation is set in parameter `do` and handles action editing.
+
+    POST:
+        receives the data and updates the node and the action being edited.
+    """
     def get(self, node_id):
         data = _load_node(node_id)
         action_details = quest_action.load_actions(data.get('actions', []))
@@ -54,6 +61,9 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             _save_node(node_id, data)
             self.redirect(node_id)
             return
+        elif self.get_argument('do', '') == 'edit':
+            data['action_to_edit'] = self.get_argument('action_id')
+
         self.render("game_node_editor.html", data=data,
                     action_menu=quest_action.package_resources(),
                     action_details=action_details,
@@ -75,6 +85,13 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
                 self.redirect("/game_node_editor/%s" % new_node_name)
             else:
                 self.redirect("/game_node_editor/%s" % node_id)
+            return
+
+        if self.get_argument('do', '') == 'save_edited_simple_action':
+            args = {k.split(".")[1]: v for k, v in args.items()
+                    if k.startswith("action.")}
+            print(args)
+            self.redirect(node_id)
             return
 
         _save_node(node_id, args)
