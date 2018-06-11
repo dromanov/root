@@ -17,14 +17,7 @@ What do actions have in common:
 """
 
 import os
-import uuid
 import pprint
-
-import tornado.web
-
-import quest
-
-__all__ = "game_action_routes make_html package_resources".split()
 
 
 def package_resources(include_separators=True):
@@ -67,52 +60,6 @@ def update_action(action_id, patch):
     save_action(action_id, action)
 
 
-class NewSimpleActionHandler(tornado.web.RequestHandler):
-    def get(self, node_id):
-        action_id = uuid.uuid4().hex
-        action = {
-            'type': 'simple',
-            'id': action_id,
-            'node_id': node_id
-        }
-        save_action(action_id, action)
-        quest.link_action(node_id, action_id)
-        self.redirect("/action_edit/simple/%s/%s" % (node_id, action_id))
-
-
-class EditSimpleActionHandler(tornado.web.RequestHandler):
-    def get(self, node_id, action_id):
-        action = _load_action(action_id)
-        action['node_id'] = node_id
-        self.render("game_simple_action_editor.html",
-                    action=action, nodes=quest.list_nodes())
-
-    def post(self, node_id, action_id):
-        args = _load_action(action_id)
-        for _key in self.request.arguments.keys():
-            v = self.get_arguments(_key)
-            if isinstance(v, list) and len(v) == 1:
-                v = v[0]
-            args[_key] = v
-        # TODO: does tornado check the _xsfr token automatically for me?
-        del args["_xsrf"]
-
-        new_node_name = args.get("make_new_node", "")
-        if new_node_name:
-            if new_node_name.isalnum():
-                self.redirect("/game_node_editor/%s" % new_node_name)
-            else:
-                self.redirect("/game_node_editor/%s" % node_id)
-            return
-
-        save_action(action_id, args)
-        self.redirect("/game_node_editor/%s" % node_id)
-
-
-def render_to_html(action_id):
-    return "DUMMY_MAKE({})".format(action_id)
-
-
 def load_actions(actions):
     """Packs actions with full data for external renderer @ node editor."""
     icons, links, _ = zip(*package_resources(include_separators=False))
@@ -121,9 +68,3 @@ def load_actions(actions):
     for k in res:
         res[k]['icon'] = pack[res[k]['type']]
     return res
-
-
-game_action_routes = [
-    (r"/action_new/simple/(.*)", NewSimpleActionHandler),
-    (r"/action_edit/simple/([^/]*)/(.*)", EditSimpleActionHandler),
-]

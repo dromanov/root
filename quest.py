@@ -100,11 +100,8 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             return
 
         if self.get_argument('do', '') == 'save_edited_simple_action':
-            print(args)
             args = {k.split(".")[1]: v for k, v in args.items()
                     if k.startswith("action.")}
-            print(args)
-            print('='*20)
             quest_action.update_action(args['id'], args)
             self.redirect(node_id)
             return
