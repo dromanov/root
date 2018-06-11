@@ -40,7 +40,7 @@
       <label for="id_nik" class="col-sm-2 control-label">ID: </label>
       <div class="col-sm-10">
         <input type="text"
-               name="action.id"
+               name="--- not used, disabled fields do not send data ---"
                id="id_nik"
                class="form-control"
                value="{{ _a["id"] }}"
@@ -80,11 +80,11 @@
             <input type="text"
                    class="form-control"
                    id="action1"
-                   name="action.action"
+                   name="action.the_action"
                    placeholder="Action">
           </div>
           <input type="hidden" name="do" value="save_edited_simple_action">
-          <input type="hidden" name="action.action_id" value="{{ _a['id'] }}">
+          <input type="hidden" name="action.id" value="{{ _a["id"] }}">
         </div>
       </div>
     </div>

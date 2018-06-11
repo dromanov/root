@@ -55,10 +55,16 @@ def _load_action(action_id):
     return data
 
 
-def _save_action(action_id, data):
+def save_action(action_id, data):
     with open("stages/game_actions/action_%s.dat" % action_id, "w",
               encoding="utf-8") as output_stream:
         pprint.pprint(data, output_stream)
+
+
+def update_action(action_id, patch):
+    action = _load_action(action_id)
+    action.update(patch)
+    save_action(action_id, action)
 
 
 class NewSimpleActionHandler(tornado.web.RequestHandler):
@@ -69,7 +75,7 @@ class NewSimpleActionHandler(tornado.web.RequestHandler):
             'id': action_id,
             'node_id': node_id
         }
-        _save_action(action_id, action)
+        save_action(action_id, action)
         quest.link_action(node_id, action_id)
         self.redirect("/action_edit/simple/%s/%s" % (node_id, action_id))
 
@@ -99,7 +105,7 @@ class EditSimpleActionHandler(tornado.web.RequestHandler):
                 self.redirect("/game_node_editor/%s" % node_id)
             return
 
-        _save_action(action_id, args)
+        save_action(action_id, args)
         self.redirect("/game_node_editor/%s" % node_id)
 
 

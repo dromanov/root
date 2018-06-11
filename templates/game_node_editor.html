@@ -41,6 +41,7 @@
       </div>
     </div>
 
+    {# Короткое название локации. #}
     <div class="form-group">
       <label for="id_title" class="col-sm-2 control-label">Заголовок: </label>
       <div class="col-sm-10">
@@ -54,6 +55,7 @@
       </div>
     </div>
 
+    {# Описание задания (html). #}
     <div class="form-group">
       <label for="id_task" class="col-sm-2 control-label">Описание задания:</label>
       <div class="col-sm-10">
@@ -88,7 +90,7 @@
       </div>
 
 
-    {# New node creation. #}
+      {# New node creation. #}
       <label for="id_node_make_new" class="col-sm-2 control-label">Создать уровень:</label>
       <div class="col-sm-4">
         <div class="input-group">
@@ -132,7 +134,7 @@
           <ul class="dropdown-menu">
             {% for icon, link, label in action_menu %}
               {% if icon != "---" %}
-                <li><a href="../action_new/{{ link }}/{{ data['nik'] }}">
+                <li><a href="?do=create_new_action&type={{ link }}">
                   {% raw glyph(icon) %} {{ label }}
                 </a></li>
               {% else %}

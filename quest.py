@@ -3,6 +3,7 @@ Handles creating, rendering and editing nodes of the text based game.
 '''
 import os
 import glob
+import uuid
 import pprint
 
 import tornado.web
@@ -63,6 +64,17 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             return
         elif self.get_argument('do', '') == 'edit':
             data['action_to_edit'] = self.get_argument('action_id')
+        elif self.get_argument('do', '') == "create_new_action":
+            action_id = uuid.uuid4().hex
+            action = {
+                'type': self.get_argument("type"),
+                'id': action_id,
+                'node_id': node_id
+            }
+            quest_action.save_action(action_id, action)
+            link_action(node_id, action_id)
+            self.redirect("?do=edit&action_id=%s" % action_id)
+            return
 
         self.render("game_node_editor.html", data=data,
                     action_menu=quest_action.package_resources(),
@@ -88,9 +100,12 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             return
 
         if self.get_argument('do', '') == 'save_edited_simple_action':
+            print(args)
             args = {k.split(".")[1]: v for k, v in args.items()
                     if k.startswith("action.")}
             print(args)
+            print('='*20)
+            quest_action.update_action(args['id'], args)
             self.redirect(node_id)
             return
 
