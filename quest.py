@@ -56,15 +56,16 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
     def get(self, node_id):
         data = _load_node(node_id)
         action_details = quest_action.load_actions(data.get('actions', []))
-        if self.get_argument('do', '') == 'delete':
+        _TODO = self.get_argument('do', '')
+        if _TODO == 'delete':
             _id = self.get_argument('action_id')
             data['actions'].pop(data['actions'].index(_id))
             _save_node(node_id, data)
             self.redirect(node_id)
             return
-        elif self.get_argument('do', '') == 'edit':
+        elif _TODO == 'edit':
             data['action_to_edit'] = self.get_argument('action_id')
-        elif self.get_argument('do', '') == "create_new_action":
+        elif _TODO == "create_new_action":
             action_id = uuid.uuid4().hex
             action = {
                 'type': self.get_argument("type"),
@@ -75,6 +76,20 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             link_action(node_id, action_id)
             self.redirect("?do=edit&action_id=%s" % action_id)
             return
+        elif _TODO == 'move_right':
+            action_id = self.get_argument("action_id")
+            if action_id in data['actions']:
+                i = data['actions'].index(action_id)
+                _a = data['actions'].pop(i)
+                data['actions'].insert(min(len(data['actions']), i+1), _a)
+            _save_node(node_id, data)
+        elif _TODO == 'move_left':
+            action_id = self.get_argument("action_id")
+            if action_id in data['actions']:
+                i = data['actions'].index(action_id)
+                _a = data['actions'].pop(i)
+                data['actions'].insert(max(0, i-1), _a)
+            _save_node(node_id, data)
 
         self.render("game_node_editor.html", data=data,
                     action_menu=quest_action.package_resources(),
