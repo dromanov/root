@@ -6,7 +6,7 @@
   <div class="btn-group">
     <button type="button" class="btn btn-primary">
       {% raw glyph(_a['icon']) %}
-      {{ _a.get('title', '') or "--- NOT SET ---" }}
+      {% raw _a.get('title', '') or "--- NOT SET ---" %}
     </button>
     <button type="button" class="btn btn-primary dropdown-toggle"
             data-toggle="dropdown" aria-haspopup="true"
@@ -71,11 +71,6 @@
     {# Действие на переходе. #}
     <div class="form-group">
       <label for="id_nodes" class="col-sm-2 control-label">Действие на переходе:</label>
-      <div class="col-sm-2">
-        {# Existing nodes as drop-down lists. #}
-        <label class="sr-only" for="exampleInputEmail3">Название</label>
-        <input type="text" class="form-control" id="action1" placeholder="Title">
-      </div>
       <div class="col-sm-4">
         {# Action. #}
         <div class="input-group">
@@ -88,6 +83,7 @@
                    class="form-control"
                    id="action1"
                    name="action.the_action"
+                   value="{{ _a.get("the_action", '') }}"
                    placeholder="Action">
           </div>
           <input type="hidden" name="do" value="save_edited_simple_action">

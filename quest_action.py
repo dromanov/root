@@ -39,7 +39,7 @@ def package_resources(include_separators=True):
     return pkg
 
 
-def _load_action(action_id):
+def load_action(action_id):
     filename = "stages/game_actions/action_%s.dat" % action_id
     data = {}
     if os.path.isfile(filename):
@@ -55,7 +55,7 @@ def save_action(action_id, data):
 
 
 def update_action(action_id, patch):
-    action = _load_action(action_id)
+    action = load_action(action_id)
     action.update(patch)
     save_action(action_id, action)
 
@@ -64,7 +64,7 @@ def load_actions(actions):
     """Packs actions with full data for external renderer @ node editor."""
     icons, links, _ = zip(*package_resources(include_separators=False))
     pack = dict(zip(links, icons))
-    res = dict((_id, _load_action(_id)) for _id in actions)
+    res = dict((_id, load_action(_id)) for _id in actions)
     for k in res:
         res[k]['icon'] = pack[res[k]['type']]
     return res

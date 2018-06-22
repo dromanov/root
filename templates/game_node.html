@@ -13,6 +13,9 @@
     <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
        <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
   </head>
+  <script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 <body class="container-fluid">
   <div class="row">
@@ -33,11 +36,11 @@
       {# Уже существующие действия. #}
       {% for action_id in data.get('actions', []) %}
       {% set _a = action_details[action_id] %}
-        <a href="../action_edit/{{ _a["type"] }}/{{ data['nik'] }}/{{ action_id }}">
+        <a href="?do=execute&action_id={{ action_id }}">
           <button type="button" class="btn btn-primary">
             <span class="glyphicon glyphicon-{{ _a['icon'] }}" aria-hidden="true"></span>
             &nbsp;
-            {{ _a.get('title', '') or "--- NOT SET ---" }}
+            {% raw _a.get('title', '') or "--- NOT SET ---" %}
           </button>
         </a>
       {% end %}
@@ -52,6 +55,12 @@
         {# Button doesn't submit [https://stackoverflow.com/a/26017210/774971] #}
         <button type="button" class="btn btn-warning btn-sm">Редактировать</button>
       </a>
+    </div>
+  </div>
+
+   <div class="row">
+    <div class="col-sm-12">
+		<p> На этом этапе также: </p>
     </div>
   </div>
 

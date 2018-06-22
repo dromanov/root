@@ -10,7 +10,68 @@ import tornado.web
 
 import quest_action
 
+import quest_traveller
+
 __all__ = ["game_routes"]
+
+
+traveller = quest_traveller.TravellerAPI()
+
+users = {}
+
+
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("pointer_user")
+
+
+class LoginHandler(BaseHandler):
+    # `async` to handle a slow disk I/O?
+    # https://github.com/tornadoweb/tornado/blob/stable/demos/blog/blog.py#L206
+    def get(self):
+        names = []
+        filename = "stages/login.dat"
+        if os.path.isfile(filename):
+            # TODO: tell Victoria about the encoding bug here.
+            names = eval(open(filename, encoding='utf-8').read())
+        self.render("login.html", names=names)
+
+    def post(self):
+        name = self.get_argument("name")
+        users[name] = quest_traveller.TravellerAPI()
+        if not self.get_secure_cookie("pointer_user"):
+            user = uuid.uuid4().hex
+            # TODO: One should implement BaseClass::get_current_user()
+            # and name the cookie below accordingly
+            # [http://www.tornadoweb.org/en/stable/guide/security.html]
+            self.set_secure_cookie("pointer_user", user)
+        self.redirect("/game_node/start")
+
+
+class GraphHandler(tornado.web.RequestHandler):
+    def get(self):
+        nodes = []
+        for name in glob.glob( "stages/game_nodes/node_*.dat"):
+           nodes.append(name[len("stages/game_nodes/node_"):-4])
+        source = []
+        target = []
+
+        for name in glob.glob( "stages/game_actions/action_*.dat"):
+            s = ''
+            t = ''
+            file = open(name)
+            for _str in file:
+                for node in nodes:
+                    if _str.find(str(node)) != -1:
+                         if _str.find("node_id") != -1:
+                             s = node   
+                         if _str.find("the_action") != -1:
+                             t = node          
+            source.append(s)
+            target.append(t)
+            # link[source] = target
+            file.close()                
+        self.render("graph.html", _nodes=nodes, _source=source, _target=target)
 
 
 def list_nodes():
@@ -38,14 +99,32 @@ def _save_node(node_id, data):
         pprint.pprint(data, output_stream)
 
 
-class GameNodeHandler(tornado.web.RequestHandler):
+class GameNodeHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self, node_id):
+        name = tornado.escape.xhtml_escape(self.current_user)
+        print("User:", name)
+
         data = _load_node(node_id)
+
+        _TODO = self.get_argument('do', '')
+        if _TODO == 'execute':
+            action_id = self.get_argument("action_id")
+            assert action_id in data['actions'], "no such action here!"
+            action = quest_action.load_action(action_id).get('the_action', '')
+            exec(action, {'me': traveller})
+            new_location = traveller.pop_location()
+            if new_location:
+                self.redirect("/game_node/" + new_location)
+            else:
+                self.redirect(node_id)
+            return None
+
         action_details = quest_action.load_actions(data.get('actions', []))
         self.render("game_node.html", data=data, action_details=action_details)
 
 
-class GameNodeEditorHandler(tornado.web.RequestHandler):
+class GameNodeEditorHandler(BaseHandler):
     """Complex handler with GET and POST channels.
     GET:
         the operation is set in parameter `do` and handles action editing.
@@ -53,9 +132,12 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
     POST:
         receives the data and updates the node and the action being edited.
     """
+    @tornado.web.authenticated
     def get(self, node_id):
+        name = tornado.escape.xhtml_escape(self.current_user)
+        print("User:", name)
+
         data = _load_node(node_id)
-        action_details = quest_action.load_actions(data.get('actions', []))
         _TODO = self.get_argument('do', '')
         if _TODO == 'delete':
             _id = self.get_argument('action_id')
@@ -78,25 +160,32 @@ class GameNodeEditorHandler(tornado.web.RequestHandler):
             return
         elif _TODO == 'move_right':
             action_id = self.get_argument("action_id")
-            if action_id in data['actions']:
-                i = data['actions'].index(action_id)
-                _a = data['actions'].pop(i)
-                data['actions'].insert(min(len(data['actions']), i+1), _a)
+            _actions = data['actions']
+            if action_id in _actions:
+                i = _actions.index(action_id)
+                _a = _actions.pop(i)
+                _actions.insert(min(len(_actions), i+1), _a)
             _save_node(node_id, data)
         elif _TODO == 'move_left':
             action_id = self.get_argument("action_id")
-            if action_id in data['actions']:
-                i = data['actions'].index(action_id)
-                _a = data['actions'].pop(i)
-                data['actions'].insert(max(0, i-1), _a)
+            _actions = data['actions']
+            if action_id in _actions:
+                i = _actions.index(action_id)
+                _a = _actions.pop(i)
+                _actions.insert(max(0, i-1), _a)
             _save_node(node_id, data)
 
+        action_details = quest_action.load_actions(data.get('actions', []))
         self.render("game_node_editor.html", data=data,
                     action_menu=quest_action.package_resources(),
                     action_details=action_details,
                     nodes=list_nodes())
 
+    @tornado.web.authenticated
     def post(self, node_id):
+        name = tornado.escape.xhtml_escape(self.current_user)
+        print("User:", name)
+
         args = _load_node(node_id)
         for _key in self.request.arguments.keys():
             v = self.get_arguments(_key)

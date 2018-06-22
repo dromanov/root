@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title> Авторизация </title>
+
+  <meta name="description" content="Source code generated using layoutit.com">
+  <meta name="author" content="LayoutIt!">
+
+  <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
+     <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
+</head>
+
+<body class='container-fluid'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <h2>Добро пожаловать!</h2>
+      <p class='lead'>Здесь вы можете зарегистрироваться и начать урок!</p>
+    </div>
+    <div class='col-sm-4 col-sm-offset-1'>
+      <p>
+        {% for name_ in names %}
+          <form action='/login' method="post">
+          <input type="hidden" name="name" value="{{ name_ }}"/>
+      <p><input type="submit" class='btn btn-primary' value="{{ name_ }}"></p>
+      {% raw xsrf_form_html() %}
+      </form>
+      <p>
+        {% end %}
+    </div>
+  </div>
+
+  <script src="{{ static_url("jquery.min.js") }}" type="text/javascript"></script>
+  <script src="{{ static_url("bootstrap-3.3.7/js/bootstrap.min.js") }}" type="text/javascript"></script>
+ </body>
+ </html>

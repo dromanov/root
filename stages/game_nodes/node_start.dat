@@ -1,7 +1,9 @@
-{'actions': ['05e8f5009cfe4654bd1ec94d0d38163e',
+{'actions': ['a4b482ada8964974936c8ab5eb33ea31',
+             '05e8f5009cfe4654bd1ec94d0d38163e',
              '83737b7d7a6c43b99eeacf736fc62112',
-             'd9f9e2aaa55f42f492124cc6b9b9aff9',
-             'a4b482ada8964974936c8ab5eb33ea31'],
+             'ff22928ae6324412bb3a07e9998eb69e'],
+ 'make_new_node': '',
  'nik': 'start',
+ 'nodes': '[start] Начало!!!"',
  'task': 'Давным давно, в далёкой-далёкой галактике...',
  'title': 'Начало!!!'}

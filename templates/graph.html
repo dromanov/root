@@ -1,0 +1,147 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+	<title>cytoscape-clipboard demo</title>
+
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+	<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
+	<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+
+	<!-- for testing with local version of cytoscape.js -->
+	<!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
+
+	<script src="src/cytoscape-undo-redo.js"></script>
+	<script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
+    <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
+	<script src="cytoscape-clipboard.js"></script>
+
+	<style>
+		body {
+			font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+			font-size: 14px;
+		}
+		#cy {
+			z-index: 999;
+			width: 85%;
+			height: 85%;
+			float: left;
+		}
+		h1 {
+			opacity: 0.5;
+			font-size: 1em;
+			font-weight: bold;
+		}
+	</style>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function(){
+			var cy = window.cy = cytoscape({
+				container: document.getElementById('cy'),
+				  boxSelectionEnabled: false,
+				  autounselectify: true,
+				  layout: {
+					name: 'dagre'
+				  },
+
+				style: [
+					{
+					  selector: 'node',
+					  style: {
+						'content': 'data(id)',
+						'text-opacity': 1,
+						'text-valign': 'center',
+						'text-halign': 'right',
+						'fontSize': '20',
+						'background-color': '#11479e'
+					  }
+					},
+					
+					 {
+					  selector: 'node.easy',
+					  style: {
+						'background-color': '#A8E4A0'
+					  }
+					},
+					
+					{
+					  selector: 'node.medium',
+					  style: {
+						'background-color': '#FBEC5D'
+					  }
+					},
+					
+					 {
+					  selector: 'node.hard',
+					  style: {
+						'background-color': '#FD7C6E'
+					  }
+					},
+					
+					{
+					  selector: 'node.fine',
+					  style: {
+						'background-color': '#DE5D83'
+					  }
+					},
+
+					{
+					  selector: 'edge',
+					  style: {
+						'curve-style': 'bezier',
+						'width': 4,
+						'target-arrow-shape': 'triangle',
+						'line-color': '#9dbaea',
+						'target-arrow-color': '#9dbaea'
+					  }
+					},
+					
+					{
+					  selector: 'edge.true',
+					  style: {
+						'line-color': '#34C924',
+						'target-arrow-color': '#34C924'
+					  }
+					}, 
+					
+					{
+					  selector: 'edge.false',
+					  style: {
+						'line-color': '#E34234',
+						'target-arrow-color': '#E34234'
+					  }
+					}
+				],
+				elements: {
+					nodes: [
+					{% for node_id in _nodes %}
+					  { data: { id: '{{ node_id }}' } },
+					{% end %}
+
+					],
+					edges: [
+				
+					{% for source_id, target_id in zip(_source, _target) %}
+					  { data: { source: '{{ source_id }}', target: '{{ target_id }}' } },
+					{% end %}
+		
+					]
+				}
+			});
+			
+		});
+	</script>
+</head>
+
+<body>
+<h1>cytoscape-clipboard demo</h1>
+
+<div id="cy"></div>
+
+
+
+</body>
+
+</html>
