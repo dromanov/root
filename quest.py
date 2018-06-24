@@ -49,25 +49,24 @@ class LoginHandler(BaseHandler):
 
 class GraphHandler(tornado.web.RequestHandler):
     def get(self):
-        level_types = ["easy_level", "medium_level", "hard_level",
-                       "fine_level", "organizational"]
-        nodes = []
-        levels = []
-        for name in glob.glob( "stages/game_nodes/node_*.dat"):
-            nodes.append(name[len("stages/game_nodes/node_"):-4])
-            file = open(name, encoding="utf8")
-            l = ''
-            for _str in file:
-                for level in level_types:
-                    if _str.find(str(level)) != -1:
-                        l = level
-            levels.append(l)
-            file.close()
-           
+        def map_level_to_type(l):
+            level_types = ["easy_level", "medium_level", "hard_level",
+                           "fine_level", "organizational"]
+            if l in level_types:
+                return l
+            return ""
+
+        all_nodes = list_nodes()
+        nodes = list(all_nodes.keys())
+        levels = [map_level_to_type(all_nodes[node].get("level", ""))
+                  for node in nodes]
+        print(nodes)
+        print(levels)
+
         source = []
         target = []
         edges = []
-        for name in glob.glob( "stages/game_actions/action_*.dat"):
+        for name in glob.glob("stages/game_actions/action_*.dat"):
             s = ''
             t = ''
             e = ''
@@ -79,18 +78,22 @@ class GraphHandler(tornado.web.RequestHandler):
                             s = node
                         if _str.find("the_action") != -1:
                             t = node
-                if _str.find("score") != -1:             
+                if _str.find("score") != -1:
                     if _str.find("+") != -1:
                         e = 'true'
                     elif _str.find("-") != -1:
-                        e = 'false'               
+                        e = 'false'
             source.append(s)
             target.append(t)
-            edges.append(e)            
+            edges.append(e)
             file.close()
-            
-        self.render("graph.html", _nodes=nodes, _source=source, _target=target,
-                    node_classes=levels, edge_classes=edges)
+        self.render("graph.html",
+                    _nodes=nodes,
+                    _source=source,
+                    _target=target,
+                    node_classes=levels,
+                    edge_classes=edges)
+
 
 
 def list_nodes():
