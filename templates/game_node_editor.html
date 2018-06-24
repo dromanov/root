@@ -55,6 +55,31 @@
       </div>
     </div>
 
+    {# Выбор уровня сложности. #}
+    {# Функция для генерации активационного флага для выпадающего списка. #}
+    {# `61` is the line number to make the function name unique.          #}
+    {%
+      set _select_62 = lambda v: \
+        'value=%s %s' % (v, "" if v != data.get('level', '') else "selected")
+    %}
+    <div class="form-group">
+      <label for="level_type" class="col-sm-2 control-label">Выберите тип локации:</label>
+        <div class="col-sm-4">
+        <div class="input-group">
+          <select class="form-control"
+                  name="level"
+                  id="level_type">
+            <option disabled>Выберите тип локации</option>
+            <option {{ _select_62("organizational") }}> Организационный этап </option>
+            <option {{ _select_62("easy_level")   }}> Легкий уровень </option>
+            <option {{ _select_62("medium_level") }}> Средний уровень </option>
+            <option {{ _select_62("hard_level")   }}> Сложный уровень </option>
+            <option {{ _select_62("fine_level")   }}> Штрафной уровень </option>
+          </select>
+        </div>
+      </div>
+	 </div>
+
     {# Описание задания (html). #}
     <div class="form-group">
       <label for="id_task" class="col-sm-2 control-label">Описание задания:</label>

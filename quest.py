@@ -15,8 +15,6 @@ import quest_traveller
 __all__ = ["game_routes"]
 
 
-traveller = quest_traveller.TravellerAPI()
-
 users = {}
 
 
@@ -38,40 +36,61 @@ class LoginHandler(BaseHandler):
 
     def post(self):
         name = self.get_argument("name")
-        users[name] = quest_traveller.TravellerAPI()
         if not self.get_secure_cookie("pointer_user"):
-            user = uuid.uuid4().hex
+            # user = uuid.uuid4().hex
+            users[name] = quest_traveller.TravellerAPI(name)
             # TODO: One should implement BaseClass::get_current_user()
-            # and name the cookie below accordingly
+            # and name the cookie below to match the one in
+            # `BaseHandler::get_current_user` (line 23).
             # [http://www.tornadoweb.org/en/stable/guide/security.html]
-            self.set_secure_cookie("pointer_user", user)
+            self.set_secure_cookie("pointer_user", name)
         self.redirect("/game_node/start")
 
 
 class GraphHandler(tornado.web.RequestHandler):
     def get(self):
+        level_types = ["easy_level", "medium_level", "hard_level",
+                       "fine_level", "organizational"]
         nodes = []
+        levels = []
         for name in glob.glob( "stages/game_nodes/node_*.dat"):
            nodes.append(name[len("stages/game_nodes/node_"):-4])
+           file = open(name, encoding="utf8")
+           l = ''
+           for _str in file:
+               for level in level_types:
+                   if _str.find(str(level)) != -1:
+                       l = level
+           levels.append(l) 
+           file.close()
+           
         source = []
         target = []
-
+        edges = []
         for name in glob.glob( "stages/game_actions/action_*.dat"):
             s = ''
             t = ''
-            file = open(name)
+            e = ''
+            file = open(name, encoding="utf8")
             for _str in file:
                 for node in nodes:
                     if _str.find(str(node)) != -1:
                          if _str.find("node_id") != -1:
                              s = node   
                          if _str.find("the_action") != -1:
-                             t = node          
+                             t = node 
+                if _str.find("score") != -1:             
+                    if _str.find("+") != -1:
+                        e = 'true'
+                    elif _str.find("-") != -1:
+                        e = 'false'               
             source.append(s)
             target.append(t)
-            # link[source] = target
-            file.close()                
-        self.render("graph.html", _nodes=nodes, _source=source, _target=target)
+            edges.append(e)            
+            file.close() 
+               
+        self.render("graph.html", _nodes=nodes, _source=source, _target=target,
+                    node_classes=levels, edge_classes=edges)
 
 
 def list_nodes():
@@ -102,8 +121,9 @@ def _save_node(node_id, data):
 class GameNodeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, node_id):
-        name = tornado.escape.xhtml_escape(self.current_user)
-        print("User:", name)
+        name_ = tornado.escape.xhtml_escape(self.current_user)
+        traveller = users[name_]
+        print("{} came to {}".format(traveller.name, node_id))
 
         data = _load_node(node_id)
 
@@ -121,7 +141,10 @@ class GameNodeHandler(BaseHandler):
             return None
 
         action_details = quest_action.load_actions(data.get('actions', []))
-        self.render("game_node.html", data=data, action_details=action_details)
+        self.render("game_node.html",
+                    data=data,
+                    traveller=traveller,
+                    action_details=action_details)
 
 
 class GameNodeEditorHandler(BaseHandler):
@@ -134,8 +157,8 @@ class GameNodeEditorHandler(BaseHandler):
     """
     @tornado.web.authenticated
     def get(self, node_id):
-        name = tornado.escape.xhtml_escape(self.current_user)
-        print("User:", name)
+        name_ = tornado.escape.xhtml_escape(self.current_user)
+        traveller = users[name_]
 
         data = _load_node(node_id)
         _TODO = self.get_argument('do', '')
@@ -176,15 +199,17 @@ class GameNodeEditorHandler(BaseHandler):
             _save_node(node_id, data)
 
         action_details = quest_action.load_actions(data.get('actions', []))
-        self.render("game_node_editor.html", data=data,
+        self.render("game_node_editor.html",
+                    data=data,
                     action_menu=quest_action.package_resources(),
                     action_details=action_details,
                     nodes=list_nodes())
 
     @tornado.web.authenticated
     def post(self, node_id):
-        name = tornado.escape.xhtml_escape(self.current_user)
-        print("User:", name)
+        name_ = tornado.escape.xhtml_escape(self.current_user)
+        traveller = users[name_]
+        print("User:", traveller.name)
 
         args = _load_node(node_id)
         for _key in self.request.arguments.keys():

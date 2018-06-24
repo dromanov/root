@@ -22,14 +22,14 @@
     </div>
     <div class='col-sm-4 col-sm-offset-1'>
       <p>
-        {% for name_ in names %}
-          <form action='/login' method="post">
-          <input type="hidden" name="name" value="{{ name_ }}"/>
-      <p><input type="submit" class='btn btn-primary' value="{{ name_ }}"></p>
-      {% raw xsrf_form_html() %}
+      {% for name_ in names %}
+      <form action='/login' method="post">
+        <input type="hidden" name="name" value="{{ name_ }}"/>
+        <p><input type="submit" class='btn btn-primary' value="{{ name_ }}"></p>
+        {% raw xsrf_form_html() %}
       </form>
       <p>
-        {% end %}
+      {% end %}
     </div>
   </div>
 

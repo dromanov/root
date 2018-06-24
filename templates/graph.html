@@ -59,29 +59,36 @@
 					  }
 					},
 					
-					 {
-					  selector: 'node.easy',
+					{
+					  selector: 'node.organizational',
+					  style: {
+						'background-color': '#11479e'
+					  }
+					},
+					
+					{
+					  selector: 'node.easy_level',
 					  style: {
 						'background-color': '#A8E4A0'
 					  }
 					},
 					
 					{
-					  selector: 'node.medium',
+					  selector: 'node.medium_level',
 					  style: {
 						'background-color': '#FBEC5D'
 					  }
 					},
 					
 					 {
-					  selector: 'node.hard',
+					  selector: 'node.hard_level',
 					  style: {
 						'background-color': '#FD7C6E'
 					  }
 					},
 					
 					{
-					  selector: 'node.fine',
+					  selector: 'node.fine_level',
 					  style: {
 						'background-color': '#DE5D83'
 					  }
@@ -116,15 +123,14 @@
 				],
 				elements: {
 					nodes: [
-					{% for node_id in _nodes %}
-					  { data: { id: '{{ node_id }}' } },
+					{% for node_id, node_class in zip(_nodes, node_classes) %}
+					  { data: { id: '{{ node_id }}' }, classes: '{{ node_class }}' },
 					{% end %}
 
 					],
 					edges: [
-				
-					{% for source_id, target_id in zip(_source, _target) %}
-					  { data: { source: '{{ source_id }}', target: '{{ target_id }}' } },
+					{% for source_id, target_id, edge_class in zip(_source, _target, edge_classes) %}
+					  { data: { source: '{{ source_id }}', target: '{{ target_id }}'}, classes: '{{ edge_class }}' },
 					{% end %}
 		
 					]
