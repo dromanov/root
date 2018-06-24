@@ -68,15 +68,15 @@ class GraphHandler(tornado.web.RequestHandler):
             file = open(name, encoding="utf8")
             for _str in file:
                 for node in nodes:
-                    if _str.find(str(node)) != -1:
-                        if _str.find("node_id") != -1:
+                    if node in _str:
+                        if "node_id" in _str:
                             s = node
-                        if _str.find("the_action") != -1:
+                        if "the_action" in _str:
                             t = node
-                if _str.find("score") != -1:
-                    if _str.find("+") != -1:
+                if "score" in _str:
+                    if "+" in _str:
                         e = 'true'
-                    elif _str.find("-") != -1:
+                    elif "-" in _str:
                         e = 'false'
             source.append(s)
             target.append(t)
