@@ -49,19 +49,14 @@ class LoginHandler(BaseHandler):
 
 class GraphHandler(tornado.web.RequestHandler):
     def get(self):
-        def map_level_to_type(l):
-            level_types = ["easy_level", "medium_level", "hard_level",
-                           "fine_level", "organizational"]
-            if l in level_types:
-                return l
-            return ""
+        level_types = ["easy_level", "medium_level", "hard_level",
+                       "fine_level", "organizational"]
 
         all_nodes = list_nodes()
         nodes = list(all_nodes.keys())
-        levels = [map_level_to_type(all_nodes[node].get("level", ""))
-                  for node in nodes]
-        print(nodes)
-        print(levels)
+        levels = [all_nodes[node].get("level", "") for node in nodes]
+        if any([l not in level_types + [""] for l in levels]):
+            print("Unknown levels: {}".format(set(levels) - set(level_types)))
 
         source = []
         target = []
