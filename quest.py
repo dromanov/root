@@ -229,6 +229,9 @@ class GameNodeEditorHandler(BaseHandler):
             args[_key] = v
         del args["_xsrf"]
 
+        _name = "require_img_uploader"
+        args[_name] = (args.get(_name, False) == 'on')
+
         # Optionally create new location (node).
         new_node_name = args.get("make_new_node", "")
         if new_node_name:

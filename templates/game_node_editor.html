@@ -94,6 +94,24 @@
       </div>
     </div>
 
+    {# Выбор подключения загрузчика файлов. #}
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"
+                   name="require_img_uploader"
+                   {% if data.get("require_img_uploader") == True %}
+                   checked
+                   {% end %} >
+            подключить загрузчик изображений
+            <!-- {{ data.get("require_img_uploader") }} -->
+          </label>
+        </div>
+      </div>
+    </div>
+
+
     {# Список существующих уровней (карта-шпаргалка). #}
     <div class="form-group">
       <label for="id_nodes" class="col-sm-2 control-label">Существующие уровни:</label>
