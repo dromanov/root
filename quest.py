@@ -1,7 +1,9 @@
-'''
+"""
 Handles creating, rendering and editing nodes of the text based game.
-'''
+"""
+
 import os
+import re
 import glob
 import uuid
 import pprint
@@ -53,42 +55,52 @@ class GraphHandler(tornado.web.RequestHandler):
                        "fine_level", "organizational"]
 
         all_nodes = list_nodes()
-        nodes = list(all_nodes.keys())
-        levels = [all_nodes[node].get("level", "") for node in nodes]
+        node_ids = list(all_nodes.keys())
+        levels = [all_nodes[node].get("level", "") for node in node_ids]
         if any([l not in level_types + [""] for l in levels]):
             print("Unknown levels: {}".format(set(levels) - set(level_types)))
 
         source = []
         target = []
-        edges = []
-        for name in glob.glob("stages/game_actions/action_*.dat"):
-            s = ''
-            t = ''
-            e = ''
-            file = open(name, encoding="utf8")
-            for _str in file:
-                for node in nodes:
-                    if node in _str:
-                        if "node_id" in _str:
-                            s = node
-                        if "the_action" in _str:
-                            t = node
-                if "score" in _str:
-                    if "+" in _str:
-                        e = 'true'
-                    elif "-" in _str:
-                        e = 'false'
-            source.append(s)
-            target.append(t)
-            edges.append(e)
-            file.close()
+        edge_class = []
+        for node_id, node in all_nodes.items():
+            actions = quest_action.load_actions(node.get("actions", []))
+            for action_id in actions:
+                def parse_action(action):
+                    """Simple heuristic to get the purpose of the action:
+                        score +=    True
+                        score -=    False
+                        goto(dest)  Transition
+                    """
+                    res = {
+                        'edge': 'unknown',
+                        'targets': [],
+                    }
+                    the_action = action.get("the_action", "")
+                    if re.search(r"me\.score\s*\+", the_action):
+                        res['edge'] = 'true'
+                    elif re.search(r"me\.score\s*-", the_action):
+                        res['edge'] = 'false'
+
+                    for dest in re.findall(r'''me\.goto\s*\(['"](\w+)['"]\)''',
+                                           the_action):
+                        res['targets'].append(dest)
+                    if len(res['targets']) > 1:
+                        print("I need more brains here!")
+                    return res
+
+                the_path = parse_action(quest_action.load_action(action_id))
+                for destination in the_path['targets']:
+                    source.append(node_id)
+                    target.append(destination)
+                    edge_class.append(the_path['edge'])
+
         self.render("graph.html",
-                    _nodes=nodes,
+                    _nodes=node_ids,
                     _source=source,
                     _target=target,
                     node_classes=levels,
-                    edge_classes=edges)
-
+                    edge_classes=edge_class)
 
 
 def list_nodes():

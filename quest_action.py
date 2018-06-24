@@ -45,6 +45,8 @@ def load_action(action_id):
     if os.path.isfile(filename):
         data = eval(open(filename, encoding="utf-8").read())
     data['id'] = action_id
+    # TODO: remove after setting defaults normally (on save).
+    data.setdefault('type', 'simple')
     return data
 
 

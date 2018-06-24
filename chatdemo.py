@@ -186,6 +186,8 @@ def main():
             (r"/a/pointer/new_user", PointerNewUserHandler),
             (r"/a/pointer/drop_user", PointerDropUserHandler),
             (r"/a/pointer/new_position", PointerNewPositionHandler),
+            (r"/images/(.*)", tornado.web.StaticFileHandler,
+                {'path': os.path.join(os.getcwd(), './images')}),
         ]
         + game_routes,
         cookie_secret=uuid.uuid4().hex,
