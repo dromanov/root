@@ -54,15 +54,15 @@ class GraphHandler(tornado.web.RequestHandler):
         nodes = []
         levels = []
         for name in glob.glob( "stages/game_nodes/node_*.dat"):
-           nodes.append(name[len("stages/game_nodes/node_"):-4])
-           file = open(name, encoding="utf8")
-           l = ''
-           for _str in file:
-               for level in level_types:
-                   if _str.find(str(level)) != -1:
-                       l = level
-           levels.append(l) 
-           file.close()
+            nodes.append(name[len("stages/game_nodes/node_"):-4])
+            file = open(name, encoding="utf8")
+            l = ''
+            for _str in file:
+                for level in level_types:
+                    if _str.find(str(level)) != -1:
+                        l = level
+            levels.append(l)
+            file.close()
            
         source = []
         target = []
@@ -75,10 +75,10 @@ class GraphHandler(tornado.web.RequestHandler):
             for _str in file:
                 for node in nodes:
                     if _str.find(str(node)) != -1:
-                         if _str.find("node_id") != -1:
-                             s = node   
-                         if _str.find("the_action") != -1:
-                             t = node 
+                        if _str.find("node_id") != -1:
+                            s = node
+                        if _str.find("the_action") != -1:
+                            t = node
                 if _str.find("score") != -1:             
                     if _str.find("+") != -1:
                         e = 'true'
@@ -87,8 +87,8 @@ class GraphHandler(tornado.web.RequestHandler):
             source.append(s)
             target.append(t)
             edges.append(e)            
-            file.close() 
-               
+            file.close()
+            
         self.render("graph.html", _nodes=nodes, _source=source, _target=target,
                     node_classes=levels, edge_classes=edges)
 
