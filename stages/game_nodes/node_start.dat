@@ -6,6 +6,6 @@
  'make_new_node': '',
  'nik': 'start',
  'nodes': '[sea2] Водоворот 🌪️"',
- 'require_img_uploader': False,
+ 'require_img_uploader': True,
  'task': 'Давным давно, в далёкой-далёкой галактике...',
  'title': 'Начало!!!'}

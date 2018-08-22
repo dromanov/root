@@ -154,7 +154,16 @@ class GameNodeHandler(BaseHandler):
         self.render("game_node.html",
                     data=data,
                     traveller=traveller,
-                    action_details=action_details)
+                    action_details=action_details,
+                    images=traveller.list_saved_images(node_id))
+        
+    @tornado.web.authenticated
+    def post(self, node_id):
+        name = tornado.escape.xhtml_escape(self.current_user)
+        traveller = users[name]
+        fileinfo = self.request.files['filearg'][0]
+        traveller.save_image(node_id, fileinfo)
+        self.redirect(node_id)
 
 
 class GameNodeEditorHandler(BaseHandler):

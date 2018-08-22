@@ -52,6 +52,34 @@
     </div>
   </div>
 
+  {# Загрузчик. #}
+  {% if data.get("require_img_uploader", False) %}
+    <hr/>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="well">
+          {% for image in images %}
+            <img src="{{image}}" />&nbsp;
+          {% end %}
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <form enctype="multipart/form-data"
+              action="/game_node/{{ data.get('nik') }}"
+              method="post"
+              class="form-inline"
+              role="form">
+          <div class="form-group">
+            <label for="file_dialog">Выберите файл:</label>
+            <input type="file" name="filearg" id="file_dialog" />
+          </div>
+          <input type="submit" value="Отправить" />
+          {% raw xsrf_form_html() %}
+        </form>
+      </div>
+    </div>
+  {% end %}
+
   <hr />
 
   <div class="row">
@@ -63,11 +91,6 @@
     </div>
   </div>
 
-   <div class="row">
-    <div class="col-sm-12">
-		<p> На этом этапе также: </p>
-    </div>
-  </div>
 
   <script src="{{ static_url("jquery.min.js") }}"></script>
   <script src="{{ static_url("bootstrap-3.3.7/js/bootstrap.min.js") }}"></script>
