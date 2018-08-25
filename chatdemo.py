@@ -15,13 +15,14 @@
 # under the License.
 
 import logging
+import uuid
+import os.path
+
+from time import time, sleep
+
 import tornado.escape
 import tornado.ioloop
 import tornado.web
-import os.path
-import uuid
-
-from time import time, sleep
 
 from tornado.concurrent import Future
 from tornado import gen
@@ -30,7 +31,8 @@ from tornado.options import define, options, parse_command_line
 from remote_mouse_cursor import PointerNewUserHandler, \
     PointerDropUserHandler, PointerNewPositionHandler, PointerUpdateHandler
 
-from quest import game_routes, LoginHandler, GraphHandler
+from quest import game_routes, LoginHandler, GraphHandler, TeacherMapHandler1,\
+    TeacherMapDataHandler1
 
 
 define("port", default=8888, help="run on the given port", type=int)
@@ -177,9 +179,11 @@ def main():
             (r"/", MainHandler),
             (r"/quest/(.*)", QuestHandler),
             (r"/teacher", TeacherMapHandler),
+            (r"/teacher1", TeacherMapHandler1),
             (r"/login", LoginHandler),
             (r"/graph", GraphHandler),
             (r"/a/teacher", TeacherMapDataHandler),
+            (r"/a/teacher1", TeacherMapDataHandler1),            
             (r"/a/message/new", MessageNewHandler),
             (r"/a/message/updates", MessageUpdatesHandler),
             (r"/a/pointer/updates", PointerUpdateHandler),

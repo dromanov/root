@@ -46,7 +46,19 @@ class LoginHandler(BaseHandler):
             # `BaseHandler::get_current_user` (line 23).
             # [http://www.tornadoweb.org/en/stable/guide/security.html]
             self.set_secure_cookie("pointer_user", name)
-        self.redirect("/game_node/start")
+        self.redirect("/game_node/0_plan")
+
+
+class TeacherMapHandler1(tornado.web.RequestHandler):
+    def get(self):
+        all_nodes = list_nodes()
+        node_ids = list(all_nodes.keys())
+        self.render("teacher_map1.html", users=users, _nodes=node_ids)
+
+
+class TeacherMapDataHandler1(tornado.web.RequestHandler):
+    def get(self):
+        self.write({'users': list(users.items())})
 
 
 class GraphHandler(tornado.web.RequestHandler):
@@ -106,14 +118,14 @@ class GraphHandler(tornado.web.RequestHandler):
 def list_nodes():
     """List all nodes for the drop-down menus, etc."""
     res = {}
-    for name in glob.glob( "stages/game_nodes/node_*.dat"):
+    for name in glob.glob("stages/game_nodes/node_*.dat"):
         node_id = name[len("stages/game_nodes/node_"):-4]
         res[node_id] = _load_node(node_id)
     return res
 
 
 def _load_node(node_id):
-    filename = "stages/game_nodes/node_%s.dat" % node_id
+    filename = f"stages/game_nodes/node_{node_id}.dat"
     data = {}
     if os.path.isfile(filename):
         data = eval(open("stages/game_nodes/node_%s.dat" % node_id,
