@@ -1,0 +1,5 @@
+{'id': '91c21638696f47fab1ef0e18fea60a5d',
+ 'node_id': '4_grape',
+ 'the_action': 'me.goto(\'4_bags\'); me.score -=5; me.story.append("4_grape")',
+ 'title': '7 кг',
+ 'type': 'simple'}

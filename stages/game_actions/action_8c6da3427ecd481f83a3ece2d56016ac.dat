@@ -1,0 +1,5 @@
+{'id': '8c6da3427ecd481f83a3ece2d56016ac',
+ 'node_id': '1_speed',
+ 'the_action': 'me.goto(\'1_time\'); me.score -=5; me.story.append("1_speed")',
+ 'title': '16 км/ч',
+ 'type': 'simple'}

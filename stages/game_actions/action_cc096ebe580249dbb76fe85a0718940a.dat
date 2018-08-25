@@ -1,0 +1,6 @@
+{'id': 'cc096ebe580249dbb76fe85a0718940a',
+ 'node_id': '3_sugar',
+ 'the_action': "me.goto('3_path_1'); me.score -=5; "
+               'me.story.append("3_sugar")',
+ 'title': '800 грамм',
+ 'type': 'simple'}

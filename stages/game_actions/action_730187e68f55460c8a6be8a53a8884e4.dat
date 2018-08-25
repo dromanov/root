@@ -1,0 +1,5 @@
+{'id': '730187e68f55460c8a6be8a53a8884e4',
+ 'node_id': '0_island_3',
+ 'the_action': 'me.goto(\'7_circle\'); me.story.append("0_island_3")',
+ 'title': 'С Набом',
+ 'type': 'simple'}

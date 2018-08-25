@@ -1,0 +1,6 @@
+{'id': 'd4f6bc086d6d40ffa4b48b6a0b266577',
+ 'node_id': '3_path_2',
+ 'the_action': "me.goto('0_island'); me.score -=5; "
+               'me.story.append("3_path_2")',
+ 'title': '12 км',
+ 'type': 'simple'}

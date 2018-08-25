@@ -1,0 +1,5 @@
+{'id': '434bed6d249644b6a9d132fd8595b72d',
+ 'node_id': '0_island_2',
+ 'the_action': 'me.goto(\'7_human\'); me.story.append("0_island_2")',
+ 'title': 'Поговорить с Айртоном о жизни',
+ 'type': 'simple'}

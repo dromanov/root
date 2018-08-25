@@ -1,0 +1,5 @@
+{'id': '33e729cc4a2e4d609f71c305a6ac2700',
+ 'node_id': '0_island_3',
+ 'the_action': 'me.goto(\'7_1001\'); me.story.append("0_island_3")',
+ 'title': 'С Гедеоном',
+ 'type': 'simple'}

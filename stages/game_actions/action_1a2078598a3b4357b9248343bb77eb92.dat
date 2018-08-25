@@ -1,0 +1,5 @@
+{'id': '1a2078598a3b4357b9248343bb77eb92',
+ 'node_id': '4_flood',
+ 'the_action': 'me.goto(\'4_nuts\'); me.score -=5; me.story.append("4_flood")',
+ 'title': '1 \\( \\frac {3} {5} \\) часа',
+ 'type': 'simple'}

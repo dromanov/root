@@ -1,0 +1,5 @@
+{'id': '3085f9dc95c544de8bd75d86e0f34927',
+ 'node_id': '4_nuts',
+ 'the_action': 'me.goto(\'4_basket\'); me.score -=5; me.story.append("4_nuts")',
+ 'title': 'во втором на 1 \\( \\frac {2} {3} \\) кг',
+ 'type': 'simple'}

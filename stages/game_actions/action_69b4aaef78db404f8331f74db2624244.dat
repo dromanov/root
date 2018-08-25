@@ -1,0 +1,6 @@
+{'id': '69b4aaef78db404f8331f74db2624244',
+ 'node_id': '4_animal_2',
+ 'the_action': "me.goto('7_rim'); me.score +=5; "
+               'me.story.append("4_animal_2")',
+ 'title': '\\( 9\\frac {1} {5} \\) и \\( 11\\frac {3} {5} \\)',
+ 'type': 'simple'}

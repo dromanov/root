@@ -1,0 +1,5 @@
+{'id': 'c975df55d62d4fe180bc464ded535bdf',
+ 'node_id': '5_fish',
+ 'the_action': 'me.goto(\'5_speed\'); me.score -=5; me.story.append("5_fish")',
+ 'title': '\\( 3\\frac {1} {3} \\)',
+ 'type': 'simple'}

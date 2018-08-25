@@ -1,0 +1,5 @@
+{'id': 'af4ac61aa89d48eeae9a26f28956e340',
+ 'node_id': '1_time',
+ 'the_action': 'me.goto(\'0_ballon\'); me.score +=5; me.story.append("1_time")',
+ 'title': '3  \\( \\frac {1} {5} \\) часа или 192 минуты',
+ 'type': 'simple'}

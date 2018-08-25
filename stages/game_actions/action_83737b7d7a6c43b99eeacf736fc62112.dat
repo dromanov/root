@@ -1,0 +1,7 @@
+{'id': '83737b7d7a6c43b99eeacf736fc62112',
+ 'make_new_node': '',
+ 'node_id': 'start',
+ 'nodes': '[start] Начало!!!"',
+ 'the_action': 'print(dir())',
+ 'title': 'В атаку!!!',
+ 'type': 'simple'}

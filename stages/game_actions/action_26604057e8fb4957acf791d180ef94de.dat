@@ -1,0 +1,5 @@
+{'id': '26604057e8fb4957acf791d180ef94de',
+ 'node_id': '7_zero',
+ 'the_action': 'me.goto(\'0_crash\'); me.score -=5; me.story.append("7_zero")',
+ 'title': 'левый столбец',
+ 'type': 'simple'}

@@ -1,0 +1,5 @@
+{'id': 'a794118ef76c4660aab35f8f2ef6fa8c',
+ 'node_id': '8_1_4',
+ 'the_action': 'me.goto(\'8_1_4_fine\');me.score -=5; me.story.append("8_1_4")',
+ 'title': '\\( \\frac {7} {15} \\)',
+ 'type': 'simple'}

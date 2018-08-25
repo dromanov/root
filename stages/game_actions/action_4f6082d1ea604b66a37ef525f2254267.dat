@@ -1,0 +1,6 @@
+{'id': '4f6082d1ea604b66a37ef525f2254267',
+ 'node_id': '4_animal_1',
+ 'the_action': "me.goto('4_animal_2'); me.score -=5; "
+               'me.story.append("4_animal_1")',
+ 'title': '2 кг',
+ 'type': 'simple'}

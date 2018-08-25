@@ -1,0 +1,6 @@
+{'id': 'aca4bf2816af4ed6b51ccad4deba1e47',
+ 'node_id': '1_market_3',
+ 'the_action': "me.goto('1_market_2'); me.score +=5; "
+               'me.story.append("1_market_3")',
+ 'title': '480 \\( {м}^{2} \\)',
+ 'type': 'simple'}

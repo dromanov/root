@@ -1,0 +1,6 @@
+{'id': 'f89ed07a9d6b4dd8942ee29f87fbc1e7',
+ 'node_id': '3_path_2',
+ 'the_action': "me.goto('3_sugar'); me.score +=5; "
+               'me.story.append("3_path_2")',
+ 'title': '11\\( \\frac {2} {3} \\)',
+ 'type': 'simple'}

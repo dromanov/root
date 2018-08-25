@@ -1,0 +1,6 @@
+{'id': '863977bf25114cc9bac05bad58949785',
+ 'node_id': '4_square_2',
+ 'the_action': "me.goto('0_island_3'); me.score +=5; "
+               'me.story.append("4_square_2")',
+ 'title': '\\( 3 \\) ведра',
+ 'type': 'simple'}

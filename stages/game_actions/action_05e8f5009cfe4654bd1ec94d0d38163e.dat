@@ -1,0 +1,7 @@
+{'id': '05e8f5009cfe4654bd1ec94d0d38163e',
+ 'make_new_node': '',
+ 'node_id': 'start',
+ 'nodes': '[start] Начало!!!"',
+ 'the_action': "me.goto('forest')",
+ 'title': 'В лес',
+ 'type': 'simple'}

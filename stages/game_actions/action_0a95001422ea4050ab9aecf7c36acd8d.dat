@@ -1,0 +1,5 @@
+{'id': '0a95001422ea4050ab9aecf7c36acd8d',
+ 'node_id': '8_3_4_fine',
+ 'the_action': "me.goto('8_3_5')",
+ 'title': 'переход',
+ 'type': 'simple'}

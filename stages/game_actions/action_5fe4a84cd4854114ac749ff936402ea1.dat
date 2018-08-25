@@ -1,0 +1,6 @@
+{'id': '5fe4a84cd4854114ac749ff936402ea1',
+ 'node_id': '7_circle',
+ 'the_action': "me.goto('4_proportion_1'); me.score +=5; "
+               'me.story.append("7_circle")',
+ 'title': '\\( \\frac {3} {16} \\)',
+ 'type': 'simple'}

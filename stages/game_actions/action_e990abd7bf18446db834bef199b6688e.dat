@@ -1,0 +1,5 @@
+{'id': 'e990abd7bf18446db834bef199b6688e',
+ 'node_id': '0_ballon_1',
+ 'the_action': 'me.goto(\'7_rus\'); me.story.append("0_ballon_1")',
+ 'title': 'Поговорить с Пенкрофтом',
+ 'type': 'simple'}

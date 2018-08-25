@@ -1,0 +1,5 @@
+{'id': '5c14047167ad483ea88a6de65b88dbfd',
+ 'node_id': '0_ballon_1',
+ 'the_action': 'me.goto(\'7_duck\'); me.story.append("0_ballon_1")',
+ 'title': 'Поговорить с Гербертом',
+ 'type': 'simple'}

@@ -1,0 +1,6 @@
+{'id': 'd3f674df1bbf4f029fa66699a18a4f1b',
+ 'node_id': '4_proportion_4',
+ 'the_action': "me.goto('7_budget'); me.score +=5; "
+               'me.story.append("4_proportion_4")',
+ 'title': '\\( \\frac {1} {10} \\)',
+ 'type': 'simple'}

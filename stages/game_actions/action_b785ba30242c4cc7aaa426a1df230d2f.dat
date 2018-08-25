@@ -1,0 +1,5 @@
+{'id': 'b785ba30242c4cc7aaa426a1df230d2f',
+ 'node_id': '7_king',
+ 'the_action': 'me.goto(\'4_grape\'); me.score +=5; me.story.append("7_king")',
+ 'title': '30 – здоровья, 108 – счастья, 132 - подарков',
+ 'type': 'simple'}

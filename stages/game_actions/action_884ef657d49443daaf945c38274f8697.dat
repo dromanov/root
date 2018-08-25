@@ -1,0 +1,5 @@
+{'id': '884ef657d49443daaf945c38274f8697',
+ 'node_id': '8_3_4',
+ 'the_action': 'me.goto(\'8_3_5\'); me.score +=5; me.story.append("8_3_4")',
+ 'title': '39 см',
+ 'type': 'simple'}

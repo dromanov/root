@@ -1,0 +1,6 @@
+{'id': '55a04ed3106b4490b5eef49757d1dc9a',
+ 'node_id': '4_jar',
+ 'the_action': "me.goto('4_square_1'); me.score +=5; "
+               'me.story.append("4_jar")',
+ 'title': '150 грамм',
+ 'type': 'simple'}

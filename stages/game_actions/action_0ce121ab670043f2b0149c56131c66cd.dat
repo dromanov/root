@@ -1,0 +1,6 @@
+{'id': '0ce121ab670043f2b0149c56131c66cd',
+ 'node_id': '4_path_2',
+ 'the_action': "me.goto('0_island_1'); me.score -=5; "
+               'me.story.append("4_path_2")',
+ 'title': '10 \\( \\frac {3} {5} \\)',
+ 'type': 'simple'}

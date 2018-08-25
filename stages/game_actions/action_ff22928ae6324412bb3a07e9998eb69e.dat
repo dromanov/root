@@ -1,0 +1,5 @@
+{'id': 'ff22928ae6324412bb3a07e9998eb69e',
+ 'node_id': 'start',
+ 'the_action': "me.goto('sea2')",
+ 'title': 'В море',
+ 'type': 'simple'}

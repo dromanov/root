@@ -1,0 +1,5 @@
+{'id': '78510a37740a489b9dc00d9fc67eb2f5',
+ 'node_id': '4_path_4',
+ 'the_action': 'me.goto(\'4_jar\'); me.score -=5; me.story.append("4_path_4")',
+ 'title': '1 час или 60 минут',
+ 'type': 'simple'}

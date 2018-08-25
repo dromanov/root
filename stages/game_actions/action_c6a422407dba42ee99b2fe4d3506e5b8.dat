@@ -1,0 +1,5 @@
+{'id': 'c6a422407dba42ee99b2fe4d3506e5b8',
+ 'node_id': '0_plan',
+ 'the_action': 'me.goto(\'1_market_4\'); me.story.append("0_plan")',
+ 'title': 'Пойду на рынок',
+ 'type': 'simple'}

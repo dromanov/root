@@ -1,0 +1,5 @@
+{'id': 'e9df856affd04e8caabcf5133558d24a',
+ 'node_id': '0_crash',
+ 'the_action': 'me.goto(\'3_path_1\'); me.story.append("0_crash")',
+ 'title': 'Попытаться определить местоположение',
+ 'type': 'simple'}

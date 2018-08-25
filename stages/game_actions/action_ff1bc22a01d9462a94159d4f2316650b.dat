@@ -1,0 +1,6 @@
+{'id': 'ff1bc22a01d9462a94159d4f2316650b',
+ 'node_id': '8_3_4',
+ 'the_action': "me.goto('8_3_4_fine'); me.score -=5; "
+               'me.story.append("8_3_4")',
+ 'title': '38 см',
+ 'type': 'simple'}

@@ -1,0 +1,6 @@
+{'id': '591a917d78394964afdcd6a88146daca',
+ 'node_id': '4_path_1',
+ 'the_action': "me.goto('4_proportion_3');  me.score +=5; "
+               'me.story.append("4_path_1")',
+ 'title': '\\( 9\\frac {1} {14} \\)',
+ 'type': 'simple'}

@@ -1,0 +1,6 @@
+{'id': '6d19490e57dd401e91257ce1c8f83cba',
+ 'node_id': '7_sleep',
+ 'the_action': "me.goto('0_island'); me.score -=5; "
+               'me.story.append("7_sleep")',
+ 'title': '25 часов',
+ 'type': 'simple'}

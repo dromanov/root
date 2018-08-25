@@ -1,0 +1,5 @@
+{'id': '857758fb13eb40dc97861c640d720f0b',
+ 'node_id': '0_ballon',
+ 'the_action': 'me.goto(\'2_vitaminC\'); me.story.append("0_ballon")',
+ 'title': 'Провести медицинский осмотр команды',
+ 'type': 'simple'}

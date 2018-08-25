@@ -1,0 +1,22 @@
+{'actions': ['f1ceec5335404e2d83c7430c98f0650a',
+             'd8ecda32a0b241e7bdd28f34de06dc2a'],
+ 'level': 'easy_level',
+ 'make_new_node': '',
+ 'nik': '2_jornal',
+ 'nodes': '[0_airton] Призыв о помощи!"',
+ 'task': 'Время заполнять бортовой журнал. \r\n'
+         '<p>Запишите показания приборов, показывающих силу ветра, норму '
+         'влажности и длину, на которую сократились запасы веревки:\r\n'
+         '<table>\r\n'
+         '<tr>\r\n'
+         '<td>\r\n'
+         '<img src="/images/2_jornal_1.png" width="200" alt="упс">\r\n'
+         '</td>\r\n'
+         '<td>\r\n'
+         '<img src="/images/2_jornal_2.jpg" width="200" alt="упс">\r\n'
+         '</td>\r\n'
+         '<td>\r\n'
+         '<img src="/images/2_jornal_3.jpg" width="700" alt="упс">\r\n'
+         '</td></tr>\r\n'
+         '</table>',
+ 'title': 'Ежедневные заботы!'}

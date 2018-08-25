@@ -1,0 +1,5 @@
+{'id': '0652d621d99c45c183735ba164ecf1ea',
+ 'node_id': '0_ballon',
+ 'the_action': 'me.goto(\'2_jornal\'); me.story.append("0_ballon")',
+ 'title': 'Заполнить бортовой журнал',
+ 'type': 'simple'}

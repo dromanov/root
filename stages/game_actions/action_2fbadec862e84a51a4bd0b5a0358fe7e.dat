@@ -1,0 +1,6 @@
+{'id': '2fbadec862e84a51a4bd0b5a0358fe7e',
+ 'node_id': '2_vitaminC',
+ 'the_action': "me.goto('0_ballon_1'); me.score -=5; "
+               'me.story.append("2_vitaminC")',
+ 'title': 'Ананас, яблоко, вишня',
+ 'type': 'simple'}

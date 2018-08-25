@@ -1,0 +1,5 @@
+{'id': 'd6b0cb2171744e3889ccd092c693cfad',
+ 'node_id': '3_sleep',
+ 'the_action': "me.goto('3_supplies'); me.score(+5)",
+ 'title': 'правильный переход',
+ 'type': 'simple'}

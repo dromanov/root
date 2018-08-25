@@ -1,0 +1,5 @@
+{'id': '49553642ead64f20ab05e1881b2f58b7',
+ 'node_id': '8_3_3',
+ 'the_action': 'me.goto(\'8_3_4\'); me.score +=5; me.story.append("8_3_3")',
+ 'title': 'Золотой',
+ 'type': 'simple'}

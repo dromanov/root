@@ -1,0 +1,6 @@
+{'id': 'f1a1e90485a04e25a5c297083da806e5',
+ 'node_id': '4_animal_1',
+ 'the_action': "me.goto('4_animal_2'); me.score +=5; "
+               'me.story.append("4_animal_1")',
+ 'title': '\\(1 \\frac {2} {3} \\)',
+ 'type': 'simple'}

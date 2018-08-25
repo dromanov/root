@@ -1,0 +1,7 @@
+{'id': 'bf02216d4a564a6db44a996f906d029b',
+ 'node_id': '8_3_1',
+ 'the_action': "me.goto('8_3_1_fine'); me.score -=5; "
+               'me.story.append("8_3_1")',
+ 'title': 'Итого: \\( 152\\frac {3} {10} \\) <p> Сдача: \\( 48\\frac {7} {10} '
+          '\\)',
+ 'type': 'simple'}

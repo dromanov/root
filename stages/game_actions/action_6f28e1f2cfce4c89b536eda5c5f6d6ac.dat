@@ -1,0 +1,6 @@
+{'id': '6f28e1f2cfce4c89b536eda5c5f6d6ac',
+ 'node_id': '7_budget',
+ 'the_action': "me.goto('0_rescue'); me.score -=5; "
+               'me.story.append("7_budget")',
+ 'title': 'у Франции больше',
+ 'type': 'simple'}

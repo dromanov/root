@@ -1,0 +1,5 @@
+{'id': '91fb415b573642f9b06e62fd556872b9',
+ 'node_id': '0_island_2',
+ 'the_action': 'me.goto(\'4_map\'); me.story.append("0_island_2")',
+ 'title': 'Расспросить Айртона об острове',
+ 'type': 'simple'}

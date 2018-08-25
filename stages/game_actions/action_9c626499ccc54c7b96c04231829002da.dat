@@ -1,0 +1,5 @@
+{'id': '9c626499ccc54c7b96c04231829002da',
+ 'node_id': '0_island_3',
+ 'the_action': 'me.goto(\'7_king\'); me.story.append("0_island_3")',
+ 'title': 'С Сайрусом',
+ 'type': 'simple'}

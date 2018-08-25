@@ -1,0 +1,5 @@
+{'id': 'f3c3760f6d964bc68686c3cd502feaae',
+ 'node_id': '7_birds',
+ 'the_action': "me.goto('0_island')",
+ 'title': 'переход',
+ 'type': 'simple'}

@@ -1,0 +1,6 @@
+{'id': 'b47343a79b1a4dfd88b228e8cecbc7d5',
+ 'node_id': '2_vitaminC',
+ 'the_action': "me.goto('0_ballon_1'); me.score -=5; "
+               'me.story.append("2_vitaminC")',
+ 'title': 'Смородина черная, лимон, ананас',
+ 'type': 'simple'}

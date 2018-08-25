@@ -1,0 +1,6 @@
+{'id': 'bf21ef5c970a4024a433b5fb235c72bf',
+ 'node_id': '8_3_3',
+ 'the_action': "me.goto('8_3_3_fine'); me.score -=5; "
+               'me.story.append("8_3_3")',
+ 'title': 'Свинцовый',
+ 'type': 'simple'}

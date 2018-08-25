@@ -1,0 +1,8 @@
+{'actions': ['1b50bab9a8774fe19940631aea2ab9b3'],
+ 'level': 'fine_level',
+ 'make_new_node': '',
+ 'nik': '8_1_5_fine',
+ 'nodes': '[0_airton] Призыв о помощи!"',
+ 'task': 'Какая часть круга закрашена?\r\n'
+         '<p><img src="/images/8_1_5_fine.jpg" alt="упс"></p>',
+ 'title': 'Промах!'}

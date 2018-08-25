@@ -1,0 +1,10 @@
+{'actions': ['b8baf10149fe4a7fa8c527aebad4c0dd',
+             '954772fd065c48cab8636cfa4aaa9045',
+             '59a41555f6c149f9ba5a780e180706b5'],
+ 'level': 'fine_level',
+ 'make_new_node': '',
+ 'nik': '8_1_5',
+ 'nodes': '[0_airton] Призыв о помощи!"',
+ 'task': 'Какая часть прямоугольника закрашена?\r\n'
+         '<p><img src="/images/8_1_5.jpg" width="200" alt="упс"></p>',
+ 'title': 'Уровень 5'}

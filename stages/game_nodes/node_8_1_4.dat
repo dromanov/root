@@ -1,0 +1,10 @@
+{'actions': ['427582e8f2ea4149a5c82c5ecb906c59',
+             '5daebe4ea54a4773b3a914d0a047e9c6',
+             'a794118ef76c4660aab35f8f2ef6fa8c'],
+ 'level': 'fine_level',
+ 'make_new_node': '',
+ 'nik': '8_1_4',
+ 'nodes': '[0_airton] Призыв о помощи!"',
+ 'task': 'Вычислите \\( \\frac {1} {15} + \\frac {2} {15} + \\frac {7} {15} - '
+         '\\frac {4} {15} \\).',
+ 'title': 'Уровень 4'}

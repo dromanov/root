@@ -1,0 +1,6 @@
+{'id': '05459a9bb8914c46b804054fd752b6a0',
+ 'node_id': '4_path_3',
+ 'the_action': "me.goto('0_island_1'); me.score -=5; "
+               'me.story.append("4_path_3")',
+ 'title': '4 \\( \\frac {1} {5} \\) часа, 252 минут, 4 часа 12 минут',
+ 'type': 'simple'}

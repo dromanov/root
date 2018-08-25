@@ -1,0 +1,5 @@
+{'id': '954772fd065c48cab8636cfa4aaa9045',
+ 'node_id': '8_1_5',
+ 'the_action': 'me.goto(\'0_ballon\'); me.score +=5; me.story.append("8_1_5")',
+ 'title': '\\( \\frac {3} {7} \\)',
+ 'type': 'simple'}

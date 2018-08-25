@@ -1,0 +1,5 @@
+{'id': 'f78cec59f7fb4dce9bdd2863765ce4c7',
+ 'node_id': 'stage11',
+ 'the_action': "me.goto('sea'), me.score(+1)",
+ 'title': 'йцу',
+ 'type': 'simple'}

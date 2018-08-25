@@ -1,0 +1,6 @@
+{'id': '33b02efd16674ed9a73a65b0e958bb56',
+ 'node_id': '1_goal',
+ 'the_action': "me.goto('1_market_3'); me.score -=5; "
+               'me.story.append("1_goal")',
+ 'title': 'разрезать на 40 частей',
+ 'type': 'simple'}

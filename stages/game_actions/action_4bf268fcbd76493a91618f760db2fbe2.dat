@@ -1,0 +1,5 @@
+{'id': '4bf268fcbd76493a91618f760db2fbe2',
+ 'node_id': '0_plan',
+ 'the_action': 'me.goto(\'1_path\'); me.story.append("0_plan")',
+ 'title': 'Буду планировать маршрут',
+ 'type': 'simple'}

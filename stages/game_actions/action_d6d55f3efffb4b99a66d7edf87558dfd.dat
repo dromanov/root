@@ -1,0 +1,5 @@
+{'id': 'd6d55f3efffb4b99a66d7edf87558dfd',
+ 'node_id': '1_path',
+ 'the_action': 'me.goto(\'1_speed\'); me.score +=5; me.story.append("1_path")',
+ 'title': '\\( 2\\frac {1} {3} \\)',
+ 'type': 'simple'}

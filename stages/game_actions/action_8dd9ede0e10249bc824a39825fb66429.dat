@@ -1,0 +1,6 @@
+{'id': '8dd9ede0e10249bc824a39825fb66429',
+ 'node_id': '4_jar',
+ 'the_action': "me.goto('0_island_3'); me.score -=5; "
+               'me.story.append("4_jar")',
+ 'title': '165 грамм',
+ 'type': 'simple'}

@@ -1,0 +1,5 @@
+{'id': '05c2ee3240d84e2e95d9d4d2a694859a',
+ 'node_id': '4_rock',
+ 'the_action': 'me.goto(\'4_nuts\'); me.score -=5; me.story.append("4_rock")',
+ 'title': '44 \\( \\frac {2} {5} \\) метра',
+ 'type': 'simple'}

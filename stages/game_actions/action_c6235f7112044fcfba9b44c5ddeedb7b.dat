@@ -1,0 +1,6 @@
+{'id': 'c6235f7112044fcfba9b44c5ddeedb7b',
+ 'node_id': '6_treasure',
+ 'the_action': "me.goto('6_path'); me.score -=5; "
+               'me.story.append("6_treasure")',
+ 'title': '280 монет',
+ 'type': 'simple'}

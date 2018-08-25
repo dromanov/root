@@ -1,0 +1,6 @@
+{'id': '5e4698c1b3e54a6fa3ffb799e35751ac',
+ 'node_id': '3_path_1',
+ 'the_action': "me.goto('3_sleep'); me.score +=5; "
+               'me.story.append("3_path_1")',
+ 'title': 'весь путь 180 морских миль, оставалось пролететь 140 морских миль',
+ 'type': 'simple'}

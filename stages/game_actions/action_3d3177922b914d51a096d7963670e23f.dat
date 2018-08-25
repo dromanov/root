@@ -1,0 +1,6 @@
+{'id': '3d3177922b914d51a096d7963670e23f',
+ 'node_id': '2_record',
+ 'the_action': "me.goto('0_ballon_1'); me.score -=5; "
+               'me.story.append("2_record")',
+ 'title': 'C',
+ 'type': 'simple'}

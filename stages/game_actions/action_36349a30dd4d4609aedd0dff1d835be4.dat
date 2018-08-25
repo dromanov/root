@@ -1,0 +1,6 @@
+{'id': '36349a30dd4d4609aedd0dff1d835be4',
+ 'node_id': '2_vitaminC',
+ 'the_action': "me.goto('2_record'); me.score +=5; "
+               'me.story.append("2_vitaminC")',
+ 'title': 'Лимон, малина, смородина черная',
+ 'type': 'simple'}

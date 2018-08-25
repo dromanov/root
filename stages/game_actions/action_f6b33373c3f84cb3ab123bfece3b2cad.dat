@@ -1,0 +1,5 @@
+{'id': 'f6b33373c3f84cb3ab123bfece3b2cad',
+ 'node_id': '0_plan',
+ 'the_action': 'me.goto(\'1_goal\'); me.story.append("0_plan")',
+ 'title': 'Придумаю, как поделим добычу (если найдем ее)',
+ 'type': 'simple'}

@@ -1,0 +1,6 @@
+{'id': 'a6063d92db6a46bc8badd63c75864493',
+ 'node_id': '4_proportion_3',
+ 'the_action': "me.goto('4_nuts'); me.score +=5; "
+               'me.story.append("4_proportion_3")',
+ 'title': '10 грамм',
+ 'type': 'simple'}

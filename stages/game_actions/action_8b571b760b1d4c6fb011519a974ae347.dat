@@ -1,0 +1,5 @@
+{'id': '8b571b760b1d4c6fb011519a974ae347',
+ 'node_id': '0_rescue',
+ 'the_action': 'me.goto(\'6_treasure\'); me.story.append("0_rescue")',
+ 'title': 'Поделить клад',
+ 'type': 'simple'}

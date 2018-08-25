@@ -1,0 +1,5 @@
+{'id': '22a86303bc224e30b82f8bfdf274687f',
+ 'node_id': '0_island',
+ 'the_action': 'me.goto(\'4_path_2\'); me.story.append("0_island")',
+ 'title': 'Отправиться исследовать остров (повернуть налево)',
+ 'type': 'simple'}

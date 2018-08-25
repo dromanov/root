@@ -1,0 +1,5 @@
+{'id': '0508b7b5a78b4014a3d2d3b8f940467f',
+ 'node_id': '7_rim',
+ 'the_action': "me.goto('0_rescue')",
+ 'title': 'переход',
+ 'type': 'simple'}

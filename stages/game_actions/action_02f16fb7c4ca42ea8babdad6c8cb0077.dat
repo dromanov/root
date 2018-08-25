@@ -1,0 +1,5 @@
+{'id': '02f16fb7c4ca42ea8babdad6c8cb0077',
+ 'node_id': '7_king',
+ 'the_action': 'me.goto(\'4_bags\'); me.score -=5; me.story.append("7_king")',
+ 'title': '36 – здоровья, 102 – счастья, 132 - подарков)',
+ 'type': 'simple'}

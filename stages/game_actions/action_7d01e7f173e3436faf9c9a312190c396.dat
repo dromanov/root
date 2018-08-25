@@ -1,0 +1,5 @@
+{'id': '7d01e7f173e3436faf9c9a312190c396',
+ 'node_id': '3_sleep',
+ 'the_action': "me.goto('0_island'); me.score(-5)",
+ 'title': 'неправильный переход',
+ 'type': 'simple'}

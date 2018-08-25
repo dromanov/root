@@ -1,0 +1,5 @@
+{'id': '82b2856436b64220ae3911f63cb77ee3',
+ 'node_id': '7_1001',
+ 'the_action': 'me.goto(\'4_bags\'); me.score -=5; me.story.append("7_1001")',
+ 'title': '156 яблок',
+ 'type': 'simple'}

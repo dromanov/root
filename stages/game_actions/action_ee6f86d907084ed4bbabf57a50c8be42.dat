@@ -1,0 +1,8 @@
+{'id': 'ee6f86d907084ed4bbabf57a50c8be42',
+ 'node_id': '3_supplies',
+ 'the_action': "me.goto('7_birds'); me.score +=5; "
+               'me.story.append("3_supplies")',
+ 'title': '\\( \\frac {1} {12} \\) центнера мяса<p> \\( \\frac {1} {18} \\) '
+          'километра веревки <p> \\( \\frac {1} {9} \\) киллограмма соли<p> '
+          '\\( \\frac {1} {4} \\) киллограма чая',
+ 'type': 'simple'}

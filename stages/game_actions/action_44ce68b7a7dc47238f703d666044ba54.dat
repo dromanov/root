@@ -1,0 +1,5 @@
+{'id': '44ce68b7a7dc47238f703d666044ba54',
+ 'node_id': '0_ballon_1',
+ 'the_action': 'me.goto(\'7_zero\'); me.story.append("0_ballon_1")',
+ 'title': 'Поиграть с Набом и Гедеоном',
+ 'type': 'simple'}

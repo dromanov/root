@@ -1,0 +1,7 @@
+{'id': 'eb9eb6a510a047c8b46277485eb96bc9',
+ 'node_id': '1_market_2',
+ 'the_action': "me.goto('0_ballon'); me.score -=5; "
+               'me.story.append("1_market_2")',
+ 'title': '\\( \\frac {3} {4} \\) за чай, \\( \\frac {3} {7} \\)  за соль и '
+          '\\( \\frac {19} {60} \\) за сахар',
+ 'type': 'simple'}

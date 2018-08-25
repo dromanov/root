@@ -1,0 +1,6 @@
+{'id': 'b09f96f94aaf46319a2c659facb16c18',
+ 'node_id': 'forest',
+ 'the_action': 'me.story.append("Был в лесу"); me.goto(\'start\'); '
+               'me.score(-1)',
+ 'title': 'Назад в начало',
+ 'type': 'simple'}

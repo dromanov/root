@@ -1,0 +1,6 @@
+{'id': 'cddb5367ad8142f9851451f4d34996ab',
+ 'node_id': '5_month',
+ 'the_action': "me.goto('0_island_2'); me.score -=5; "
+               'me.story.append("5_month")',
+ 'title': '\\( \\frac {29} {365} \\)',
+ 'type': 'simple'}

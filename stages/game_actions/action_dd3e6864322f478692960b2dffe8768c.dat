@@ -1,0 +1,5 @@
+{'id': 'dd3e6864322f478692960b2dffe8768c',
+ 'node_id': '0_ballon',
+ 'the_action': 'me.goto(\'2_record\'); me.story.append("0_ballon")',
+ 'title': 'Провести учет провизии',
+ 'type': 'simple'}

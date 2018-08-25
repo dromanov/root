@@ -1,0 +1,5 @@
+{'id': '585db358827544acb57cee25399f7c18',
+ 'node_id': '0_crash',
+ 'the_action': 'me.goto(\'3_path_2\'); me.story.append("0_crash")',
+ 'title': 'Попробовать построить маршрут',
+ 'type': 'simple'}

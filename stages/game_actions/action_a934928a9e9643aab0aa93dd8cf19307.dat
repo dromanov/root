@@ -1,0 +1,5 @@
+{'id': 'a934928a9e9643aab0aa93dd8cf19307',
+ 'node_id': '7_rus',
+ 'the_action': "me.goto('7_zero'); me.score(-5)",
+ 'title': 'неправильный переход',
+ 'type': 'simple'}

@@ -1,0 +1,6 @@
+{'id': '223fc7f0500e4b3b882d710872f82e72',
+ 'node_id': '7_circle',
+ 'the_action': "me.goto('4_grape'); me.score -=5; "
+               'me.story.append("7_circle")',
+ 'title': '\\( \\frac {3} {10} \\)',
+ 'type': 'simple'}

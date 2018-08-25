@@ -1,0 +1,5 @@
+{'id': 'a4a3c73386634dda82516819e44d3172',
+ 'node_id': '0_crash',
+ 'the_action': 'me.goto(\'3_sugar\'); me.story.append("0_crash")',
+ 'title': 'Проверить остатки припасов',
+ 'type': 'simple'}

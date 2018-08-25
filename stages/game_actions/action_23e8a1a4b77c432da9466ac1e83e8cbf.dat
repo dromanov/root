@@ -1,0 +1,6 @@
+{'id': '23e8a1a4b77c432da9466ac1e83e8cbf',
+ 'node_id': '4_proportion_4',
+ 'the_action': "me.goto('7_rim'); me.score -=5; "
+               'me.story.append("4_proportion_4")',
+ 'title': '\\( \\frac {3} {10} \\)',
+ 'type': 'simple'}

@@ -1,0 +1,8 @@
+{'id': '853e1910b3584864a94d0784e253a8c2',
+ 'node_id': '1_market_4',
+ 'the_action': "me.goto('1_speed'); me.score +=5; "
+               'me.story.append("1_market_4")',
+ 'title': '1 см = \\( \\frac {1} {100} \\) м <p> 2 дм = \\( \\frac {1} {5} \\) '
+          'м <p> 15 кг = \\( \\frac {15} {1000} \\) т  <p> 120 г = \\( \\frac '
+          '{3} {25000} \\) т',
+ 'type': 'simple'}

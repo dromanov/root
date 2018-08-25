@@ -1,0 +1,5 @@
+{'id': 'c677ec9648ce4eb8a8d4a849d638f698',
+ 'node_id': '0_island_1',
+ 'the_action': 'me.goto(\'4_path_1\'); me.story.append("0_island_1")',
+ 'title': 'Провести анализ местности',
+ 'type': 'simple'}

@@ -1,0 +1,6 @@
+{'id': 'e2c64bc2565b40b9a585368fa7dce0de',
+ 'node_id': '4_path_4',
+ 'the_action': "me.goto('4_square_2');me.score +=5; "
+               'me.story.append("4_path_4")',
+ 'title': '\\( \\frac {19} {20} \\) часа или 57 минут',
+ 'type': 'simple'}

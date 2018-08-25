@@ -1,0 +1,5 @@
+{'id': '7a27865768e24722aca409966ebe286f',
+ 'node_id': '0_island_1',
+ 'the_action': 'me.goto(\'4_rock\'); me.story.append("0_island_1")',
+ 'title': 'Исследовать пещеру',
+ 'type': 'simple'}

@@ -1,0 +1,5 @@
+{'id': '85372f0293664f94a18e80772e5451f5',
+ 'node_id': '7_duck',
+ 'the_action': 'me.goto(\'7_zero\'); me.score -=5; me.story.append("7_duck")',
+ 'title': 'через 4 дня',
+ 'type': 'simple'}

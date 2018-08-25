@@ -1,0 +1,5 @@
+{'id': 'a13f7dbd41ef4e03a7decad4bc18a0e3',
+ 'node_id': '1_time',
+ 'the_action': 'me.goto(\'8_1_1\'); me.score -=5; me.story.append("1_time")',
+ 'title': '3 \\( \\frac {1} {5} \\) часа или 190 минут',
+ 'type': 'simple'}

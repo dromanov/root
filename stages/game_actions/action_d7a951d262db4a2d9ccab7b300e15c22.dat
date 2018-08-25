@@ -1,0 +1,6 @@
+{'id': 'd7a951d262db4a2d9ccab7b300e15c22',
+ 'node_id': '4_bags',
+ 'the_action': "me.goto('4_animal_1'); me.score +=5; "
+               'me.story.append("4_bags")',
+ 'title': '22 мешка',
+ 'type': 'simple'}

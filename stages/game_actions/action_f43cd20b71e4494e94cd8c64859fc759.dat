@@ -1,0 +1,5 @@
+{'id': 'f43cd20b71e4494e94cd8c64859fc759',
+ 'node_id': '6_path',
+ 'the_action': 'me.goto(\'6_code\'); me.score -=5; me.story.append("6_path")',
+ 'title': 'в \\( 4 \\) раза',
+ 'type': 'simple'}

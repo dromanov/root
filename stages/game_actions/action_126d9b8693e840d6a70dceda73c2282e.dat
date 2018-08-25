@@ -1,0 +1,5 @@
+{'id': '126d9b8693e840d6a70dceda73c2282e',
+ 'node_id': '0_airton',
+ 'the_action': 'me.goto(\'5_fish\'); me.story.append("0_airton")',
+ 'title': 'Рыбачить',
+ 'type': 'simple'}

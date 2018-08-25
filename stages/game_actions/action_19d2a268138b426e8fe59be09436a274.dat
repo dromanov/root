@@ -1,0 +1,5 @@
+{'id': '19d2a268138b426e8fe59be09436a274',
+ 'node_id': '0_island_1',
+ 'the_action': 'me.goto(\'4_flood\'); me.story.append("0_island_1")',
+ 'title': 'Приспособить пещеру для жизни',
+ 'type': 'simple'}

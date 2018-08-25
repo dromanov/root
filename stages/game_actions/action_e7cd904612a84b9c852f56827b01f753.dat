@@ -1,0 +1,6 @@
+{'id': 'e7cd904612a84b9c852f56827b01f753',
+ 'node_id': '4_square_1',
+ 'the_action': "me.goto('4_square_2'); me.score +=5; "
+               'me.story.append("4_square_1")',
+ 'title': '\\( \\frac {20} {21} \\)',
+ 'type': 'simple'}

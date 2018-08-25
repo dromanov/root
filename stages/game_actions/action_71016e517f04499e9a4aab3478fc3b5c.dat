@@ -1,0 +1,5 @@
+{'id': '71016e517f04499e9a4aab3478fc3b5c',
+ 'node_id': '4_basket',
+ 'the_action': "me.goto('0_airton')",
+ 'title': 'переход',
+ 'type': 'simple'}
