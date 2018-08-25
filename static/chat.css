@@ -21,20 +21,31 @@ body {
 
 body,
 input {
-  font-family: sans-serif;
-  font-size: 10pt;
+  /*font-family: "Arial", sans-serif;*/
+  font-size: 15pt;
   color: black;
 }
 
 table {
-  border-collapse: collapse;
-  border: 0;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 10pt;
+	text-align: left;
+	border-collapse: separate;
+	border-spacing: 5px;
+	background: #ECE9E0;
+	color: #656665;
+	border: 16px solid #ECE9E0;
+	border-radius: 20px;
+}
+th {
+	font-size: 18px;
+	padding: 10px;
+}
+td {
+	background: #ffffff;
+	padding: 10px;
 }
 
-td {
-  border: 0;
-  padding: 0;
-}
 
 #body {
   position: absolute;
@@ -99,4 +110,10 @@ td {
 
 .button2000:hover::after {
     opacity: 1;
+}
+
+/* Between-form-element-like padding taken from inspection of
+   the bootstrap 3.3.2 generated page. */
+.dima-mt-f {
+  margin-top: 15px;
 }
