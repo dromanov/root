@@ -21,6 +21,13 @@
     </div>
   </div>
 
+  {# Функция для генерации иконки из набора бутстрапа.  #}
+  {%
+    set glyph = lambda name, add_space=True: \
+      '<span class="glyphicon glyphicon-%s" aria-hidden="true"></span> %s ' % \
+        (name, add_space and "&nbsp;" or "")
+  %}
+
   <form method="POST" class="form-horizontal">
     <div class="form-group">
       <label for="id_nik" class="col-sm-2 control-label">Код уровня: </label>
@@ -34,6 +41,7 @@
       </div>
     </div>
 
+    {# Короткое название локации. #}
     <div class="form-group">
       <label for="id_title" class="col-sm-2 control-label">Заголовок: </label>
       <div class="col-sm-10">
@@ -47,6 +55,32 @@
       </div>
     </div>
 
+    {# Выбор уровня сложности. #}
+    {# Функция для генерации активационного флага для выпадающего списка. #}
+    {# `61` is the line number to make the function name unique.          #}
+    {%
+      set _select_62 = lambda v: \
+        'value=%s %s' % (v, "" if v != data.get('level', '') else "selected")
+    %}
+    <div class="form-group">
+      <label for="level_type" class="col-sm-2 control-label">Выберите тип локации:</label>
+        <div class="col-sm-4">
+        <div class="input-group">
+          <select class="form-control"
+                  name="level"
+                  id="level_type">
+            <option disabled>Выберите тип локации</option>
+            <option {{ _select_62("organizational") }}> Организационный этап </option>
+            <option {{ _select_62("easy_level")   }}> Легкий уровень </option>
+            <option {{ _select_62("medium_level") }}> Средний уровень </option>
+            <option {{ _select_62("hard_level")   }}> Сложный уровень </option>
+            <option {{ _select_62("fine_level")   }}> Штрафной уровень </option>
+          </select>
+        </div>
+      </div>
+	 </div>
+
+    {# Описание задания (html). #}
     <div class="form-group">
       <label for="id_task" class="col-sm-2 control-label">Описание задания:</label>
       <div class="col-sm-10">
@@ -60,6 +94,65 @@
       </div>
     </div>
 
+    {# Выбор подключения загрузчика файлов. #}
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"
+                   name="require_img_uploader"
+                   {% if data.get("require_img_uploader") == True %}
+                   checked
+                   {% end %} >
+            подключить загрузчик изображений
+            <!-- {{ data.get("require_img_uploader") }} -->
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {# Список существующих уровней (карта-шпаргалка). #}
+    <div class="form-group">
+      <label for="id_nodes" class="col-sm-2 control-label">Существующие уровни:</label>
+        <div class="col-sm-4">
+        {# Existing nodes as drop-down lists. #}
+        <div class="input-group">
+          <div class="input-group-addon">
+            {% raw glyph('map-marker', add_space=False) %}
+          </div>
+          <select class="form-control"
+                  name="nodes"
+                  id="id_nodes">
+          {% for num, node in enumerate(nodes.values()) %}
+          {# TODO: rename `nik` to `node_id`. #}
+            <option>[{{ node["nik"] }}] {{ node["title"] }}"</option>
+          {% end %}
+          </select>
+        </div>
+      </div>
+
+
+      {# New node creation. #}
+      <label for="id_node_make_new" class="col-sm-2 control-label">Создать уровень:</label>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <input type="text"
+                 class="form-control"
+                 name="make_new_node"
+                 id="id_node_make_new"
+                 value=""
+                 autocomplete="off"
+                 placeholder="Введите метку новой ноды (in English, a variable name)">
+          <span class="input-group-btn">
+            <button class="btn btn-success" type="button">
+              {% raw glyph('plus') %} Добавить
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+
     {# Редактирование действий (Action). #}
     <div class="form-group">
       <label for="id_buttons" class="col-sm-2 control-label">
@@ -68,30 +161,23 @@
       <div class="col-sm-10">
         {# Уже существующие действия. #}
         {% for action_id in data.get('actions', []) %}
-        {% set _a = action_details[action_id] %}
-          <a href="../action_edit/{{ _a["type"] }}/{{ data['nik'] }}/{{ action_id }}">
-            <button type="button" class="btn btn-primary">
-              <span class="glyphicon glyphicon-{{ _a['icon'] }}" aria-hidden="true"></span>
-              &nbsp;
-              {{ _a.get('title', '') or "--- NOT SET ---" }}
-            </button>
-          </a>
+        {%   set _a = action_details[action_id] %}
+        {%   if _a['type'] == 'simple' %}
+        {%     include "game_action_editor_button_simple_action.html" %}
+        {%   end %}
         {% end %}
 
         {# Меню для создания нового действия (Action). #}
         <div class="btn-group">
           <button type="button" class="btn btn-success dropdown-toggle"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            &nbsp;
-            Новое действие <span class="caret"></span>
+            {% raw glyph('plus') %} Новое действие <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
             {% for icon, link, label in action_menu %}
               {% if icon != "---" %}
-                <li><a href="../action_new/{{ link }}/{{ data['nik'] }}">
-                  <span class="glyphicon glyphicon-{{ icon }}" aria-hidden="true"></span>
-                  &nbsp;{{ label }}
+                <li><a href="?do=create_new_action&type={{ link }}">
+                  {% raw glyph(icon) %} {{ label }}
                 </a></li>
               {% else %}
                 <li role="separator" class="divider"></li>

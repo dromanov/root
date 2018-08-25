@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ data.get("stage_name", "") }}</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
+  <title>{{ data.get("stage_name", "") }}</title>
 
-    <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
-       <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
-  </head>
+  <meta name="description" content="Source code generated using layoutit.com">
+  <meta name="author" content="LayoutIt!">
+
+  <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
+    MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{
+      cancel: ["Extension","cancel"],
+      bcancel: ["Extension","cancel"],
+      xcancel: ["Extension","cancel"],
+      cancelto: ["Extension","cancel"]
+    });
+  });
+</script>
+<script type="text/javascript" src="{{ static_url("MathJax/MathJax.js?config=TeX-AMS_HTML-full") }}"></script>
 
 <body class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
-      <h1>{% raw data.get("title", "--- НЕТ ЗАГОЛОВКА ---") %}</h1>
+      <h1>
+        <span>{% raw data.get("title", "--- НЕТ ЗАГОЛОВКА ---") %}</span>
+        <span class="pull-right">
+          {{ traveller.name }} ({{ traveller.score }})
+        </span>
+      </h1>
     </div>
   </div>
 
@@ -33,16 +51,44 @@
       {# Уже существующие действия. #}
       {% for action_id in data.get('actions', []) %}
       {% set _a = action_details[action_id] %}
-        <a href="../action_edit/{{ _a["type"] }}/{{ data['nik'] }}/{{ action_id }}">
+        <a href="?do=execute&action_id={{ action_id }}">
           <button type="button" class="btn btn-primary">
             <span class="glyphicon glyphicon-{{ _a['icon'] }}" aria-hidden="true"></span>
             &nbsp;
-            {{ _a.get('title', '') or "--- NOT SET ---" }}
+            {% raw _a.get('title', '') or "--- NOT SET ---" %}
           </button>
         </a>
       {% end %}
     </div>
   </div>
+
+  {# Загрузчик. #}
+  {% if data.get("require_img_uploader", False) %}
+    <hr/>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="well">
+          {% for image in images %}
+            <img src="{{image}}" />&nbsp;
+          {% end %}
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <form enctype="multipart/form-data"
+              action="/game_node/{{ data.get('nik') }}"
+              method="post"
+              class="form-inline"
+              role="form">
+          <div class="form-group">
+            <label for="file_dialog">Выберите файл:</label>
+            <input type="file" name="filearg" id="file_dialog" />
+          </div>
+          <input type="submit" value="Отправить" />
+          {% raw xsrf_form_html() %}
+        </form>
+      </div>
+    </div>
+  {% end %}
 
   <hr />
 
@@ -54,6 +100,7 @@
       </a>
     </div>
   </div>
+
 
   <script src="{{ static_url("jquery.min.js") }}"></script>
   <script src="{{ static_url("bootstrap-3.3.7/js/bootstrap.min.js") }}"></script>
