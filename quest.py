@@ -115,6 +115,24 @@ class GraphHandler(tornado.web.RequestHandler):
                     edge_classes=edge_class)
 
 
+class TableHandler(tornado.web.RequestHandler):
+    def get(self):
+        level_types = ["easy_level", "medium_level", "hard_level",
+                       "fine_level", "organizational"]
+
+        all_nodes = list_nodes()
+        node_ids = list(sorted(all_nodes.keys()))
+        levels = [all_nodes[node].get("level", "") for node in node_ids]
+        if any([l not in level_types + [""] for l in levels]):
+            print("Unknown levels: {}".format(set(levels) - set(level_types)))
+
+        self.render("table.html",
+                    nodes=node_ids,
+                    titles={n: all_nodes[n].get("title") for n in node_ids},
+                    user_names=sorted(users.keys()),
+                    user_data=users)
+
+
 def list_nodes():
     """List all nodes for the drop-down menus, etc."""
     res = {}
@@ -169,9 +187,9 @@ class GameNodeHandler(BaseHandler):
                 res = res*60 + int(terms.pop(0))
             return res
 
-        if "youtube_from" in data:
+        if data.get("youtube_from", "").strip():
             data["youtube_from"] = hhmmss2sec(data["youtube_from"])
-        if "youtube_to" in data:
+        if data.get("youtube_to", "").strip():
             data["youtube_to"] = hhmmss2sec(data["youtube_to"])
 
         action_details = quest_action.load_actions(data.get('actions', []))

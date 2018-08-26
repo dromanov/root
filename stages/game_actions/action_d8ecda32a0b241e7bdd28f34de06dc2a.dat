@@ -1,5 +1,5 @@
 {'id': 'd8ecda32a0b241e7bdd28f34de06dc2a',
  'node_id': '2_jornal',
- 'the_action': "me.goto('2_vitaminC'); me.score(+5)",
+ 'the_action': "me.goto('2_vitaminC'); me.score += 5",
  'title': 'правильный ответ',
  'type': 'simple'}

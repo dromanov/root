@@ -13,7 +13,7 @@ import tornado.web
 from tornado.options import define, options, parse_command_line
 
 from quest import (game_routes, LoginHandler, GraphHandler, TeacherMapHandler1,
-                   TeacherMapDataHandler1)
+                   TeacherMapDataHandler1, TableHandler)
 
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=True, help="run in debug mode")
@@ -31,6 +31,7 @@ def main():
             (r"/", MainHandler),
             (r"/login", LoginHandler),
             (r"/graph", GraphHandler),
+            (r"/table", TableHandler),
             (r"/teacher1", TeacherMapHandler1),
             (r"/a/teacher1", TeacherMapDataHandler1),            
             (r"/images/(.*)", tornado.web.StaticFileHandler,

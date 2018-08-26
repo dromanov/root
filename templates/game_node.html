@@ -93,8 +93,8 @@
   {% if (data.get("youtube_id")) %}
   <hr />
   <iframe type="text/html"
-    width="640"
-    height="385"
+    width="700"
+    height="480"
     src="https://www.youtube.com/embed/{{ data['youtube_id'] }}?loop=0&start={{ data.get("youtube_from", "") }}&end={{ data.get("youtube_to", "") }}&autoplay=1&controls=0&showinfo=0&rel=0&mute=1"
     frameborder="0">
   </iframe>

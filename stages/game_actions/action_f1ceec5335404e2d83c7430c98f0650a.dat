@@ -1,5 +1,5 @@
 {'id': 'f1ceec5335404e2d83c7430c98f0650a',
  'node_id': '2_jornal',
- 'the_action': "me.goto('0_ballon_1'); me.score(-5)",
+ 'the_action': "me.goto('0_ballon_1'); me.score -= 5",
  'title': 'неправильный ответ',
  'type': 'simple'}
