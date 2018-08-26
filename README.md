@@ -14,14 +14,14 @@
 
 ## Step 1
 
-$ mkvirtualenv tornado_timetable
-$ mkdir tornado_timetable
-$ cd tornado_timetable
-$ pip install tornado
-$ python
->>> import tornado
->>> tornado.version
-4.3
+    $ mkvirtualenv tornado_timetable
+    $ mkdir tornado_timetable
+    $ cd tornado_timetable
+    $ pip install tornado
+    $ python
+    >>> import tornado
+    >>> tornado.version
+    4.3
 
 
 ## Step 2
