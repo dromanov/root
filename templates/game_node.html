@@ -41,7 +41,7 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <div class="well">{% raw data.get("task", "--- НЕТ ТЕКСТА ЗАДАНИЯ ---")
+      <div class="well">{% raw data.get("task", "--- НЕТ ТЕКСТА ЗАДАНИЯ ---").replace("{{ name }}", traveller.name)
       %}</div>
     </div>
   </div>
@@ -88,6 +88,16 @@
         </form>
       </div>
     </div>
+  {% end %}
+
+  {% if (data.get("youtube_id")) %}
+  <hr />
+  <iframe type="text/html"
+    width="640"
+    height="385"
+    src="https://www.youtube.com/embed/{{ data['youtube_id'] }}?loop=0&start={{ data.get("youtube_from", "") }}&end={{ data.get("youtube_to", "") }}&autoplay=1&controls=0&showinfo=0&rel=0&mute=1"
+    frameborder="0">
+  </iframe>
   {% end %}
 
   <hr />

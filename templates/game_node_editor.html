@@ -111,6 +111,26 @@
       </div>
     </div>
 
+    {# Выбор подключения ролика с ютуба. #}
+    <div class="form-group">
+      <label for="youtube_id" class="col-sm-2 control-label">Видео с ютуба:</label>
+      <div class="col-sm-10 form-inline">
+        <input type="text"
+               name="youtube_id"
+               id="youtube_id"
+               value="{{ data.get("youtube_id", "") }}"
+               placeholder="ID ролика" />
+        <input type="text"
+               name="youtube_from"
+               value="{{ data.get("youtube_from", "") }}"
+               placeholder="from hh:mm:ss" />
+        <input type="text"
+               name="youtube_to"
+               value="{{ data.get("youtube_to", "") }}"
+               placeholder="to hh:mm:ss" />
+      </div>
+    </div>
+
     {# Список существующих уровней (карта-шпаргалка). #}
     <div class="form-group">
       <label for="id_nodes" class="col-sm-2 control-label">Существующие уровни:</label>

@@ -162,6 +162,18 @@ class GameNodeHandler(BaseHandler):
                 self.redirect(node_id)
             return None
 
+        def hhmmss2sec(s):
+            terms = s.split(":")
+            res = 0
+            while terms:
+                res = res*60 + int(terms.pop(0))
+            return res
+
+        if "youtube_from" in data:
+            data["youtube_from"] = hhmmss2sec(data["youtube_from"])
+        if "youtube_to" in data:
+            data["youtube_to"] = hhmmss2sec(data["youtube_to"])
+
         action_details = quest_action.load_actions(data.get('actions', []))
         self.render("game_node.html",
                     data=data,
