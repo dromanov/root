@@ -1,90 +1,153 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Tornado Chat Demo</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Tornado Chat Demo</title>
 
-    <!-- Bootstrap -->
-    <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="{{ static_url("bootstrap-3.3.7/css/bootstrap.min.css") }}" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 
-    <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
-  </head>
-  <body class="container">
-    <h1>Добро пожаловать в проект "Таинственный остров"!</h1>
+  <link rel="stylesheet" href="{{ static_url("chat.css") }}" type="text/css">
+
+  {# Huge thanks to https://codepen.io/dudleystorey/pen/PZyMrd #}
+  <style>
+    * { box-sizing: border-box; }
+    .video-background {
+      background: #000;
+      position: fixed;
+      top: 0; right: 0; bottom: 0; left: 0;
+      z-index: -99;
+    }
+    .video-foreground,
+    .video-background iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    #vidtop-content {
+      top: 0;
+      color: #fff;
+    }
+    #vidtop-content2 {
+      top: 0;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.75);
+    }
+    .vid-info {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 33%;
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      padding: 1rem;
+      font-family: Avenir, Helvetica, sans-serif;
+    }
+    .vid-info h1 { font-size: 2rem; font-weight: 700; margin-top: 0; line-height: 1.2; }
+    .vid-info a { display: block; color: #fff; text-decoration: none; background: rgba(0,0,0,0.5); transition: .6s background; border-bottom: none; margin: 1rem auto; text-align: center; }
+    @media (min-aspect-ratio: 16/9) {
+      .video-foreground { height: 300%; top: -100%; }
+    }
+    @media (max-aspect-ratio: 16/9) {
+      .video-foreground { width: 300%; left: -100%; }
+    }
+    @media all and (max-width: 600px) {
+    .vid-info { width: 50%; padding: .5rem; }
+    .vid-info h1 { margin-bottom: .2rem; }
+    }
+    @media all and (max-width: 500px) {
+    .vid-info .acronym { display: none; }
+    }
+  </style>
+</head>
+<body class="container">
+
+  <div class="video-background">
+    <div class="video-foreground">
+      <iframe src="https://www.youtube.com/embed/W0LHTWG-UmQ?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=W0LHTWG-UmQ&mute=1" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+<div id="vidtop-content2" class="text-">
+  <h1>Добро пожаловать в проект "Таинственный остров"!</h1>
+  <p>
+    При столкновении с внешним миром человеку приходится полагаться только
+    на свой ум, знания, накопленный опыт и на товарищей &mdash; будь то
+    экспедиция, труд инженера, принимающего силы природы на свои изделия,
+    или работа космонавта.
+  </p>
+  <p>
+    Для таких людей не представляет проблемы с помощью часов и палки,
+    воткнутой в песок, определить широту и долготу места крушения своего
+    самолёта. Из такого же теста сделан и космонавт Гордон Купер:
+    <blockquote>
     <p>
-      При столкновении с внешним миром человеку приходится полагаться только
-      на свой ум, знания, накопленный опыт и на товарищей &mdash; будь то
-      экспедиция, работа инженера, принимающего силы природы на свои изделия,
-      или работа космонавта.
-    </p>
-    <p>
-      Для таких людей не представляет проблемы с помощью часов и палки,
-      воткнутой в песок, определить широту и долготу места крушения своего
-      самолёта. Из такого же теста сделан и космонавт Гордон Купер:
-      <blockquote>
-      <p>
-        В последнем из полетов серии Mercury в корабле Гордона отказала
-        электроника. Вся. Полностью. Не работали ни коррекция направления,
-        ни контроль двигателей, ни даже приборы, которые показывали бы ему,
-        в какую сторону он летит. Единственное, что продолжало работать – это
-        радио, подключенное напрямую к батареям питания внутри падающей мёртвой
-        жестянки.
-      </p>
-
-      <p>
-        Учёные ЦУПа оказалить беспомощны, и, связавшись с
-        астронавтом Джоном Гленом, Купер сам рассчитывает
-        параметры входа. У него было меньше инструментов, чем сейчас есть у
-        вас: перед отключением электроника показала, что воздух заканчивается и
-        капсула начала наполняться углекислым газом.
-      </p>
-
-      <p>
-        Сориентировав окно капсулы в сторону звезд, Купер нанес на него
-        отметки и стал управлять ускорителями, дотягиваясь и вручную открывая
-        и закрывая топливные клапаны, используя для замера времени работы
-        только наручные часы. Необходимые сроки работы он считал в уме.
-      </p>
-
-      <p>
-        Интересна реакция самого Купера на этот смертельно опасный
-        математический тест: <em>"…ну, это то, что мы всё время хотели
-        попробовать сделать. Так что у меня просто появилась возможность
-        сделать то, что всегда хотелось."</em>
-      </p>
-
-      <footer>
-        "Космонавты, которые намного круче чем любой герой боевика"
-        <cite title="Source Title">[https://habr.com/post/168937/]</cite>
-      </footer>
-      </blockquote>
+      В последнем из полетов серии Mercury в корабле Гордона отказала
+      электроника. Вся. Полностью. Не работали ни коррекция направления,
+      ни контроль двигателей, ни даже приборы, которые показывали бы ему,
+      в какую сторону он летит. Единственное, что продолжало работать – это
+      радио, подключенное напрямую к батареям питания внутри падающей мёртвой
+      жестянки.
     </p>
 
     <p>
-      Ниже вы можете самостоятельно пройти полный приключений путь, описанный
-      в книге Жюля Верна "Таинственный остров", чтобы ощутить суть такого
-      выбора &mdash; на себе.
-    </p>
-    <ul>
-      <li><a href="/game_node/0_plan">Таинственный остров</a></li>
-      <li><a href="/graph">Граф квеста</a></li>
-    </ul>
-
-    <p class="modal-footer">P.S. Ключевой вклад в разработку квеста внесла
-      Исаева Виктория Владимировна: работы доступны на portfolio.kspu.ru.
+      Учёные ЦУПа оказалить беспомощны, и, связавшись с
+      астронавтом Джоном Гленом, Купер сам рассчитывает
+      параметры входа. У него было меньше инструментов, чем сейчас есть у
+      вас: перед отключением электроника показала, что воздух заканчивается и
+      капсула начала наполняться углекислым газом.
     </p>
 
-    <script src="{{ static_url("jquery.min.js") }}" type="text/javascript"></script>
-    <script src="{{ static_url("bootstrap-3.3.7/js/bootstrap.min.js") }}" type="text/javascript"></script>
-  </body>
+    <p>
+      Сориентировав окно капсулы в сторону звезд, Купер нанес на него
+      отметки и стал управлять ускорителями, дотягиваясь и вручную открывая
+      и закрывая топливные клапаны, используя для замера времени работы
+      только наручные часы. Необходимые сроки работы он считал в уме.
+    </p>
+
+    <p>
+      Интересна реакция самого Купера на этот смертельно опасный
+      математический тест: <em>"…ну, это то, что мы всё время хотели
+      попробовать сделать. Так что у меня просто появилась возможность
+      сделать то, что всегда хотелось."</em>
+    </p>
+
+    <footer>
+      "Космонавты, которые намного круче чем любой герой боевика"
+      <cite title="Source Title">[https://habr.com/post/168937/]</cite>
+    </footer>
+    </blockquote>
+  </p>
+
+  <p>
+    Ниже вы можете самостоятельно пройти полный приключений путь, описанный
+    в книге Жюля Верна "Таинственный остров", чтобы ощутить суть такого
+    выбора &mdash; на себе.
+  </p>
+  <ul>
+    <li><a href="/game_node/0_plan">Таинственный остров</a></li>
+    <li><a href="/graph">Граф квеста</a></li>
+  </ul>
+
+  <p class="modal-footer">P.S. Ключевой вклад в разработку квеста внесла
+    Исаева Виктория Владимировна: работы доступны на portfolio.kspu.ru.
+  </p>
+</div>
+
+<script src="{{ static_url("jquery.min.js") }}" type="text/javascript"></script>
+<script src="{{ static_url("bootstrap-3.3.7/js/bootstrap.min.js") }}" type="text/javascript"></script>
+</body>
 </html>

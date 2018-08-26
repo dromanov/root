@@ -38,5 +38,6 @@ $ workon peopleware
 ## Step 3
 
 Freeze and install the requirements:
+
     $ pip freeze > requirements.txt
     $ pip install -r requirements.txt
