@@ -4,8 +4,12 @@
  'level': 'easy_level',
  'make_new_node': '',
  'nik': '1_path',
- 'nodes': '[0_airton] Призыв о помощи!"',
+ 'nodes': '[3_path_2] Как быстро несет нас ветер!"',
+ 'require_img_uploader': False,
  'task': 'На карте отмечены города, в которых вы можете остановиться и '
          'пополнить припасы. Отметьте координаты  города M.\r\n'
          '<p><img src="/images/1_path.png" alt="упс"></p>',
- 'title': 'Куда дорога нас ведет?'}
+ 'title': 'Куда дорога нас ведет?',
+ 'youtube_from': '19:10',
+ 'youtube_id': 'oQi2mRJ35zo',
+ 'youtube_to': '21:23'}
