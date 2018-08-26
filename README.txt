@@ -1,14 +1,18 @@
+О проекте
+=========
+
 Это квест, выполненный в рамках дипломной работы Исаевой Виктории Владимировны.
 
 Можно посмотреть online-демо: http://misterious.herokuapp.com/
 
 Аудитория - пятые классы школы, математика, тема "Дроби".
 
-Репозиторий уже готов к выгрузке на heroku.
+Репозиторий уже готов к выгрузке на `heroku`.
 
 
-Step 1
-======
+# Установка среды разработки
+
+## Step 1
 
 $ mkvirtualenv tornado_timetable
 $ mkdir tornado_timetable
@@ -19,8 +23,9 @@ $ python
 >>> tornado.version
 4.3
 
-Step 2
-======
+
+## Step 2
+
 $ workon peopleware
 
 (!) Make absolute path (after all symbolic links stripped) to be unicode free,
@@ -29,8 +34,9 @@ $ workon peopleware
     If you want to work in Russian-named-folder, create real folder in clean
     place and place the symlink into Russian folder to work there.
 
-Step 3
-======
+
+## Step 3
+
 Freeze and install the requirements:
     $ pip freeze > requirements.txt
     $ pip install -r requirements.txt
