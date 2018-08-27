@@ -14,9 +14,10 @@ import quest_action
 
 import quest_traveller
 
-__all__ = ("game_routes LoginHandler GraphHandler"
+__all__ = ("game_routes LoginHandler ResetHandler GraphHandler"
            "TeacherMapHandler1 TeacherMapDataHandler1").split()
 
+secret = 1
 users = {}
 
 
@@ -31,6 +32,8 @@ class LoginHandler(BaseHandler):
     def get(self):
         names = []
         filename = "stages/login.dat"
+        self.set_secure_cookie("secret", str(secret + 1))
+        print(secret)
         if os.path.isfile(filename):
             # TODO: tell Victoria about the encoding bug here.
             names = eval(open(filename, encoding='utf-8').read())
@@ -46,6 +49,14 @@ class LoginHandler(BaseHandler):
             # `BaseHandler::get_current_user` (line 23).
             # [http://www.tornadoweb.org/en/stable/guide/security.html]
             self.set_secure_cookie("pointer_user", name)
+        self.redirect("/game_node/0_plan")
+
+
+class ResetHandler(tornado.web.RequestHandler):
+    def get(self):
+        global secret
+        secret += 1
+        self.clear_cookie("point_user")
         self.redirect("/game_node/0_plan")
 
 
