@@ -2,5 +2,5 @@
  'node_id': '1_market_3',
  'the_action': "me.goto('0_ballon'); me.score -=5; "
                'me.story.append("1_market_3")',
- 'title': '450 \\( {м}^{2} \\)',
+ 'title': '450 м',
  'type': 'simple'}

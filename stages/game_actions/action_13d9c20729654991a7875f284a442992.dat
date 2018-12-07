@@ -1,5 +1,5 @@
 {'id': '13d9c20729654991a7875f284a442992',
  'node_id': '7_rus',
- 'the_action': "me.goto('0_crash'); me.score(+5)",
+ 'the_action': "me.goto('0_crash'); me.score += 5;",
  'title': 'правильный переход',
  'type': 'simple'}

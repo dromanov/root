@@ -16,38 +16,39 @@
 <body class='container-fluid'>
   <div class='row'>
     <div class='col-md-12'>
-      <h2>Таблица успеваемости класса: квест "Таинственный остров".</h2>
-      <p class='lead'>Здесь вы можете выполнить переход к любому этапу квеста :-)</p>
+      <h2>Статистика прохождения квеста: ученик(ца) {{ user_name }}.</h2>
+
+      <table class="table table-hover table-bordered table-striped table-responsive table-condensed">
+        <thead>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">Правильных ответов:</th>
+          <td class="text-center">{{ len([1 for s in user_path if s['delta_score'] > 0]) }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Неправильных ответов:</th>
+          <td class="text-center">{{ len([1 for s in user_path if s['delta_score'] < 0]) }}</td>
+        </tr>
+        </tbody>
+      </table>
 
       <table class="table table-hover table-bordered table-striped table-responsive table-condensed">
         <thead>
         <tr>
           <th>Локация</th>
-          {% for name in user_names %}
-          <th class="text-center">{{ name }} [<a href="/stat_user/{{ name }}"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span></a>]</th>
-          {% end %}
+          <th>Оценка</th>
         </tr>
         </thead>
         <tbody>
-        {% for node_id in nodes %}
+        {% for step in user_path %}
         <tr>
-          <th scope="row"><a href="/game_node/{{ node_id }}">{{ node_id }}: {{ titles[node_id] }}</a></th>
-          {% for name in user_names %}
-          <td class="text-center">
-            {% if node_id in user_data[name].story %}
-              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-            {% end %}
-          </td>
-          {% end %}
+          <th scope="row"><a href="/game_node/{{ step['node_id'] }}">{{ step['node_id'] }}: {% raw titles[step['node_id']] %}</a></th>
+          <td class="text-center">{{ step['delta_score'] }}</td>
         </tr>
         {% end %}
         </tbody>
       </table>
-    </div>
-    <div class='col-sm-4 col-sm-offset-1'>
-      <p>
-      !!!
-      <p>
     </div>
   </div>
 

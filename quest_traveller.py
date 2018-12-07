@@ -19,6 +19,7 @@ class TravellerAPI:
         self.story = []
         self.new_location = None
         self.name = name
+        self._history = []
 
     def goto(self, place):
         self.new_location = place
@@ -27,6 +28,12 @@ class TravellerAPI:
         location = self.new_location
         self.new_location = None
         return location
+
+    def remember(self, item):
+        self._history.append(item)
+
+    def get_history(self):
+        return self._history
 
     def save_image(self, node_id, fileinfo):
         fname = fileinfo['filename']

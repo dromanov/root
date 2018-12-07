@@ -8,14 +8,16 @@ import glob
 import uuid
 import pprint
 
+from copy import deepcopy
+
 import tornado.web
 
 import quest_action
-
 import quest_traveller
 
-__all__ = ("game_routes LoginHandler ResetHandler GraphHandler"
-           "TeacherMapHandler1 TeacherMapDataHandler1").split()
+__all__ = ("game_routes LoginHandler ResetHandler GraphHandler "
+           "TeacherMapHandler1 TeacherMapDataHandler1 "
+           "UserStatisticHandler").split()
 
 secret = 1
 users = {}
@@ -35,7 +37,6 @@ class LoginHandler(BaseHandler):
         self.set_secure_cookie("secret", str(secret + 1))
         print(secret)
         if os.path.isfile(filename):
-            # TODO: tell Victoria about the encoding bug here.
             names = eval(open(filename, encoding='utf-8').read())
         self.render("login.html", names=names)
 
@@ -45,9 +46,9 @@ class LoginHandler(BaseHandler):
             # user = uuid.uuid4().hex
             users[name] = quest_traveller.TravellerAPI(name)
             # TODO: One should implement BaseClass::get_current_user()
-            # and name the cookie below to match the one in
-            # `BaseHandler::get_current_user` (line 23).
-            # [http://www.tornadoweb.org/en/stable/guide/security.html]
+            #   and name the cookie below to match the one in
+            #   `BaseHandler::get_current_user` (line 23).
+            #   [http://www.tornadoweb.org/en/stable/guide/security.html]
             self.set_secure_cookie("pointer_user", name)
         self.redirect("/game_node/0_plan")
 
@@ -183,7 +184,12 @@ class GameNodeHandler(BaseHandler):
             action_id = self.get_argument("action_id")
             assert action_id in data['actions'], "no such action here!"
             action = quest_action.load_action(action_id).get('the_action', '')
+            me_before = deepcopy(traveller)
             exec(action, {'me': traveller})
+            traveller.remember({
+                'node_id': node_id,
+                'delta_score': traveller.score - me_before.score
+            })
             new_location = traveller.pop_location()
             if new_location:
                 self.redirect("/game_node/" + new_location)
@@ -318,6 +324,24 @@ def link_action(node_id, action_id):
     data = _load_node(node_id)
     data['actions'] = data.get('actions', []) + [action_id]
     _save_node(node_id, data)
+
+
+class UserStatisticHandler(tornado.web.RequestHandler):
+    def get(self, username):
+        if username not in users:
+            print(f"Unknown user: {username}")
+            self.clear()
+            self.set_status(400)
+            self.finish(f"<html><head><meta charset='utf-8'/></head>"
+                        f"<body>User `{username}` is not found.</body></html>")
+            return
+
+        all_nodes = list_nodes()
+        node_ids = list(sorted(all_nodes.keys()))
+        self.render("user_stat.html",
+                    user_name=username,
+                    user_path=users[username].get_history(),
+                    titles={n: all_nodes[n].get("title") for n in node_ids})
 
 
 game_routes = [
