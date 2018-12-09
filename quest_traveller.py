@@ -50,3 +50,11 @@ class TravellerAPI:
                                                      '*'])))
         # I use relative path here, but the site requires the absolute path.
         return [f.lstrip('.') for f in filenames]
+
+    def to_txt(self):
+        dump = [self.score, self.story, self.name, self._history, self.story]
+        return repr(dump)
+
+    def update_from_txt(self, dump_):
+        data = eval(dump_)
+        self.score, self.story, self.name, self._history, self.story = data

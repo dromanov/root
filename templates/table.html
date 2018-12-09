@@ -31,7 +31,10 @@
         <tbody>
         {% for node_id in nodes %}
         <tr>
-          <th scope="row"><a href="/game_node/{{ node_id }}">{{ node_id }}: {{ titles[node_id] }}</a></th>
+          <th scope="row">
+            <a href="/game_node/{{ node_id }}">{{ node_id }}: {% raw titles[node_id] %}</a>
+            [<a href="/stat_node/{{ node_id }}"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span></a>]
+          </th>
           {% for name in user_names %}
           <td class="text-center">
             {% if node_id in user_data[name].story %}

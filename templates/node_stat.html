@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Статистика: {{ user_name }}</title>
+  <title>Статистика по локации «{{ titles[node_id] }}»</title>
 
   <meta name="description" content="Source code generated using layoutit.com">
   <meta name="author" content="LayoutIt!">
@@ -16,7 +16,7 @@
 <body class='container-fluid'>
   <div class='row'>
     <div class='col-md-12'>
-      <h2>Статистика прохождения квеста: ученик(ца) {{ user_name }}.</h2>
+      <h2>Статистика прохождения локации «{{ titles[node_id] }}».</h2>
 
       <table class="table table-hover table-bordered table-striped table-responsive table-condensed">
         <thead>
@@ -24,11 +24,11 @@
         <tbody>
         <tr>
           <th scope="row">Правильных ответов:</th>
-          <td class="text-center">{{ len([1 for s in user_path if s['delta_score'] > 0]) }}</td>
+          <td class="text-center">{{ len([1 for score in location_stat.values() if score > 0]) }}</td>
         </tr>
         <tr>
           <th scope="row">Неправильных ответов:</th>
-          <td class="text-center">{{ len([1 for s in user_path if s['delta_score'] < 0]) }}</td>
+          <td class="text-center">{{ len([1 for score in location_stat.values() if score < 0]) }}</td>
         </tr>
         </tbody>
       </table>
@@ -41,13 +41,10 @@
         </tr>
         </thead>
         <tbody>
-        {% for step in user_path %}
+        {% for kid, score in sorted(location_stat.items()) %}
         <tr>
-          <th scope="row">
-            <a href="/game_node/{{ step['node_id'] }}">{{ step['node_id'] }}: {% raw titles[step['node_id']] %}</a>
-            [<a href="/stat_node/{{ step['node_id'] }}"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span></a>]
-          </th>
-          <td class="text-center">{{ step['delta_score'] }}</td>
+          <th scope="row"><a href="/stat_user/{{ kid }}"> {{ kid }}</a></th>
+          <td class="text-center">{{ score }}</td>
         </tr>
         {% end %}
         </tbody>

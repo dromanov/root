@@ -1,7 +1,7 @@
 """
 Handles creating, rendering and editing nodes of the text based game.
 """
-
+import atexit
 import os
 import re
 import glob
@@ -44,7 +44,8 @@ class LoginHandler(BaseHandler):
         name = self.get_argument("name")
         if not self.get_secure_cookie("pointer_user"):
             # user = uuid.uuid4().hex
-            users[name] = quest_traveller.TravellerAPI(name)
+            if name not in users:
+                users[name] = quest_traveller.TravellerAPI(name)
             # TODO: One should implement BaseClass::get_current_user()
             #   and name the cookie below to match the one in
             #   `BaseHandler::get_current_user` (line 23).
@@ -343,6 +344,47 @@ class UserStatisticHandler(tornado.web.RequestHandler):
                     user_path=users[username].get_history(),
                     titles={n: all_nodes[n].get("title") for n in node_ids})
 
+
+class NodeStatisticHandler(tornado.web.RequestHandler):
+    def get(self, node_id):
+        kids = sorted(users.keys())
+
+        def location_score(history):
+            for h in history:
+                if h['node_id'] == node_id:
+                    return h['delta_score']
+            return None
+
+        location_stat = {k: location_score(v.get_history())
+                           for k, v in users.items()}
+
+        all_nodes = list_nodes()
+        node_ids = list(sorted(all_nodes.keys()))
+        self.render("node_stat.html",
+                    node_id=node_id,
+                    location_stat=location_stat,
+                    titles={n: all_nodes[n].get("title") for n in node_ids})
+
+
+def dump_database():
+    with open('users.repr.txt', 'w') as fp:
+        fp.write(repr({k: v.to_txt() for k, v in users.items()}))
+
+
+def restore_from_database():
+    try:
+        with open('users.repr.txt') as fp:
+            # TODO: Yes, yes, I know!
+            data = eval(fp.read())
+            for name, ascii_dump in data.items():
+                users[name] = quest_traveller.TravellerAPI(name)
+                users[name].update_from_txt(ascii_dump)
+    except:
+        pass
+
+
+restore_from_database()
+atexit.register(dump_database)
 
 game_routes = [
     (r"/game_node/(.*)", GameNodeHandler),
