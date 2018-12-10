@@ -51,7 +51,7 @@ class LoginHandler(BaseHandler):
             #   `BaseHandler::get_current_user` (line 23).
             #   [http://www.tornadoweb.org/en/stable/guide/security.html]
             self.set_secure_cookie("pointer_user", name)
-        self.redirect("/game_node/0_plan")
+        self.redirect(f"/game_node/{users[name].pop_location()}")
 
 
 class ResetHandler(tornado.web.RequestHandler):

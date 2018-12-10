@@ -17,7 +17,7 @@ class TravellerAPI:
     def __init__(self, name):
         self.score = 0
         self.story = []
-        self.new_location = None
+        self.new_location = "0_plan"  # `0_plan` is the start of the quest.
         self.name = name
         self._history = []
 
@@ -25,9 +25,7 @@ class TravellerAPI:
         self.new_location = place
 
     def pop_location(self):
-        location = self.new_location
-        self.new_location = None
-        return location
+        return self.new_location
 
     def remember(self, item):
         self._history.append(item)
@@ -52,9 +50,10 @@ class TravellerAPI:
         return [f.lstrip('.') for f in filenames]
 
     def to_txt(self):
-        dump = [self.score, self.story, self.name, self._history, self.story]
+        dump = [self.score, self.story, self.name, self._history, self.story,
+                self.new_location]
         return repr(dump)
 
     def update_from_txt(self, dump_):
-        data = eval(dump_)
-        self.score, self.story, self.name, self._history, self.story = data
+        (self.score, self.story, self.name, self._history, self.story,
+         self.new_location) = eval(dump_)
