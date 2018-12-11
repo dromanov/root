@@ -30,12 +30,35 @@
       text-anchor:middle;
       font-size:12px;
     }
+
+    {# Taken from https://bl.ocks.org/mbostock/2368837 #}
+    .bar--positive {
+      fill: #109618;
+    }
+
+    .bar--negative {
+      fill: #DC3912;
+    }
+
+    .axis text {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
   </style>
 </head>
 
 <body class='container-fluid'>
 
 <script>
+// Taken from http://bl.ocks.org/NPashaP/9994181
+
 var data = [
   {label: 'Правильно', color: "#109618", value: 0 },
   {label: 'Неправильно', color: "#DC3912", value: 0 },
@@ -59,6 +82,66 @@ function loadRealData() {
 }
 
 setTimeout(loadRealData, 1000);
+
+// Taken from https://bl.ocks.org/mbostock/2368837
+
+var margin = {top: 20, right: 30, bottom: 40, left: 30},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scale.linear()
+    .range([0, width]);
+
+var y = d3.scale.ordinal()
+    .rangeRoundBands([0, height], 0.1);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickSize(0)
+    .tickPadding(6);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+let tsv = [
+{% for step in user_path %}
+  { name: "{% raw titles[step['node_id']] %}",
+    value: {{ step['delta_score'] }} },
+{% end %}
+];
+
+x.domain(               // ↓- to reserve some space for the labels.
+  d3.extent(tsv.concat([{value: -5}, {value: 5}]),
+            function(d) { return d.value; })
+).nice();
+y.domain(tsv.map(function(d) { return d.name; }));
+
+svg.selectAll(".bar")
+    .data(tsv)
+  .enter().append("rect")
+    .attr("class", function(d) { return "bar bar--" + (d.value < 0 ? "negative" : "positive"); })
+    .attr("x", function(d) { return x(Math.min(0, d.value)); })
+    .attr("y", function(d) { return y(d.name); })
+    .attr("width", function(d) { return Math.abs(x(d.value) - x(0)); })
+    .attr("height", y.rangeBand());
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + x(0) + ",0)")
+    .call(yAxis);
 
 </script>
 
