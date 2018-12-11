@@ -57,12 +57,13 @@
 <body class='container-fluid'>
 
 <script>
+// ----------------------------------------------------------------------------
 // Taken from http://bl.ocks.org/NPashaP/9994181
 
 var data = [
   {label: 'Правильно', color: "#109618", value: 0 },
   {label: 'Неправильно', color: "#DC3912", value: 0 },
-	{label: "Неизвестно", color:"#FF9900", value: 1},
+	{label: "Неизвестно", color:"#DDDDDD", value: 1},
 ];
 
 var svgDonut = d3.select("body").append("svg").attr("width",700).attr("height",300);
@@ -76,14 +77,14 @@ function loadRealData() {
   data = [
     {label: 'Правильно', color: "#109618", value: {{ len([1 for s in user_path if s['delta_score'] > 0]) }} },
     {label: 'Неправильно', color: "#DC3912", value: {{ len([1 for s in user_path if s['delta_score'] < 0]) }} },
-  	{label: "Неизвестно", color:"#FF9900", value: 0},
+  	{label: "Неизвестно", color:"#DDDDDD", value: 0},
   ];
 	Donut3D.transition("salesDonut", data, 130, 100, 30, 0.25);
 }
 
 setTimeout(loadRealData, 1000);
 
-
+// ----------------------------------------------------------------------------
 // Taken from https://bl.ocks.org/mbostock/2368837
 
 var margin = {top: 20, right: 30, bottom: 40, left: 30},
