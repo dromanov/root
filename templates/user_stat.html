@@ -57,11 +57,12 @@
 <body class='container-fluid'>
   <div class='row'>
     <div class='col-md-12'>
-      <h2>Статистика прохождения квеста: ученик(ца) {{ user_name }}.</h2>
+      <h2 class="text-center">Статистика прохождения квеста: ученик(ца) {{ user_name }}</h2>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 col-md-offset-3">
+      <h3 class="text-center">Общее количество набранных баллов</h3>
       <div id="user_stat_donut" class="text-center">
       </div>
       <table class="table table-hover table-bordered table-striped table-responsive table-condensed">
@@ -81,7 +82,15 @@
     </div>
     <div class="col-md-6 text-center" id="user_stat_donut">
     </div>
+  </div>
 
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h3>Оценки за индивидуальные задания</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
       <table class="table table-hover table-bordered table-striped table-responsive table-condensed">
         <thead>
         <tr>
@@ -101,6 +110,8 @@
         {% end %}
         </tbody>
       </table>
+    </div>
+    <div class="col-md-6" id="vertical_story">
     </div>
   </div>
 
@@ -142,7 +153,7 @@
     // Taken from https://bl.ocks.org/mbostock/2368837
 
     var margin = {top: 20, right: 30, bottom: 40, left: 30},
-        width = 960 - margin.left - margin.right,
+        width = 500 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.linear()
@@ -161,7 +172,7 @@
         .tickSize(0)
         .tickPadding(6);
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#vertical_story").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
