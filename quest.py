@@ -139,10 +139,19 @@ class TableHandler(tornado.web.RequestHandler):
         if any([l not in level_types + [""] for l in levels]):
             print("Unknown levels: {}".format(set(levels) - set(level_types)))
 
+        def score(name):
+            history = users[name].get_history()
+            scores = (h['delta_score'] for h in history)
+            positive = sum(h for h in scores if h > 0)
+            negative = sum(h for h in scores if h < 0)
+            return positive, negative
+
+        pupils_scores = [(p, score(p)) for p in users]
         self.render("table.html",
                     nodes=node_ids,
                     titles={n: all_nodes[n].get("title") for n in node_ids},
                     user_names=sorted(users.keys()),
+                    scores=pupils_scores,
                     user_data=users)
 
 
@@ -347,8 +356,6 @@ class UserStatisticHandler(tornado.web.RequestHandler):
 
 class NodeStatisticHandler(tornado.web.RequestHandler):
     def get(self, node_id):
-        kids = sorted(users.keys())
-
         def location_score(history):
             for h in history:
                 if h['node_id'] == node_id:
@@ -356,7 +363,8 @@ class NodeStatisticHandler(tornado.web.RequestHandler):
             return None
 
         location_stat = {k: location_score(v.get_history())
-                           for k, v in users.items()}
+                         for k, v in users.items()
+                         if location_score(v.get_history()) is not None}
 
         all_nodes = list_nodes()
         node_ids = list(sorted(all_nodes.keys()))

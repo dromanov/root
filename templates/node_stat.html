@@ -24,11 +24,11 @@
         <tbody>
         <tr>
           <th scope="row">Правильных ответов:</th>
-          <td class="text-center">{{ len([1 for score in location_stat.values() if score > 0]) }}</td>
+          <td class="text-center">{{ len([1 for score in location_stat.values() if score and score > 0]) }}</td>
         </tr>
         <tr>
           <th scope="row">Неправильных ответов:</th>
-          <td class="text-center">{{ len([1 for score in location_stat.values() if score < 0]) }}</td>
+          <td class="text-center">{{ len([1 for score in location_stat.values() if score and score < 0]) }}</td>
         </tr>
         </tbody>
       </table>
