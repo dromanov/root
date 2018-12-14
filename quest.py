@@ -44,13 +44,13 @@ class LoginHandler(BaseHandler):
         name = self.get_argument("name")
         if not self.get_secure_cookie("pointer_user"):
             # user = uuid.uuid4().hex
-            if name not in users:
-                users[name] = quest_traveller.TravellerAPI(name)
             # TODO: One should implement BaseClass::get_current_user()
             #   and name the cookie below to match the one in
             #   `BaseHandler::get_current_user` (line 23).
             #   [http://www.tornadoweb.org/en/stable/guide/security.html]
             self.set_secure_cookie("pointer_user", name)
+        if name not in users:
+            users[name] = quest_traveller.TravellerAPI(name)
         self.redirect(f"/game_node/{users[name].pop_location()}")
 
 
